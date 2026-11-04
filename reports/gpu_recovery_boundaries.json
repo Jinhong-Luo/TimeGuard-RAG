@@ -1,0 +1,233 @@
+{
+  "recorded_at_utc": "2026-11-04T16:03:38.017907+00:00",
+  "pending_tasks": 11,
+  "complete_tasks_preserved": 134,
+  "all_pending_below_embedding_progress": true,
+  "all_pending_empty_chunk_ids": true,
+  "all_pending_no_done_credit": true,
+  "all_pending_without_embedding_or_indexing_markers": true,
+  "checks": [
+    {
+      "task_id": "5c053e2ad86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_timeguard_corpus_extra_08",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "2",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "64b3d1dd428d6743b20d40bf760e5b0aa4f42c36928986465c4f3e14ce57d5fa",
+      "task_tail_sha256": "a09ee8fde6f50f2122f88ba34b44935ff8f53d10b43c51ed6ab25ef0932e9ca4",
+      "log_path": "/ragflow/logs/task_executor_common_timeguard_corpus_extra_08.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c053eacd86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_timeguard_corpus_extra_09",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "2",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "83f30315286a0c4f9d7b56212f9502a3086633d8f598da7fd38be90a9ea2e45f",
+      "task_tail_sha256": "6dd6dbfcba3aba1c151028fdaa6a5942d58786688c0399469aff7848beae524a",
+      "log_path": "/ragflow/logs/task_executor_common_timeguard_corpus_extra_09.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c272da0d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_timeguard_corpus_extra_10",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "2",
+      "progress": 0.3,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "5e2158a5acdeddd118b0a25aec0ef2419f4fd8ed1c2f0db8f2dc0eb1ecd0097b",
+      "task_tail_sha256": "f33078d0783424e4aca23a5b6587a0c8037905c43bf78c5b35ecbf5f990656fe",
+      "log_path": "/ragflow/logs/task_executor_common_timeguard_corpus_extra_10.log",
+      "matched_task_lines": 5
+    },
+    {
+      "task_id": "5c273016d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_timeguard_corpus_extra_11",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "2",
+      "progress": 0.1,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "e08956cdafcaf034ad532567205cbf37d7dd71f2a7e6937ed43a4a8fa20c47c9",
+      "task_tail_sha256": "fa79ee81fc266c053d22e0fb03261c8fedc9e76a31b9408caa23e35c4314db58",
+      "log_path": "/ragflow/logs/task_executor_common_timeguard_corpus_extra_11.log",
+      "matched_task_lines": 4
+    },
+    {
+      "task_id": "5c478d2ad86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_4",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "1",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "6cfed0d550c3f2fd97229d5c0f2ab6c692b32bab5c03992e878669512efea345",
+      "task_tail_sha256": "907945ce47e1c2e2397837c78b8894c44e4195c625acf2dab33483f27ee7f9ac",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_4.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c5c6998d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_1",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "13",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "2c92a8c55f11c3135db220ce989f129f950717a4758d570a87af7b0aed09ae29",
+      "task_tail_sha256": "7cabacd2caa7aebf90a279d141d599aadb1a3380614d9456563a5ed01fd7b45a",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_1.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c5c69d4d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_2",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "13",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "c4f397b97db83ebe62eeb3edb436dcd5ecdb51b13986e3a42a536645156212be",
+      "task_tail_sha256": "17189799671677cb0e8470b1765b34b806c0dbf292ec9a37526033a45598904d",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_2.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c5c6a1ad86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_5",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "13",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "a7f53d92a9104ee670220d87509314152ba7f1d8ca39ac0c723967706797c9a5",
+      "task_tail_sha256": "93ba33bffb0e7119830a627bf9dd759c62df45f2a5319b13178f74a7a340a889",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_5.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c5c6a56d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_3",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "13",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "26b6c86a6c911bb4135331404cdc8f75e90a0758b07f48be2dbb2df0aa8e00ef",
+      "task_tail_sha256": "126495d7fe0234d7cbcd7d3d924aa80a5684595a0a1c986fd44adea469a4cc74",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_3.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c5c6a92d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_6",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "13",
+      "progress": 0.63,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "ed55558d4147b715ce621aae5bd07d3d418f045b904ecbddad9ed88833db216e",
+      "task_tail_sha256": "954a2e16ee437ec71784af3cc6389d3d1c84603ceeda2a50650d4b3797ed708e",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_6.log",
+      "matched_task_lines": 8
+    },
+    {
+      "task_id": "5c5c6ad8d86011f18b1eef68ca6e58af",
+      "consumer": "task_executor_common_9266d4734226_0",
+      "done_credit": null,
+      "aborted": null,
+      "pending_credit": "13",
+      "progress": 0.1,
+      "stage_markers": {
+        "Generate ": 0,
+        "Embedding chunks": 0,
+        "Indexing doc(": 0,
+        "Indexing done": 0,
+        "set_progress got exception": 0,
+        "set_progress error": 0
+      },
+      "log_sha256": "68353e5f3d27a6e7112ac525d85837c04d4e195137b22b579b14f1a672120e6a",
+      "task_tail_sha256": "dec5ef22e11b72bf84169bd6bd50e15a99b43e5bdc1643839c7aa44d93b0b8f6",
+      "log_path": "/ragflow/logs/task_executor_common_9266d4734226_0.log",
+      "matched_task_lines": 4
+    }
+  ],
+  "snapshot_sha256": "fcc7270bb1878aff56c4841b2d57983a11f56d24e197d3f3ca3154ff0d635b87",
+  "说明": "11个静止页段均未进入索引/累计阶段；第12个已进入后期的页段已单独自然完成并ACK。只读核查，不修改数据库、队列或成功页。"
+}

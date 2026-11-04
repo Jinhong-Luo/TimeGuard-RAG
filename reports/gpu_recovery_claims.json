@@ -1,0 +1,1964 @@
+{
+  "recorded_at_utc": "2026-11-04T16:14:21.567137+00:00",
+  "generation": "gpu-recovery-20261104T1601",
+  "ready_workers": [
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_0",
+      "native_index": "9266d4734226_0",
+      "pid": 126,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:10:36.566870+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 2.6485882699489594e-05
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_1",
+      "native_index": "9266d4734226_1",
+      "pid": 192,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:10:56.786997+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 20.020731716882437
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_2",
+      "native_index": "9266d4734226_2",
+      "pid": 198,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:11:16.540090+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 39.25059253512882
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_3",
+      "native_index": "9266d4734226_3",
+      "pid": 284,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:11:36.260775+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 57.86448049196042
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_4",
+      "native_index": "9266d4734226_4",
+      "pid": 330,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:11:56.001824+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 76.71102597890422
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_5",
+      "native_index": "9266d4734226_5",
+      "pid": 337,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:12:15.578687+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 95.45409039407969
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_6",
+      "native_index": "9266d4734226_6",
+      "pid": 344,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:12:35.106406+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 114.00611641793512
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_7",
+      "native_index": "9266d4734226_7",
+      "pid": 431,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:12:54.673450+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 132.51177794416435
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_8",
+      "native_index": "9266d4734226_8",
+      "pid": 476,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:13:14.284913+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 151.11534818797372
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_9",
+      "native_index": "9266d4734226_9",
+      "pid": 522,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:13:34.053368+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 169.7031927080825
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_10",
+      "native_index": "9266d4734226_10",
+      "pid": 528,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:13:53.701531+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 188.47886475012638
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    },
+    {
+      "schema_version": 1,
+      "generation": "gpu-recovery-20261104T1601",
+      "consumer": "task_executor_common_9266d4734226_11",
+      "native_index": "9266d4734226_11",
+      "pid": 534,
+      "preflight_ready": true,
+      "preflight_completed_at_utc": "2026-11-04T16:14:13.397254+00:00",
+      "phase": "waiting_release",
+      "release_required": true,
+      "environment_whitelist": {
+        "DEVICE": "gpu",
+        "CUDA_VISIBLE_DEVICES": null,
+        "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "MAX_CONCURRENT_TASKS": "1",
+        "MAX_CONCURRENT_CHUNK_BUILDERS": "1",
+        "OCR_GPU_MEM_LIMIT_MB": "8192",
+        "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+        "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+        "OCR_INTRA_OP_NUM_THREADS": "2",
+        "OCR_INTER_OP_NUM_THREADS": "2",
+        "TABLE_AUTO_ROTATE": "true"
+      },
+      "gpu": {
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda_version": "12.8",
+        "onnxruntime_version": "1.23.2",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "cuda_device_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "cuda_allocation_and_operation_passed": true,
+        "table_auto_rotate": {
+          "raw_environment_value": "true",
+          "native_default": "true",
+          "effective": true
+        },
+        "sessions": [
+          {
+            "name": "det",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            },
+            "synthetic_inference": {
+              "input_shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "output_shapes": [
+                [
+                  1,
+                  1,
+                  64,
+                  64
+                ]
+              ],
+              "finite": true,
+              "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+            }
+          },
+          {
+            "name": "rec",
+            "native_device_argument": 0,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "layout",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          },
+          {
+            "name": "tsr",
+            "native_device_argument": null,
+            "providers": [
+              "CUDAExecutionProvider",
+              "CPUExecutionProvider"
+            ],
+            "cuda_provider_options": {
+              "device_id": "0",
+              "gpu_mem_limit": "8589934592",
+              "arena_extend_strategy": "kSameAsRequested"
+            },
+            "requested_threads": {
+              "intra_op": 2,
+              "inter_op": 2
+            },
+            "actual_session_options": {
+              "intra_op_num_threads": 0,
+              "inter_op_num_threads": 0,
+              "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+              "enable_cpu_mem_arena": true
+            }
+          }
+        ],
+        "说明": "四个原生缓存会话在同一进程中复用；CPU 执行器可作为原生后备，但 CUDA 必须始终是首选。",
+        "preflight_lock_wait_seconds": 207.13439564709552
+      },
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      },
+      "注意": "ready 仅表示本进程通过设备预检；恢复脚本必须同时核对 generation、pid 存活及 phase。"
+    }
+  ],
+  "claims": [
+    {
+      "message_id": "1793804379766-4",
+      "task_id": "5c053e2ad86011f18b1eef68ca6e58af",
+      "old_consumer": "task_executor_common_timeguard_corpus_extra_08",
+      "new_consumer": "task_executor_common_9266d4734226_8",
+      "payload_sha256": "77533007fd714dbb906611a6398b3c33acba9e9deac8c72a8d7a3c2df35e2860"
+    },
+    {
+      "message_id": "1793804379767-1",
+      "task_id": "5c053eacd86011f18b1eef68ca6e58af",
+      "old_consumer": "task_executor_common_timeguard_corpus_extra_09",
+      "new_consumer": "task_executor_common_9266d4734226_9",
+      "payload_sha256": "326dbdfd108488f8dbeb6cea6e17e62fc1febe48bac6f4459ea043fe0846b327"
+    },
+    {
+      "message_id": "1793804379991-0",
+      "task_id": "5c272da0d86011f18b1eef68ca6e58af",
+      "old_consumer": "task_executor_common_timeguard_corpus_extra_10",
+      "new_consumer": "task_executor_common_9266d4734226_10",
+      "payload_sha256": "a510da15d54cad9895ae0bf72158011bef2a7d05d8072c7de22684b4d0d265fa"
+    },
+    {
+      "message_id": "1793804379992-0",
+      "task_id": "5c273016d86011f18b1eef68ca6e58af",
+      "old_consumer": "task_executor_common_timeguard_corpus_extra_11",
+      "new_consumer": "task_executor_common_9266d4734226_11",
+      "payload_sha256": "5c77b065adf4ab955ae00474c95f9c3f5d06a472403a1b507eebe2d96fc89a3c"
+    }
+  ],
+  "stream_length_before": 1043,
+  "stream_length_after": 1043,
+  "pending_before": 11,
+  "pending_after": 11,
+  "complete_tasks_preserved": 134,
+  "document_metadata_chunks_preserved": 4214,
+  "release_written": false,
+  "说明": "全部12执行器实际CUDA/原生四模型预检成功后等待门闩；只将4条原消息转给对应8..11消费者，保留消息ID与内容，其他7条仍归原消费者；134成功页段及文档累计块数未改变。未写释放文件。"
+}

@@ -1,0 +1,1677 @@
+{
+  "workers": [
+    {
+      "consumer": "task_executor_common_9266d4734226_0",
+      "pid": 126,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_1",
+      "pid": 192,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_2",
+      "pid": 198,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_3",
+      "pid": 284,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_4",
+      "pid": 330,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_5",
+      "pid": 337,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_6",
+      "pid": 344,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_7",
+      "pid": 431,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_8",
+      "pid": 476,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_9",
+      "pid": 522,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_10",
+      "pid": 528,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    },
+    {
+      "consumer": "task_executor_common_9266d4734226_11",
+      "pid": 534,
+      "phase": "entering_native",
+      "gpu_uuid": "71384a25-5e87-bd05-8f42-8117a841e9fc",
+      "table_auto_rotate": {
+        "raw_environment_value": "true",
+        "native_default": "true",
+        "effective": true
+      },
+      "sessions": [
+        {
+          "name": "det",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          },
+          "synthetic_inference": {
+            "input_shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "output_shapes": [
+              [
+                1,
+                1,
+                64,
+                64
+              ]
+            ],
+            "finite": true,
+            "用途": "仅检查执行链路，不作为解析质量或吞吐成绩"
+          }
+        },
+        {
+          "name": "rec",
+          "native_device_argument": 0,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "layout",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        },
+        {
+          "name": "tsr",
+          "native_device_argument": null,
+          "providers": [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider"
+          ],
+          "cuda_provider_options": {
+            "device_id": "0",
+            "gpu_mem_limit": "8589934592",
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "requested_threads": {
+            "intra_op": 2,
+            "inter_op": 2
+          },
+          "actual_session_options": {
+            "intra_op_num_threads": 0,
+            "inter_op_num_threads": 0,
+            "execution_mode": "ExecutionMode.ORT_SEQUENTIAL",
+            "enable_cpu_mem_arena": true
+          }
+        }
+      ],
+      "source_sha256": {
+        "guard": "ad4f139ed0f8f547a93860d6b230a0dd119aa6e66cf40a8f4fe993a4ebf25030",
+        "native_entrypoint": "9eb714ade169efe323afd5b23f4d36d0b6482378b9a79366edac43e5344cba24",
+        "native_ocr": "92954531f5fbd1ac6c0fe79c0c5dc5806d9db9243a0831929d347fc3e5816a9d",
+        "native_recognizer": "144b6b2fe91083f2f4c6acc660b0f9b5a6b37d77f1c2fd5fb3a8e615b9f9692f",
+        "native_pdf_parser": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475"
+      }
+    }
+  ],
+  "preserved_completed_tasks": 134,
+  "preserved_completed_tasks_exactly_unchanged": true,
+  "resumed_tasks": [
+    {
+      "id": "5c053e2ad86011f18b1eef68ca6e58af",
+      "from_page": 48,
+      "to_page": 60,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c053eacd86011f18b1eef68ca6e58af",
+      "from_page": 72,
+      "to_page": 84,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c272da0d86011f18b1eef68ca6e58af",
+      "from_page": 0,
+      "to_page": 12,
+      "progress": 0.8,
+      "retry_count": 2
+    },
+    {
+      "id": "5c273016d86011f18b1eef68ca6e58af",
+      "from_page": 12,
+      "to_page": 24,
+      "progress": 1.0,
+      "retry_count": 2
+    },
+    {
+      "id": "5c478d2ad86011f18b1eef68ca6e58af",
+      "from_page": 60,
+      "to_page": 72,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c5c6998d86011f18b1eef68ca6e58af",
+      "from_page": 48,
+      "to_page": 60,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c5c69d4d86011f18b1eef68ca6e58af",
+      "from_page": 60,
+      "to_page": 72,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c5c6a1ad86011f18b1eef68ca6e58af",
+      "from_page": 72,
+      "to_page": 84,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c5c6a56d86011f18b1eef68ca6e58af",
+      "from_page": 84,
+      "to_page": 96,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c5c6a92d86011f18b1eef68ca6e58af",
+      "from_page": 96,
+      "to_page": 108,
+      "progress": 0.63,
+      "retry_count": 2
+    },
+    {
+      "id": "5c5c6ad8d86011f18b1eef68ca6e58af",
+      "from_page": 108,
+      "to_page": 120,
+      "progress": 0.63,
+      "retry_count": 2
+    }
+  ],
+  "total_tasks": 1041,
+  "completed_tasks": 138,
+  "completed_task_pages": 1597,
+  "recorded_at_utc": "2026-11-04T16:19:06.354422+00:00",
+  "container_id": "cd81970f327041656e903bf8a0abf27c9aee20199abbd221f53becb8633f3bd3",
+  "image_config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+  "memory_limit_gib": 64,
+  "cpu_limit": 16,
+  "resource_snapshot": {
+    "CPUPerc": "1170.99%",
+    "MemUsage": "39.8GiB / 64GiB",
+    "PIDs": "2440"
+  },
+  "document_count": 84,
+  "document_statuses": {
+    "RUNNING": 76,
+    "DONE": 8
+  },
+  "error_markers": 0,
+  "native_metadata_chunks": 4344,
+  "profile_sha256": "6d2a544385a7d4e57c5f4015b170eeb20c2f6bb05117e599c42efde6735973aa",
+  "说明": "固定时间只读快照：12个原生执行器已通过真实GPU预检并进入原生入口；134个旧成功Task逐字段保持原样，11条恢复任务真实领取次数为2；未将累计块数当唯一索引项数。",
+  "preserved_task_fields": [
+    "id",
+    "doc_id",
+    "from_page",
+    "to_page",
+    "progress",
+    "retry_count",
+    "chunk_ids"
+  ],
+  "hardware_provenance_note": "此报告的GPU预检描述恢复后当前12个执行器；134个保留Task中含1个已确证CPU完成页段，详见cpu_completed_segment_audit.json。不是全历史GPU证明。"
+}

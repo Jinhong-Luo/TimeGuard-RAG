@@ -1,0 +1,18 @@
+{
+  "recorded_at_utc": "2026-11-04T16:14:52.715237+00:00",
+  "current_profile_sha256": "6d2a544385a7d4e57c5f4015b170eeb20c2f6bb05117e599c42efde6735973aa",
+  "previous_profile_sha256": "e49b2b8f911035612227ad6e73533902012af9b79019a43be2424c1946700977",
+  "state_sha256": "4934b6b30f2f80530eaa5579ae185f78e3dee79ae4d8ead1f37ffc206fd44695",
+  "source_profile_initial8_untouched": true,
+  "recovery_evidence_sha256": {
+    "reports/gpu_access_after_memory_update.json": "49e25733ac6937f3dff0b65bdbf8af79d3f61d27fdaffaa486090ccb67ae9770",
+    "reports/extra_worker_cpu_route_pause.json": "fbe64b8694c6b811e3beb0cfc8fbcc21591f5edd67e0a31b7de703b077e9a3b6",
+    "reports/gpu_recovery_workers_frozen.json": "7b46e7397893938bfbf8d841b759d61bb8a9703eac4b8fd2b4aa04c0ed7b7c54",
+    "reports/gpu_recovery_finish_inflight.json": "2c65bf4563735747ac4bb49c7e63dcbd98de557a45571cede3e37264bf5f3b89",
+    "reports/gpu_recovery_boundaries.json": "2129bd4a779d91bc4684ee0a98663528d2609e9ac313587b462b7fdccf4efeda",
+    "reports/gpu_recovery_logs_archive.json": "9a9284671d8122a275600d32f61f972a0baef2f18ace949ed96dcc6f530d6310",
+    "reports/gpu_recovery_claims.json": "780f695acfea907be405641c1977f0160f47466033d80c1a11b677f088c62dfd",
+    "reports/gpu_recovery_release.json": "6b2a8c2384d5418f1aa727fca5fc86c88df34815e95f5ee0d4341e55db41524a"
+  },
+  "说明": "在正式检索/模型评测之前追加实际设备异常与精确恢复身份；原扩充来源与初始8进程profile字节保持不变。"
+}

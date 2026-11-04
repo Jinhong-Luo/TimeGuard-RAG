@@ -1,0 +1,75 @@
+{
+  "recorded_at_utc": "2026-11-04T15:54:19.420178+00:00",
+  "results": {
+    "default": {
+      "exit_code": 0,
+      "result": {
+        "cuda_available": false,
+        "device_count": 0,
+        "environment": {
+          "TE_RUN_MODE": null,
+          "DEVICE": "gpu",
+          "LD_LIBRARY_PATH": null,
+          "LD_PRELOAD": null,
+          "NVIDIA_VISIBLE_DEVICES": null
+        },
+        "devices": {
+          "/dev/nvidia3": {
+            "open_ok": false,
+            "errno": 1,
+            "message": "[Errno 1] Operation not permitted: '/dev/nvidia3'"
+          },
+          "/dev/nvidiactl": {
+            "open_ok": false,
+            "errno": 1,
+            "message": "[Errno 1] Operation not permitted: '/dev/nvidiactl'"
+          },
+          "/dev/nvidia-uvm": {
+            "open_ok": false,
+            "errno": 1,
+            "message": "[Errno 1] Operation not permitted: '/dev/nvidia-uvm'"
+          }
+        }
+      },
+      "stderr": "/ragflow/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:829: UserWarning: Can't initialize NVML\n  warnings.warn(\"Can't initialize NVML\")\n"
+    },
+    "entrypoint_environment": {
+      "exit_code": 0,
+      "result": {
+        "cuda_available": false,
+        "device_count": 0,
+        "environment": {
+          "TE_RUN_MODE": null,
+          "DEVICE": "gpu",
+          "LD_LIBRARY_PATH": "/usr/lib/x86_64-linux-gnu/",
+          "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libjemalloc.so",
+          "NVIDIA_VISIBLE_DEVICES": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc"
+        },
+        "devices": {
+          "/dev/nvidia3": {
+            "open_ok": false,
+            "errno": 1,
+            "message": "[Errno 1] Operation not permitted: '/dev/nvidia3'"
+          },
+          "/dev/nvidiactl": {
+            "open_ok": false,
+            "errno": 1,
+            "message": "[Errno 1] Operation not permitted: '/dev/nvidiactl'"
+          },
+          "/dev/nvidia-uvm": {
+            "open_ok": false,
+            "errno": 1,
+            "message": "[Errno 1] Operation not permitted: '/dev/nvidia-uvm'"
+          }
+        }
+      },
+      "stderr": "/ragflow/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:829: UserWarning: Can't initialize NVML\n  warnings.warn(\"Can't initialize NVML\")\n"
+    },
+    "nvml": {
+      "exit_code": 255,
+      "stdout": "Failed to initialize NVML: Unknown Error\n",
+      "stderr": ""
+    }
+  },
+  "说明": "只读新进程设备访问探针；没有领取任务、修改权限、模型或容器配置。"
+}

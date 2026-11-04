@@ -1,0 +1,23 @@
+{
+  "paused_at_utc": "2026-11-04T15:43:57.826021+00:00",
+  "reason": "独立日志核验确认附加4进程走CPU分支；立即暂挂避免继续领取和CPU争抢，保留现场供任务范围审计",
+  "paused_workers": [
+    {
+      "pid": 8369,
+      "consumer": "timeguard_corpus_extra_08"
+    },
+    {
+      "pid": 8952,
+      "consumer": "timeguard_corpus_extra_09"
+    },
+    {
+      "pid": 9542,
+      "consumer": "timeguard_corpus_extra_10"
+    },
+    {
+      "pid": 9665,
+      "consumer": "timeguard_corpus_extra_11"
+    }
+  ],
+  "original_eight_workers_untouched": true
+}

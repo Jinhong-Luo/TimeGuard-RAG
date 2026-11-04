@@ -1,0 +1,10 @@
+{
+  "started_at_utc": "2026-11-04T16:02:12.487730+00:00",
+  "stopped_at_utc": "2026-11-04T16:02:18.234215+00:00",
+  "pid": 617,
+  "task_id": "5c478ce4d86011f18b1eef68ca6e58af",
+  "progress": 1.0,
+  "chunk_ids_count": 38,
+  "retry_count": 1,
+  "说明": "仅恢复已进入embedding/索引窗口的一个GPU执行器；等待该页段完成后立即再暂停，避免重放计数不明确的中间提交。"
+}

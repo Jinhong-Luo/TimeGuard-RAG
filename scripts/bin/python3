@@ -1,0 +1,7 @@
+#!/bin/sh
+# 仅在原生解析入口前插入守卫，其余 Python 命令保持原解释器执行。
+if [ "${1-}" = "rag/svr/task_executor.py" ]; then
+    guard_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd) || exit 1
+    exec /ragflow/.venv/bin/python "$guard_dir/gpu_worker_guard.py" "$@"
+fi
+exec /ragflow/.venv/bin/python "$@"

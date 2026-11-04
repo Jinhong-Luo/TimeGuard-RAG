@@ -1,0 +1,68 @@
+{
+  "recorded_at_utc": "2026-11-04T16:08:20.844952+00:00",
+  "old_container_id": "9266d473422603f72681ed4e85424ba48301915e52fdad8069690084e054057f",
+  "private_directory": ".cache/gpu-recovery-logs-before",
+  "logs": [
+    {
+      "file": "task_executor_common_9266d4734226_0.log",
+      "bytes": 223307,
+      "sha256": "68353e5f3d27a6e7112ac525d85837c04d4e195137b22b579b14f1a672120e6a"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_1.log",
+      "bytes": 183838,
+      "sha256": "2c92a8c55f11c3135db220ce989f129f950717a4758d570a87af7b0aed09ae29"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_2.log",
+      "bytes": 266123,
+      "sha256": "c4f397b97db83ebe62eeb3edb436dcd5ecdb51b13986e3a42a536645156212be"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_3.log",
+      "bytes": 224555,
+      "sha256": "26b6c86a6c911bb4135331404cdc8f75e90a0758b07f48be2dbb2df0aa8e00ef"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_4.log",
+      "bytes": 247726,
+      "sha256": "6cfed0d550c3f2fd97229d5c0f2ab6c692b32bab5c03992e878669512efea345"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_5.log",
+      "bytes": 272641,
+      "sha256": "a7f53d92a9104ee670220d87509314152ba7f1d8ca39ac0c723967706797c9a5"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_6.log",
+      "bytes": 231203,
+      "sha256": "ed55558d4147b715ce621aae5bd07d3d418f045b904ecbddad9ed88833db216e"
+    },
+    {
+      "file": "task_executor_common_9266d4734226_7.log",
+      "bytes": 283699,
+      "sha256": "2e250ba29ccdd28bd8da67641e346235ff796d34e90e8b56da1e8940a488654d"
+    },
+    {
+      "file": "task_executor_common_timeguard_corpus_extra_08.log",
+      "bytes": 25396,
+      "sha256": "64b3d1dd428d6743b20d40bf760e5b0aa4f42c36928986465c4f3e14ce57d5fa"
+    },
+    {
+      "file": "task_executor_common_timeguard_corpus_extra_09.log",
+      "bytes": 8193,
+      "sha256": "83f30315286a0c4f9d7b56212f9502a3086633d8f598da7fd38be90a9ea2e45f"
+    },
+    {
+      "file": "task_executor_common_timeguard_corpus_extra_10.log",
+      "bytes": 7324,
+      "sha256": "5e2158a5acdeddd118b0a25aec0ef2419f4fd8ed1c2f0db8f2dc0eb1ecd0097b"
+    },
+    {
+      "file": "task_executor_common_timeguard_corpus_extra_11.log",
+      "bytes": 7178,
+      "sha256": "e08956cdafcaf034ad532567205cbf37d7dd71f2a7e6937ed43a4a8fa20c47c9"
+    }
+  ],
+  "说明": "在12进程冻结、唯一后期页段自然完成并ACK后，复制全部12个原生执行器日志至本项目私有目录；源日志未删除。"
+}

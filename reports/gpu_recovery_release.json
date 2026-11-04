@@ -1,0 +1,9 @@
+{
+  "released_at_utc": "2026-11-04T16:14:52.613119+00:00",
+  "generation": "gpu-recovery-20261104T1601",
+  "claims_report_sha256": "780f695acfea907be405641c1977f0160f47466033d80c1a11b677f088c62dfd",
+  "worker_count": 12,
+  "resume_pending_tasks": 11,
+  "completed_tasks_preserved_before_release": 134,
+  "说明": "全部真实GPU预检与精确PEL转移核验成功后写入本代次门闩；允许原生任务入口续领，不调用模型。"
+}

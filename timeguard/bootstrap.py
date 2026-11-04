@@ -21,10 +21,17 @@ def main():
     parser.add_argument("--project", default="timeguard_ljh")
     parser.add_argument("--gpu-uuid", help="启用已验证派生镜像，并只暴露指定的一张GPU")
     parser.add_argument("--gpu-image-lock", default="deploy/gpu-image-lock.json")
-    parser.add_argument("--task-workers", type=int, choices=[1, 2, 4, 8], default=1,
+    parser.add_argument("--gpu-profile-output", default="deploy/parse-profile.gpu.json",
+                        help="GPU资源配置输出；保留既有来源链时使用新的deploy文件名")
+    parser.add_argument("--task-workers", type=int, choices=[1, 2, 4, 8, 12], default=1,
                         help="GPU解析的原生执行器进程数；需先验证资源余量")
     parser.add_argument("--tasks-per-worker", type=int, choices=[1, 2, 4], default=4,
                         help="每个GPU执行器的任务与分块并发上限")
+    parser.add_argument("--worker-host-id", default="timeguard_gpu",
+                        help="固定原生消费者前缀；恢复现有任务时必须与审计计划一致")
+    parser.add_argument("--worker-generation", help="本次启动守卫的非敏感代次标识，默认随机生成")
+    parser.add_argument("--hold-workers", action="store_true",
+                        help="GPU预检成功后等待代次匹配的释放文件，用于审计完成后的精确恢复")
     args = parser.parse_args()
     root = Path.cwd()
     lock = read_json(root / "upstream.lock.json")["ragflow"]
@@ -55,6 +62,14 @@ def main():
         actual_gpu = command(["docker", "image", "inspect", "--format", "{{.Id}}", gpu["image"]], capture=True).stdout.strip()
         if actual_gpu != gpu["config_digest"]:
             raise ValueError("GPU派生镜像内容与锁文件不符")
+        if not re.fullmatch(r"[a-zA-Z0-9_-]{1,32}", args.worker_host_id):
+            raise ValueError("消费者前缀只能含字母、数字、下划线或连字符，最多32字符")
+        generation = args.worker_generation or secrets.token_hex(12)
+        if not re.fullmatch(r"[a-zA-Z0-9_-]{1,64}", generation):
+            raise ValueError("守卫代次标识不合法")
+        image_env = json.loads(command(["docker", "image", "inspect", "--format", "{{json .Config.Env}}", gpu["image"]], capture=True).stdout)
+        image_path = next((x.split("=", 1)[1] for x in image_env if x.startswith("PATH=")),
+                          "/ragflow/.venv/bin:/usr/local/bin:/usr/bin:/bin")
     runtime = deploy / "runtime.env"
     if not runtime.exists():
         overrides = {k: secrets.token_hex(24) for k in ["ELASTIC_PASSWORD", "MYSQL_PASSWORD", "MINIO_PASSWORD", "REDIS_PASSWORD"]}
@@ -88,9 +103,9 @@ def main():
     if not allowed <= config["services"].keys():
         raise ValueError("上游缺少预期的 CPU/Elasticsearch/MySQL/MinIO/Redis 服务，停止生成")
     config["services"] = {k: v for k, v in config["services"].items() if k in allowed}
-    ragflow_memory_gib = 48 if gpu and args.task_workers == 8 else 24
-    if gpu and args.task_workers == 8 and args.tasks_per_worker != 1:
-        raise ValueError("8个执行器只允许每进程1个解析/分块任务，总上限保持8")
+    ragflow_memory_gib = {8: 48, 12: 64}.get(args.task_workers, 24) if gpu else 24
+    if gpu and args.task_workers >= 8 and args.tasks_per_worker != 1:
+        raise ValueError("8或12个执行器只允许每进程1个解析/分块任务，避免隐性放大并发")
     limits = {"ragflow-cpu": (f"{ragflow_memory_gib}g", 16), "es01": ("4g", 2), "mysql": ("2g", 1), "minio": ("1g", 1), "redis": ("512m", 1),
               "tei-cpu": ("2g", 2)}
     for name, service in config["services"].items():
@@ -125,8 +140,8 @@ def main():
                 original_command = service.get("command") or []
                 if isinstance(original_command, str):
                     original_command = shlex.split(original_command)
-                service["command"] = [part for part in original_command if not part.startswith("--workers=")]
-                service["command"].append(f"--workers={args.task_workers}")
+                service["command"] = [part for part in original_command if not part.startswith(("--workers=", "--host-id="))]
+                service["command"].extend([f"--workers={args.task_workers}", f"--host-id={args.worker_host_id}"])
                 service_env.update({"DEVICE": "gpu", "TORCH_CUDA_INDEX_URL": "https://download.pytorch.org/whl/cu128",
                                     "PIP_NO_INDEX": "1", "PIP_CONSTRAINT": "/opt/timeguard/gpu-constraints.txt",
                                     "MAX_CONCURRENT_TASKS": str(args.tasks_per_worker),
@@ -134,6 +149,20 @@ def main():
                                     "OCR_GPU_MEM_LIMIT_MB": "8192",
                                     "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
                                     "OCR_GPUMEM_ARENA_SHRINKAGE": "1", "TABLE_AUTO_ROTATE": "true"})
+                service_env.update({"PATH": "/opt/timeguard/bin:" + image_path,
+                                    "TIMEGUARD_RUNTIME_GENERATION": generation})
+                mounts = service.setdefault("volumes", [])
+                for local, target in [(root / "scripts/bin/python3", "/opt/timeguard/bin/python3"),
+                                      (root / "scripts/gpu_worker_guard.py", "/opt/timeguard/gpu_worker_guard.py")]:
+                    if not local.is_file():
+                        raise ValueError(f"GPU启动守卫不存在：{local}")
+                    mounts.append({"type": "bind", "source": str(local), "target": target, "read_only": True})
+                if args.hold_workers:
+                    control = root / "data/runtime-control"
+                    control.mkdir(parents=True, exist_ok=True)
+                    os.chmod(control, 0o700)
+                    mounts.append({"type": "bind", "source": str(control), "target": "/opt/timeguard/runtime", "read_only": True})
+                    service_env["TIMEGUARD_WORKER_RELEASE"] = "/opt/timeguard/runtime/workers.release"
                 service["deploy"] = {"resources": {"reservations": {"devices": [
                     {"driver": "nvidia", "device_ids": [args.gpu_uuid], "capabilities": ["gpu"]}]}}}
         if name == "minio":
@@ -179,11 +208,20 @@ def main():
                         "gpu_uuid": args.gpu_uuid, "visible_gpu_count": 1, "ocr_gpu_mem_limit_mb": 8192,
                         "ocr_arena_extend_strategy": "kSameAsRequested", "ocr_gpumem_arena_shrinkage": True,
                         "table_auto_rotate": True,
+                        "worker_host_id": args.worker_host_id,
+                        "gpu_preflight_required": True,
+                        "runtime_resource_update_allowed": False,
+                        "ocr_session_threads_requested": {"intra": 2, "inter": 2},
+                        "ocr_session_threads_effective": {"intra": 0, "inter": 0},
+                        "ocr_session_threads_note": "固定底座把SessionOptions传给options而非sess_options，ORT1.23.2未采用请求值；保留上游代码，实际默认自动线程。",
                         "torch_version": gpu["native_cuda_probe"]["torch"],
                         "torch_cuda": gpu["native_cuda_probe"]["torch_cuda"],
                         "gpu_model": gpu["native_cuda_probe"]["device_name"],
                         "wheel_lock_sha256": gpu["wheel_lock_sha256"], "constraints_sha256": gpu["constraints_sha256"]})
-        write_json(deploy / "parse-profile.gpu.json", profile)
+        profile_target = (root / args.gpu_profile_output).resolve()
+        if not profile_target.is_relative_to(deploy.resolve()):
+            raise ValueError("GPU配置记录必须保存在当前项目deploy目录")
+        write_json(profile_target, profile)
     os.chmod(target, 0o600)
     print(f"已生成 {target}，仅开放回环端口 18080 / 19380；未启动容器")
     print(f"启动：docker compose -p {args.project} -f deploy/compose.generated.json up -d")

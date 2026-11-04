@@ -1,0 +1,66 @@
+{
+  "frozen_at_utc": "2026-11-04T16:01:01.120003+00:00",
+  "workers": [
+    {
+      "pid": 128,
+      "state_before": "Sl",
+      "identity": "9266d4734226_0"
+    },
+    {
+      "pid": 190,
+      "state_before": "Sl",
+      "identity": "9266d4734226_1"
+    },
+    {
+      "pid": 233,
+      "state_before": "Sl",
+      "identity": "9266d4734226_2"
+    },
+    {
+      "pid": 397,
+      "state_before": "Sl",
+      "identity": "9266d4734226_3"
+    },
+    {
+      "pid": 441,
+      "state_before": "Sl",
+      "identity": "9266d4734226_4"
+    },
+    {
+      "pid": 485,
+      "state_before": "Sl",
+      "identity": "9266d4734226_5"
+    },
+    {
+      "pid": 530,
+      "state_before": "Sl",
+      "identity": "9266d4734226_6"
+    },
+    {
+      "pid": 617,
+      "state_before": "Sl",
+      "identity": "9266d4734226_7"
+    },
+    {
+      "pid": 8369,
+      "state_before": "Tsl",
+      "identity": "timeguard_corpus_extra_08"
+    },
+    {
+      "pid": 8952,
+      "state_before": "Tsl",
+      "identity": "timeguard_corpus_extra_09"
+    },
+    {
+      "pid": 9542,
+      "state_before": "Tsl",
+      "identity": "timeguard_corpus_extra_10"
+    },
+    {
+      "pid": 9665,
+      "state_before": "Tsl",
+      "identity": "timeguard_corpus_extra_11"
+    }
+  ],
+  "说明": "仅暂停本项目12个已确认执行器，防止任务快照与恢复计划期间继续提交或领取；尚未停止容器或修改任务。"
+}
