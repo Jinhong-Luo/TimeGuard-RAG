@@ -1,0 +1,373 @@
+{
+  "chosen_effort": "low",
+  "review_source": "model",
+  "rule": "完整开发集模型裁判正确率距最优不超过设定容差时选择平均耗时最短者",
+  "quality_tolerance": 0.02,
+  "candidates": [
+    {
+      "run": "runs/dev-complete/low",
+      "effort": "low",
+      "denominator": 39,
+      "completed": 39,
+      "status_counts": {
+        "ok": 39
+      },
+      "zero_retrieval_count": 0,
+      "page_hit_recall_at_k_proxy": 0.20512820512820512,
+      "strict_text_recall_at_k_proxy": 0.02564102564102564,
+      "k": 6,
+      "cost_usd": null,
+      "answer_accuracy": null,
+      "numeric_and_scope_accuracy": null,
+      "citation_support_rate": null,
+      "reviewed": 0,
+      "human_reviewed": 0,
+      "model_answer_accuracy": 0.2564102564102564,
+      "model_numeric_and_scope_accuracy": null,
+      "model_citation_support_rate": null,
+      "model_reviewed": 39,
+      "human_spot_check": null,
+      "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+      "mean_seconds": 9.068523606243662,
+      "median_seconds": 9.106192972976714,
+      "numeric_and_scope_accuracy_known_count": 0,
+      "numeric_and_scope_accuracy_unknown_count": 39,
+      "numeric_and_scope_accuracy_coverage": 0.0,
+      "citation_support_rate_known_count": 0,
+      "citation_support_rate_unknown_count": 39,
+      "citation_support_rate_coverage": 0.0,
+      "model_numeric_and_scope_accuracy_known_count": 34,
+      "model_numeric_and_scope_accuracy_unknown_count": 5,
+      "model_numeric_and_scope_accuracy_coverage": 0.8717948717948718,
+      "model_citation_support_rate_known_count": 30,
+      "model_citation_support_rate_unknown_count": 9,
+      "model_citation_support_rate_coverage": 0.7692307692307693,
+      "model_judge_status_counts": {
+        "ok": 39
+      },
+      "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+    },
+    {
+      "run": "runs/dev-complete/medium",
+      "effort": "medium",
+      "denominator": 39,
+      "completed": 39,
+      "status_counts": {
+        "ok": 39
+      },
+      "zero_retrieval_count": 0,
+      "page_hit_recall_at_k_proxy": 0.20512820512820512,
+      "strict_text_recall_at_k_proxy": 0.02564102564102564,
+      "k": 6,
+      "cost_usd": null,
+      "answer_accuracy": null,
+      "numeric_and_scope_accuracy": null,
+      "citation_support_rate": null,
+      "reviewed": 0,
+      "human_reviewed": 0,
+      "model_answer_accuracy": 0.2564102564102564,
+      "model_numeric_and_scope_accuracy": null,
+      "model_citation_support_rate": null,
+      "model_reviewed": 39,
+      "human_spot_check": null,
+      "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+      "mean_seconds": 10.00020967790475,
+      "median_seconds": 9.534436941845343,
+      "numeric_and_scope_accuracy_known_count": 0,
+      "numeric_and_scope_accuracy_unknown_count": 39,
+      "numeric_and_scope_accuracy_coverage": 0.0,
+      "citation_support_rate_known_count": 0,
+      "citation_support_rate_unknown_count": 39,
+      "citation_support_rate_coverage": 0.0,
+      "model_numeric_and_scope_accuracy_known_count": 32,
+      "model_numeric_and_scope_accuracy_unknown_count": 7,
+      "model_numeric_and_scope_accuracy_coverage": 0.8205128205128205,
+      "model_citation_support_rate_known_count": 31,
+      "model_citation_support_rate_unknown_count": 8,
+      "model_citation_support_rate_coverage": 0.7948717948717948,
+      "model_judge_status_counts": {
+        "ok": 39
+      },
+      "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+    },
+    {
+      "run": "runs/dev-complete/high",
+      "effort": "high",
+      "denominator": 39,
+      "completed": 39,
+      "status_counts": {
+        "ok": 39
+      },
+      "zero_retrieval_count": 0,
+      "page_hit_recall_at_k_proxy": 0.20512820512820512,
+      "strict_text_recall_at_k_proxy": 0.02564102564102564,
+      "k": 6,
+      "cost_usd": null,
+      "answer_accuracy": null,
+      "numeric_and_scope_accuracy": null,
+      "citation_support_rate": null,
+      "reviewed": 0,
+      "human_reviewed": 0,
+      "model_answer_accuracy": 0.2564102564102564,
+      "model_numeric_and_scope_accuracy": null,
+      "model_citation_support_rate": null,
+      "model_reviewed": 39,
+      "human_spot_check": null,
+      "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+      "mean_seconds": 14.148493082584956,
+      "median_seconds": 13.339751563034952,
+      "numeric_and_scope_accuracy_known_count": 0,
+      "numeric_and_scope_accuracy_unknown_count": 39,
+      "numeric_and_scope_accuracy_coverage": 0.0,
+      "citation_support_rate_known_count": 0,
+      "citation_support_rate_unknown_count": 39,
+      "citation_support_rate_coverage": 0.0,
+      "model_numeric_and_scope_accuracy_known_count": 30,
+      "model_numeric_and_scope_accuracy_unknown_count": 9,
+      "model_numeric_and_scope_accuracy_coverage": 0.7692307692307693,
+      "model_citation_support_rate_known_count": 27,
+      "model_citation_support_rate_unknown_count": 12,
+      "model_citation_support_rate_coverage": 0.6923076923076923,
+      "model_judge_status_counts": {
+        "ok": 39
+      },
+      "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+    },
+    {
+      "run": "runs/dev-complete/xhigh",
+      "effort": "xhigh",
+      "denominator": 39,
+      "completed": 39,
+      "status_counts": {
+        "ok": 39
+      },
+      "zero_retrieval_count": 0,
+      "page_hit_recall_at_k_proxy": 0.20512820512820512,
+      "strict_text_recall_at_k_proxy": 0.02564102564102564,
+      "k": 6,
+      "cost_usd": null,
+      "answer_accuracy": null,
+      "numeric_and_scope_accuracy": null,
+      "citation_support_rate": null,
+      "reviewed": 0,
+      "human_reviewed": 0,
+      "model_answer_accuracy": 0.23076923076923078,
+      "model_numeric_and_scope_accuracy": null,
+      "model_citation_support_rate": null,
+      "model_reviewed": 39,
+      "human_spot_check": null,
+      "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+      "mean_seconds": 22.81204728032343,
+      "median_seconds": 22.071727977134287,
+      "numeric_and_scope_accuracy_known_count": 0,
+      "numeric_and_scope_accuracy_unknown_count": 39,
+      "numeric_and_scope_accuracy_coverage": 0.0,
+      "citation_support_rate_known_count": 0,
+      "citation_support_rate_unknown_count": 39,
+      "citation_support_rate_coverage": 0.0,
+      "model_numeric_and_scope_accuracy_known_count": 32,
+      "model_numeric_and_scope_accuracy_unknown_count": 7,
+      "model_numeric_and_scope_accuracy_coverage": 0.8205128205128205,
+      "model_citation_support_rate_known_count": 25,
+      "model_citation_support_rate_unknown_count": 14,
+      "model_citation_support_rate_coverage": 0.6410256410256411,
+      "model_judge_status_counts": {
+        "ok": 39
+      },
+      "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+    },
+    {
+      "run": "runs/dev-complete/max",
+      "effort": "max",
+      "denominator": 39,
+      "completed": 39,
+      "status_counts": {
+        "ok": 39
+      },
+      "zero_retrieval_count": 0,
+      "page_hit_recall_at_k_proxy": 0.20512820512820512,
+      "strict_text_recall_at_k_proxy": 0.02564102564102564,
+      "k": 6,
+      "cost_usd": null,
+      "answer_accuracy": null,
+      "numeric_and_scope_accuracy": null,
+      "citation_support_rate": null,
+      "reviewed": 0,
+      "human_reviewed": 0,
+      "model_answer_accuracy": 0.23076923076923078,
+      "model_numeric_and_scope_accuracy": null,
+      "model_citation_support_rate": null,
+      "model_reviewed": 39,
+      "human_spot_check": null,
+      "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+      "mean_seconds": 28.96996391306703,
+      "median_seconds": 30.5929756318219,
+      "numeric_and_scope_accuracy_known_count": 0,
+      "numeric_and_scope_accuracy_unknown_count": 39,
+      "numeric_and_scope_accuracy_coverage": 0.0,
+      "citation_support_rate_known_count": 0,
+      "citation_support_rate_unknown_count": 39,
+      "citation_support_rate_coverage": 0.0,
+      "model_numeric_and_scope_accuracy_known_count": 33,
+      "model_numeric_and_scope_accuracy_unknown_count": 6,
+      "model_numeric_and_scope_accuracy_coverage": 0.8461538461538461,
+      "model_citation_support_rate_known_count": 24,
+      "model_citation_support_rate_unknown_count": 15,
+      "model_citation_support_rate_coverage": 0.6153846153846154,
+      "model_judge_status_counts": {
+        "ok": 39
+      },
+      "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+    },
+    {
+      "run": "runs/dev-complete/ultra",
+      "effort": "ultra",
+      "denominator": 39,
+      "completed": 39,
+      "status_counts": {
+        "ok": 39
+      },
+      "zero_retrieval_count": 0,
+      "page_hit_recall_at_k_proxy": 0.20512820512820512,
+      "strict_text_recall_at_k_proxy": 0.02564102564102564,
+      "k": 6,
+      "cost_usd": null,
+      "answer_accuracy": null,
+      "numeric_and_scope_accuracy": null,
+      "citation_support_rate": null,
+      "reviewed": 0,
+      "human_reviewed": 0,
+      "model_answer_accuracy": 0.23076923076923078,
+      "model_numeric_and_scope_accuracy": null,
+      "model_citation_support_rate": null,
+      "model_reviewed": 39,
+      "human_spot_check": null,
+      "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+      "mean_seconds": 23.303065138283927,
+      "median_seconds": 22.716383663006127,
+      "numeric_and_scope_accuracy_known_count": 0,
+      "numeric_and_scope_accuracy_unknown_count": 39,
+      "numeric_and_scope_accuracy_coverage": 0.0,
+      "citation_support_rate_known_count": 0,
+      "citation_support_rate_unknown_count": 39,
+      "citation_support_rate_coverage": 0.0,
+      "model_numeric_and_scope_accuracy_known_count": 33,
+      "model_numeric_and_scope_accuracy_unknown_count": 6,
+      "model_numeric_and_scope_accuracy_coverage": 0.8461538461538461,
+      "model_citation_support_rate_known_count": 25,
+      "model_citation_support_rate_unknown_count": 14,
+      "model_citation_support_rate_coverage": 0.6410256410256411,
+      "model_judge_status_counts": {
+        "ok": 39
+      },
+      "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+    }
+  ],
+  "说明": "开发集选择为暂定结论；冻结配置后在保留测试集报告一次最终效果，费用未知时不能宣称最便宜。本次只按完整模型答案正确率选优，不等于人工准确率；数值口径或引用支持的未知判断仍保留null，不把未知算成功。",
+  "source_runs": [
+    {
+      "run": "runs/dev-complete/low",
+      "effort": "low",
+      "manifest": "09215bc185017a6e812b3dfdb48bdaf2ea3a1247e40ec01be90bce35b415fffe",
+      "results": "1ef4cee2df964f1c70119286ba03f75b6d88c8a7e3b2f9b2f54b7a00f76017e6",
+      "model_reviews_manifest": "7e86a7edc314c6fd8f0622dd09db1e923278251edb35e1e33a2215fbe17acb5b",
+      "model_reviews": "198d307a751db87dc932f3c211af0b8bfb2074711a832a2dcf937fc1ca71f363"
+    },
+    {
+      "run": "runs/dev-complete/medium",
+      "effort": "medium",
+      "manifest": "718042f4054dcf8bb18d5217f0ddd6b74a942deece8161261891d8ad3e6d86a9",
+      "results": "7de31fea2031c499f51f85a99311d416e1c4297a4fa3e9f180a6dd704bd40c32",
+      "model_reviews_manifest": "a8dafa2186cc3d39b0a5e818186e4cead425652d3349232999880113d9361c95",
+      "model_reviews": "8a7046c64c2662b0d35b6e8554866f087c7965c2a157e19c7043f541dd94f177"
+    },
+    {
+      "run": "runs/dev-complete/high",
+      "effort": "high",
+      "manifest": "fad4edb322b118a198ecf7b5c71066813e7b7960deff2b5ad0962ea6b56e77b2",
+      "results": "a3a12f239c10967316f4ff759de56dc8160361eecdd22aaae5a58d858627afd3",
+      "model_reviews_manifest": "437de666886c89f0ca39b4a6d7cc6443f71e9a7b5b2148b41b01d4473eb49def",
+      "model_reviews": "c899823d20d5b371716e216d5839bdab28cd4c402868677bacf1e75455d60148"
+    },
+    {
+      "run": "runs/dev-complete/xhigh",
+      "effort": "xhigh",
+      "manifest": "f8da6bdb1bdf4478492a78a03366f84a37c3cd1c57357a1daa822220818bd69a",
+      "results": "8e8d3593ca129e988da84d5153fa66bfc5de0c4d40f54ed69364a59b65cb1395",
+      "model_reviews_manifest": "a0728b794613ce379e462d85e485e976d1c4120022b6fb5651a40154ff238d06",
+      "model_reviews": "0bc07c4a675d1365077c331822d6c180f6293f5b3b94b2e88f57d47501dd075f"
+    },
+    {
+      "run": "runs/dev-complete/max",
+      "effort": "max",
+      "manifest": "f52f88cb0534c13f3b9c977940a73bc797c84d49314853a8c6fbbbba9921252d",
+      "results": "df11f77d295b75c89f2abe1526dcb9c31c664175007ecc8e0f9c9dc296e3acd1",
+      "model_reviews_manifest": "abd5c943808c2c3e74b6fd5beaba1c5a0366d337e88d7a12c12cf71ef4550088",
+      "model_reviews": "1989cbdcb7f3fdb3bab2acb73a60578f52c45674e83f1744aa985dc04cdd5369"
+    },
+    {
+      "run": "runs/dev-complete/ultra",
+      "effort": "ultra",
+      "manifest": "142625eeb581e53e26ea92fdff4aeb22f83945a7201cb58c85495d6cb800cfde",
+      "results": "20637d48af787e0d62d565f0dee1734a4e48acce39c794bf93218e886230127d",
+      "model_reviews_manifest": "1731e1c8a1940727a23b958b401002106f95547fe621d20447fc10a4e0236ac1",
+      "model_reviews": "44dcdb222aaeb617975c1bcf802e01a5ca410119cdd6a4400f8f0011db6d5cd2"
+    }
+  ],
+  "selection_status": "模型裁判暂定推荐，未完成人工抽查",
+  "human_spot_check": null,
+  "judge_configuration": {
+    "version": "timeguard-financebench-judge-v2",
+    "judge_type": "model",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "transport": "codex-app-server-structured-output-v1",
+    "concurrency": 2,
+    "request_timeout_seconds": 360.0,
+    "gold_sha256": "748fbd2e54de5ea6edc937f8493fba6f87cba6134e9e580b34cdd1c92a56bb0c",
+    "prompt_sha256": "723d07844c178eb7708daa840e18b95361020840f8d6a7144c4a65e141ad92b2",
+    "code_sha256": "adab22c193849a4a24eceb58ece511c1d8856f6756f8d65065550e636587c671",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer_correct": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "numeric_and_scope_correct": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "citation_support": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "has_factual_claims": {
+          "type": "boolean"
+        },
+        "judgement_reason": {
+          "type": "string"
+        },
+        "failure_category": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "answer_correct",
+        "numeric_and_scope_correct",
+        "citation_support",
+        "has_factual_claims",
+        "judgement_reason",
+        "failure_category"
+      ]
+    }
+  },
+  "judge_configuration_sha256": "77094250f6847b2bc4d1450e4211923c4b790e43e67e2fba9b985039ba3d25d4"
+}
