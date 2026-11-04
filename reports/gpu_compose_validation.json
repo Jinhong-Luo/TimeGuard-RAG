@@ -1,0 +1,32 @@
+{
+  "bootstrap_sha256": "280473fa9f1e2dbf3c79c117d24acba2f22c933f3f3813febbd748ed338bf6ae",
+  "validated_profile": {
+    "profile": "single-gpu-cpu16-workers4-tasks2",
+    "parser": "DeepDOC",
+    "device": "gpu",
+    "onnx_provider": "CUDAExecutionProvider",
+    "onnxruntime_gpu_version": "1.23.2",
+    "image_config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+    "cpus": 16,
+    "memory_gib": 24,
+    "task_executors": 4,
+    "max_concurrent_tasks": 2,
+    "max_concurrent_chunk_builders": 2,
+    "ocr_intra_op_num_threads": 2,
+    "ocr_inter_op_num_threads": 2,
+    "total_task_limit": 8,
+    "gpu_uuid": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+    "visible_gpu_count": 1,
+    "ocr_gpu_mem_limit_mb": 8192,
+    "ocr_arena_extend_strategy": "kSameAsRequested",
+    "ocr_gpumem_arena_shrinkage": true,
+    "torch_version": "2.8.0+cu128",
+    "torch_cuda": "12.8",
+    "gpu_model": "NVIDIA GeForce RTX 3090",
+    "wheel_lock_sha256": "b4a16ad0df7f36d6f7a6b92fd3ceb23f26b144cbc87b45b0ba1c005aff9867f0",
+    "constraints_sha256": "c53c80512cedb1dfd41f69b569c622009f9c04535bd269cf0c4086e05047371e"
+  },
+  "compose_config_passed": true,
+  "container_restarted": false,
+  "说明": "已真实生成4执行器每进程2任务的配置并通过Compose及字段检查；检查后还原当前启动配置。当前160页烟测使用1个原始4任务执行器加3个各2任务附加执行器，不能把此生成检查称为正式全库运行。"
+}

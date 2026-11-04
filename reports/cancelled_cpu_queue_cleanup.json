@@ -1,0 +1,21 @@
+{
+  "started_at_utc": "2026-11-04T13:43:32.201691+00:00",
+  "completed_at_utc": "2026-11-04T13:43:34.194621+00:00",
+  "cpu_dataset_id": "6a6aaefcd84f11f186606f5660765f41",
+  "cancelled_document_count": 84,
+  "matched_messages": 1041,
+  "matched_ids_sha256": "6380c47254facaa4fb1a4b69c7b820582fdce905e26262c250900f918699a8c5",
+  "before_stream_lengths": {
+    "te.0.common": 1043,
+    "te.1.common": 0
+  },
+  "removed": 1041,
+  "by_queue": {
+    "te.0.common": 1041
+  },
+  "after": {
+    "te.0.common": 2,
+    "te.1.common": 0
+  },
+  "说明": "原生API确认84份CPU文档均CANCEL后，仅其明确doc_id消息XACK+XDEL；保留私有原消息计划，未清GPU任务或全局队列。"
+}

@@ -1,0 +1,9 @@
+{
+  "started_at_utc": "2026-11-04T13:09:28.695248+00:00",
+  "ended_at_utc": "2026-11-04T13:15:50.629144+00:00",
+  "source": "服务器直连官方PyTorch/PyPI；4线程复用TLS，无大文件SSH传输",
+  "new_downloaded_bytes": 3907533353,
+  "seconds": 381.93394695804454,
+  "success": true,
+  "errors": []
+}

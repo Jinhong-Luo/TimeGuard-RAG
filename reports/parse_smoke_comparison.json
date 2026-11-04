@@ -1,0 +1,56 @@
+{
+  "recorded_at_utc": "2026-11-04T14:00:13.768027+00:00",
+  "cases": [
+    {
+      "case": "cpu_smoke",
+      "state_path": "data/smoke_ingestion.json",
+      "profile": null,
+      "documents": [
+        {
+          "id": "e8a8b960d84c11f1b11effc6441485b6",
+          "name": "AMCOR_2022_8K_dated-2022-07-01.pdf",
+          "run": "DONE",
+          "chunk_count": 18,
+          "progress_msg": "\n20:40:29 Task has been received.\n20:40:30 Page(1~9): Start to parse.\n20:40:31 Page(1~9): OCR started\n20:42:20 Page(1~9): Processing...\n20:43:12 Page(1~9): OCR finished (161.59s)\n20:43:59 Page(1~9): Layout analysis (46.51s)\n20:44:18 Page(1~9): Table analysis (18.67s)\n20:44:18 Page(1~9): Text merged (0.26s)\n20:44:18 Page(1~9): Finish parsing.\n20:44:23 Page(1~9): Generate 20 chunks\n20:44:28 Page(1~9): Embedding chunks (5.65s)\n20:44:30 Page(1~9): Indexing done (1.09s).\n20:44:35 Page(1~9): Task done (245.58s)"
+        }
+      ]
+    },
+    {
+      "case": "gpu_smoke",
+      "state_path": "data/gpu_smoke_ingestion.json",
+      "profile": {
+        "profile": "single-gpu-cpu16-tasks4",
+        "parser": "DeepDOC",
+        "device": "gpu",
+        "onnx_provider": "CUDAExecutionProvider",
+        "onnxruntime_gpu_version": "1.23.2",
+        "image_config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+        "cpus": 16,
+        "memory_gib": 24,
+        "task_executors": 1,
+        "max_concurrent_tasks": 4,
+        "max_concurrent_chunk_builders": 4,
+        "ocr_intra_op_num_threads": 2,
+        "ocr_inter_op_num_threads": 2,
+        "gpu_uuid": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+        "visible_gpu_count": 1,
+        "ocr_gpu_mem_limit_mb": 2048,
+        "torch_version": "2.8.0+cu128",
+        "torch_cuda": "12.8",
+        "gpu_model": "NVIDIA GeForce RTX 3090",
+        "wheel_lock_sha256": "b4a16ad0df7f36d6f7a6b92fd3ceb23f26b144cbc87b45b0ba1c005aff9867f0",
+        "constraints_sha256": "c53c80512cedb1dfd41f69b569c622009f9c04535bd269cf0c4086e05047371e"
+      },
+      "documents": [
+        {
+          "id": "179e8202d85411f1b5742528776745a5",
+          "name": "AMCOR_2022_8K_dated-2022-07-01.pdf",
+          "run": "DONE",
+          "chunk_count": 18,
+          "progress_msg": "\n21:43:34 Task has been received.\n21:43:34 Page(1~9): Start to parse.\n21:43:34 Page(1~9): OCR started\n21:43:52 Page(1~9): Processing...\n21:43:55 Page(1~9): OCR finished (21.00s)\n21:44:07 Page(1~9): Layout analysis (11.41s)\n21:44:15 Page(1~9): Table analysis (8.09s)\n21:44:15 Page(1~9): Text merged (0.12s)\n21:44:15 Page(1~9): Finish parsing.\n21:44:16 Page(1~9): Generate 20 chunks\n21:44:21 Page(1~9): Embedding chunks (4.91s)\n21:44:22 Page(1~9): Indexing done (0.32s).\n21:44:28 Page(1~9): Task done (54.28s)"
+        }
+      ]
+    }
+  ],
+  "说明": "同一9页文档的原生任务耗时分别245.58秒和54.28秒；CPU配额和设备同时不同，只是单文档工程诊断，不能将倍率外推全库。队列等待不包含在原生任务耗时；此处无显存峰值结论。"
+}

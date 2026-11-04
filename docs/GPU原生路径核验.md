@@ -1,6 +1,6 @@
 # GPU 原生路径核验
 
-核验日期：2026-11-04。结论是**固定 RAGFlow 底座存在可用的原生 GPU 路径，当前尚未完成本项目 GPU 推理实测**。本次只读取官方源码、wheel 小元数据与 HTTP 头，没有下载大包、安装依赖、修改驱动或镜像。
+核验日期：2026-11-04。最初只读核验确认了固定底座的原生 GPU 路径；随后部署已验证真实 ONNX CUDA 推理，并完成9页PDF解析。派生镜像摘要和实际输出见 `deploy/gpu-image-lock.json`，下载与构建没有修改上游源码或系统驱动。当前正在进一步验证160页长财报；全84份文档索引尚未完成。下文保留最初依赖核查与空间预算，运行中资源变化以 `reports` 的真实记录为准。
 
 部署代理报告的实际环境：RAGFlow v0.27.3，镜像 config `ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc`；Python 3.13；`onnxruntime-gpu==1.23.2`，列出 CUDA/TensorRT/CPU provider；没有 torch、triton、任何 nvidia-* Python 发行包，系统库缓存也未见 CUDA/cuDNN/cuBLAS。服务器有 4 张 RTX 3090 24GB，驱动 `595.58.03`。这些服务器状态来自部署代理的只读实查，本报告未另开远程部署。
 
@@ -56,3 +56,19 @@
 [settings.check_and_install_torch](https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/common/settings.py#L522) 自动将可见设备数赋给 `PARALLEL_DEVICES`；[PDF 原生 OCR](https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/deepdoc/parser/pdf_parser.py#L1721) 支持按页轮转可见 GPU，不需要臆造 `PARALLEL_DEVICES` 环境变量。当前明确执行方案为**只按UUID绑定一张空闲3090、一个受限任务执行器**；单卡不足再评估扩展，不默认占用全部四卡。原生 `OCR_GPU_MEM_LIMIT_MB` 默认每会话 2048 MB，多模型、多进程总量仍会累加。
 
 若转为 GPU 正式索引，应统一重新解析本次正式语料，CPU 烟测另留报告，不把两种运行条件混成同一个冻结索引。维持原生 DeepDOC 模型、渲染/分块设置与完整 84 份文档，不降级解析来缩短等待。已知 CPU 烟测为 9 页 245.58 秒，整套语料 12,013 页；简单线性外推约 91 小时串行，但样本太小、已调整 CPU/并发，**不能当作正式耗时预测或 GPU 提速倍数**。
+
+## 已实现的项目构建入口
+
+在项目根目录操作；确认目标GPU空闲，并将命令中的UUID换成已核验设备。下载器只接受锁清单中的官方PyTorch/PyPI来源，单段有范围核验、超时和有限重试，最终每个wheel均验证完整SHA256。当前锁清单面向镜像内CPython3.13，不依赖宿主机Python版本。
+
+```bash
+python3 scripts/download_gpu_wheels.py
+python3 -m timeguard.gpu_image --gpu-uuid GPU-71384a25-5e87-bd05-8f42-8117a841e9fc
+python3 -m timeguard.bootstrap --prepare-compose --local-embedding \
+  --gpu-uuid GPU-71384a25-5e87-bd05-8f42-8117a841e9fc \
+  --task-workers 4 --tasks-per-worker 2
+```
+
+生成配置不自动启停服务；已有任务运行时不得直接重建。构建器要求指定GPU空闲、基础镜像摘要一致、轮子全部校验通过、空间充足，并拒绝覆盖已存在的本项目builder。仅在独立构建容器中安装固定依赖，原生CUDA会话真实推理通过后提交派生镜像并清理该builder。
+
+长文首次触发原生每会话2048MiB限制后，配置调整为8192MiB、`OCR_ARENA_EXTEND_STRATEGY=kSameAsRequested`、`OCR_GPUMEM_ARENA_SHRINKAGE=1`。这些是原生资源选项；默认表格四角度OCR保持开启。执行器数量通过原生入口 `--workers=N` 控制，每进程任务上限单独冻结；单纯设置 `NUM_WORKERS` 环境变量对该入口无效。上面的4×2是待完整长文验证后部署的配置，不代表全库已经成功。

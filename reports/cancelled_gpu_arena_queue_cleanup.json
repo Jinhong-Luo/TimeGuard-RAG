@@ -1,0 +1,25 @@
+{
+  "started_at_utc": "2026-11-04T13:55:51.805071+00:00",
+  "completed_at_utc": "2026-11-04T13:55:53.819866+00:00",
+  "gpu_failed_dataset_id": "25ed085ed85611f199056d29a87deaaa",
+  "cancelled_document_count": 84,
+  "matched_messages": 1041,
+  "matched_ids_sha256": "227d0954f2a6209e0811880a76adcf48cf659c0ab7705d0e92bb027c254e8c02",
+  "before_stream_lengths": {
+    "te.0.common": 1043,
+    "te.1.common": 0
+  },
+  "removed": 1041,
+  "by_queue": {
+    "te.0.common": 1041
+  },
+  "after": {
+    "te.0.common": 2,
+    "te.1.common": 0
+  },
+  "说明": "原生API确认旧GPU知识库84份文档均已取消或失败后，仅逐项复核其旧message_id和doc_id再XACK+XDEL；本次操作时新正式文档尚未提交，未删除新任务或修改全局游标。",
+  "verified_document_status_counts": {
+    "CANCEL": 83,
+    "FAIL": 1
+  }
+}

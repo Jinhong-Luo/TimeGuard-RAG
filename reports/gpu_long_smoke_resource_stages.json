@@ -1,0 +1,62 @@
+[
+  {
+    "utc": "2026-11-04T14:08:17.339011+00:00",
+    "stage": "160页资源烟测第二阶段",
+    "worker_added": "timeguard_gpu_extra_1",
+    "existing_workers": 1,
+    "new_worker_tasks": 2,
+    "total_task_limit": 6,
+    "gpu_before": {
+      "used_mib": 686,
+      "free_mib": 23441,
+      "utilization_percent": 3
+    },
+    "container_memory_before": "7.226GiB / 24GiB",
+    "algorithm_changed": false,
+    "说明": "保留原生进程和成功页，逐个增加执行器；资源烟测并非严格进程数吞吐对照。后续正式索引另冻结稳定部署条件。",
+    "existing_task_limits": [
+      4
+    ]
+  },
+  {
+    "utc": "2026-11-04T14:12:34.039921+00:00",
+    "stage": "160页资源烟测新增第3执行器",
+    "worker_added": "timeguard_gpu_extra_2",
+    "existing_workers": 2,
+    "new_worker_tasks": 2,
+    "total_task_limit": 8,
+    "gpu_before": {
+      "used_mib": 1184,
+      "free_mib": 22943,
+      "utilization_percent": 0
+    },
+    "container_memory_before": "11.09GiB / 24GiB",
+    "algorithm_changed": false,
+    "说明": "保留原生进程和成功页，逐个增加执行器；资源烟测并非严格进程数吞吐对照。后续正式索引另冻结稳定部署条件。",
+    "existing_task_limits": [
+      4,
+      2
+    ]
+  },
+  {
+    "utc": "2026-11-04T14:14:39.309288+00:00",
+    "stage": "160页资源烟测新增第4执行器",
+    "worker_added": "timeguard_gpu_extra_3",
+    "existing_workers": 3,
+    "existing_task_limits": [
+      4,
+      2,
+      2
+    ],
+    "new_worker_tasks": 2,
+    "total_task_limit": 10,
+    "gpu_before": {
+      "used_mib": 1581,
+      "free_mib": 22546,
+      "utilization_percent": 0
+    },
+    "container_memory_before": "14.07GiB / 24GiB",
+    "algorithm_changed": false,
+    "说明": "保留原生进程和成功页，逐个增加执行器；资源烟测并非严格进程数吞吐对照。后续正式索引另冻结稳定部署条件。"
+  }
+]

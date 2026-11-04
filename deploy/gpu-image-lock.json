@@ -1,0 +1,37 @@
+{
+  "image": "timeguard-ragflow:v0.27.3-torch2.8.0-cu128",
+  "config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+  "base_image": {
+    "image": "infiniflow/ragflow:v0.27.3",
+    "linux_amd64_manifest_digest": "sha256:4ab74ec388e2d897419e01518a516e9386e5ff812587a1025e6f6a407b2ad067",
+    "config_digest": "sha256:ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc",
+    "layer_count": 39,
+    "说明": "官方固定版本；归档导入前逐层校验 SHA256，导入后核对镜像配置摘要。"
+  },
+  "wheel_lock_sha256": "b4a16ad0df7f36d6f7a6b92fd3ceb23f26b144cbc87b45b0ba1c005aff9867f0",
+  "constraints_sha256": "c53c80512cedb1dfd41f69b569c622009f9c04535bd269cf0c4086e05047371e",
+  "gpu_uuid": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+  "started_at_utc": "2026-11-04T13:20:53.029657+00:00",
+  "completed_at_utc": "2026-11-04T13:23:40.160387+00:00",
+  "native_cuda_probe": {
+    "torch": "2.8.0+cu128",
+    "torch_cuda": "12.8",
+    "onnxruntime": "1.23.2",
+    "providers": [
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+    ],
+    "visible_device_count": 1,
+    "device_name": "NVIDIA GeForce RTX 3090",
+    "output_shapes": [
+      [
+        1,
+        1,
+        64,
+        64
+      ]
+    ]
+  },
+  "uncompressed_bytes": 14753335404,
+  "说明": "只安装固定CUDA依赖，保留上游源代码和模型；wheelhouse只读挂载，不复制进最终镜像。"
+}

@@ -1,4 +1,4 @@
-"""固定上游源码，并生成仅属于当前项目的 CPU 部署配置。"""
+"""固定上游源码，并生成仅属于当前项目的受限部署配置。"""
 
 import argparse
 import json
@@ -19,6 +19,12 @@ def main():
     parser.add_argument("--prepare-compose", action="store_true")
     parser.add_argument("--local-embedding", action="store_true", help="启用原生 TEI CPU 英文轻量 Embedding 服务")
     parser.add_argument("--project", default="timeguard_ljh")
+    parser.add_argument("--gpu-uuid", help="启用已验证派生镜像，并只暴露指定的一张GPU")
+    parser.add_argument("--gpu-image-lock", default="deploy/gpu-image-lock.json")
+    parser.add_argument("--task-workers", type=int, choices=[1, 2, 4], default=1,
+                        help="GPU解析的原生执行器进程数；需先验证资源余量")
+    parser.add_argument("--tasks-per-worker", type=int, choices=[1, 2, 4], default=4,
+                        help="每个GPU执行器的任务与分块并发上限")
     args = parser.parse_args()
     root = Path.cwd()
     lock = read_json(root / "upstream.lock.json")["ragflow"]
@@ -36,6 +42,19 @@ def main():
         raise ValueError("项目名必须是小写英文、数字、下划线或连字符")
     deploy = root / "deploy"
     deploy.mkdir(exist_ok=True)
+    gpu = None
+    if not args.gpu_uuid and (args.task_workers != 1 or args.tasks_per_worker != 4):
+        raise ValueError("自定义进程数仅用于已验证GPU资源阶段；CPU后备保持固定配置")
+    if args.gpu_uuid:
+        if not re.fullmatch(r"GPU-[0-9a-fA-F-]{36}", args.gpu_uuid):
+            raise ValueError("必须传入明确的单GPU UUID")
+        gpu = read_json(args.gpu_image_lock)
+        expected_base = read_json(deploy / "image-lock.json")["ragflow_cpu"]["config_digest"]
+        if gpu["base_image"]["config_digest"] != expected_base or gpu["gpu_uuid"] != args.gpu_uuid:
+            raise ValueError("GPU镜像的基础版本或已验证设备不一致")
+        actual_gpu = command(["docker", "image", "inspect", "--format", "{{.Id}}", gpu["image"]], capture=True).stdout.strip()
+        if actual_gpu != gpu["config_digest"]:
+            raise ValueError("GPU派生镜像内容与锁文件不符")
     runtime = deploy / "runtime.env"
     if not runtime.exists():
         overrides = {k: secrets.token_hex(24) for k in ["ELASTIC_PASSWORD", "MYSQL_PASSWORD", "MINIO_PASSWORD", "REDIS_PASSWORD"]}
@@ -93,9 +112,27 @@ def main():
         if name == "mysql":
             service_env["MYSQL_ROOT_PASSWORD"] = env["MYSQL_PASSWORD"]
         if name == "ragflow-cpu":
-            service_env["LLM_TIMEOUT_SECONDS"] = "180"
+            service_env["LLM_TIMEOUT_SECONDS"] = "330"
+            service_env["LLM_MAX_RETRIES"] = "0"
             service_env.update({"MAX_CONCURRENT_TASKS": "4", "MAX_CONCURRENT_CHUNK_BUILDERS": "4",
                                 "OCR_INTRA_OP_NUM_THREADS": "2", "OCR_INTER_OP_NUM_THREADS": "2"})
+            if gpu:
+                service["image"] = gpu["image"]
+                import shlex
+                original_command = service.get("command") or []
+                if isinstance(original_command, str):
+                    original_command = shlex.split(original_command)
+                service["command"] = [part for part in original_command if not part.startswith("--workers=")]
+                service["command"].append(f"--workers={args.task_workers}")
+                service_env.update({"DEVICE": "gpu", "TORCH_CUDA_INDEX_URL": "https://download.pytorch.org/whl/cu128",
+                                    "PIP_NO_INDEX": "1", "PIP_CONSTRAINT": "/opt/timeguard/gpu-constraints.txt",
+                                    "MAX_CONCURRENT_TASKS": str(args.tasks_per_worker),
+                                    "MAX_CONCURRENT_CHUNK_BUILDERS": str(args.tasks_per_worker),
+                                    "OCR_GPU_MEM_LIMIT_MB": "8192",
+                                    "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+                                    "OCR_GPUMEM_ARENA_SHRINKAGE": "1"})
+                service["deploy"] = {"resources": {"reservations": {"devices": [
+                    {"driver": "nvidia", "device_ids": [args.gpu_uuid], "capabilities": ["gpu"]}]}}}
         if name == "minio":
             service_env["MINIO_ROOT_PASSWORD"] = env["MINIO_PASSWORD"]
         if name == "redis":
@@ -128,6 +165,20 @@ def main():
     target = deploy / "compose.generated.json"
     write_json(target, config)
     # 镜像锁是已核验的静态来源记录，不在每次生成配置时覆盖。
+    if gpu:
+        profile = read_json(deploy / "parse-profile.cpu.json")
+        profile.update({"profile": f"single-gpu-cpu16-workers{args.task_workers}-tasks{args.tasks_per_worker}", "device": "gpu",
+                        "task_executors": args.task_workers, "max_concurrent_tasks": args.tasks_per_worker,
+                        "max_concurrent_chunk_builders": args.tasks_per_worker,
+                        "total_task_limit": args.task_workers * args.tasks_per_worker,
+                        "onnx_provider": "CUDAExecutionProvider", "image_config_digest": gpu["config_digest"],
+                        "gpu_uuid": args.gpu_uuid, "visible_gpu_count": 1, "ocr_gpu_mem_limit_mb": 8192,
+                        "ocr_arena_extend_strategy": "kSameAsRequested", "ocr_gpumem_arena_shrinkage": True,
+                        "torch_version": gpu["native_cuda_probe"]["torch"],
+                        "torch_cuda": gpu["native_cuda_probe"]["torch_cuda"],
+                        "gpu_model": gpu["native_cuda_probe"]["device_name"],
+                        "wheel_lock_sha256": gpu["wheel_lock_sha256"], "constraints_sha256": gpu["constraints_sha256"]})
+        write_json(deploy / "parse-profile.gpu.json", profile)
     os.chmod(target, 0o600)
     print(f"已生成 {target}，仅开放回环端口 18080 / 19380；未启动容器")
     print(f"启动：docker compose -p {args.project} -f deploy/compose.generated.json up -d")

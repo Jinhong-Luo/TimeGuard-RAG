@@ -1,0 +1,32 @@
+{
+  "recorded_at_utc": "2026-11-04T14:20:39.312787+00:00",
+  "scope": "160页独立资源烟测，正式84份全库尚未完成",
+  "latest": {
+    "utc": "2026-11-04T14:20:31.048635+00:00",
+    "dataset_id": "b7c95010d85711f1b0f349057592f04c",
+    "expected_documents": 1,
+    "listed_documents": 1,
+    "done_documents": 0,
+    "status_counts": {
+      "RUNNING": 1
+    },
+    "completed_task_pages": 88,
+    "completed_page_intervals": 8,
+    "chunks": 261,
+    "gpu_memory_used_mib": 2288,
+    "gpu_utilization_percent": 20,
+    "container_cpu_percent": "321.60%",
+    "container_memory": "18.23GiB / 24GiB"
+  },
+  "sample_count": 123,
+  "sample_interval_seconds": 10,
+  "sampled_gpu_memory_max_mib": 3098,
+  "sampled_gpu_utilization_median_percent": 2,
+  "error_markers": 0,
+  "container_image_config": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+  "container_running": true,
+  "container_oom_killed": false,
+  "container_restart_count": 0,
+  "project_filesystem_free_bytes": 369997115392,
+  "说明": "采样最大值不是连续监控的绝对峰值；API文档快照保留在本项目缓存，最终完整报告仅在文档DONE且有效块非零时生成。"
+}
