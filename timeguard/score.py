@@ -59,7 +59,9 @@ def summarize(expected_ids, gold, rows, k=6, reviews=None):
               "page_hit_recall_at_k_proxy": sum(r["page_hit_recall"] or 0 for r in scored) / n,
               "strict_text_recall_at_k_proxy": sum(r["strict_text_recall"] or 0 for r in scored) / n,
               "k": k, "cost_usd": None, "answer_accuracy": None, "numeric_and_scope_accuracy": None,
-              "citation_support_rate": None, "reviewed": 0,
+              "citation_support_rate": None, "reviewed": 0, "human_reviewed": 0,
+              "model_answer_accuracy": None, "model_numeric_and_scope_accuracy": None,
+              "model_citation_support_rate": None, "model_reviewed": 0, "human_spot_check": None,
               "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。"}
     durations = [r["elapsed_seconds"] for r in rows if r.get("elapsed_seconds") is not None]
     report["mean_seconds"] = statistics.mean(durations) if durations else None
@@ -68,9 +70,13 @@ def summarize(expected_ids, gold, rows, k=6, reviews=None):
         if len({r["id"] for r in reviews}) != len(reviews) or {r["id"] for r in reviews} - set(expected_ids):
             raise ValueError("人工复核题号重复或超出运行集合")
         review_map = {r["id"]: r for r in reviews}
+        if any(r.get("judge_type", "human") not in ("human", "model") for r in reviews):
+            raise ValueError("复核来源必须明确为 human 或 model")
         valid = [review_map[i] for i in expected_ids if i in review_map and
-                 isinstance(review_map[i].get("answer_correct"), bool) and review_map[i].get("reviewer")]
+                 isinstance(review_map[i].get("answer_correct"), bool) and review_map[i].get("reviewer")
+                 and review_map[i].get("judge_type", "human") == "human"]
         report["reviewed"] = len(valid)
+        report["human_reviewed"] = len(valid)
         # 部分复核不能伪装成完整准确率。
         if len(valid) == n:
             report["answer_accuracy"] = sum(r["answer_correct"] for r in valid) / n
@@ -78,6 +84,21 @@ def summarize(expected_ids, gold, rows, k=6, reviews=None):
                 values = [r[source] for r in valid if isinstance(r.get(source), bool)]
                 if len(values) == n:
                     report[target] = sum(values) / n
+        model_rows = [review_map[i] for i in expected_ids if i in review_map
+                      and review_map[i].get("judge_type") == "model"]
+        report["model_judge_status_counts"] = dict(collections.Counter(r.get("judge_status", "missing") for r in model_rows))
+        model_valid = [r for r in model_rows if r.get("judge_status") == "ok"
+                       and isinstance(r.get("answer_correct"), bool) and r.get("reviewer")]
+        report["model_reviewed"] = len(model_valid)
+        if len(model_valid) == n:
+            report["model_answer_accuracy"] = sum(r["answer_correct"] for r in model_valid) / n
+            for source, target in [("numeric_and_scope_correct", "model_numeric_and_scope_accuracy"),
+                                   ("citation_support", "model_citation_support_rate")]:
+                values = [r[source] for r in model_valid if isinstance(r.get(source), bool)]
+                if len(values) == n:
+                    report[target] = sum(values) / n
+        if model_rows:
+            report["模型裁判说明"] = "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
     return report, scored, review_rows
 
 

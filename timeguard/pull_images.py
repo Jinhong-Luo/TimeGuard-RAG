@@ -21,21 +21,25 @@ def main():
     env = dict(os.environ)
     env.update({"HTTP_PROXY": args.proxy, "HTTPS_PROXY": args.proxy})
     images = sorted({s["image"] for s in read_json("deploy/compose.generated.json")["services"].values()})
+    locked = {entry["image"]: entry for entry in read_json("deploy/image-lock.json").values()}
     cache = Path(".cache/images").resolve()
     cache.mkdir(parents=True, exist_ok=True)
     crane = str(Path(args.crane).resolve())
 
     def invoke(cmd):
-        return subprocess.run(cmd, env=env, check=True, capture_output=True, text=True).stdout
+        timeout = 7200 if "pull" in cmd or "load" in cmd else 120
+        return subprocess.run(cmd, env=env, check=True, capture_output=True, text=True, timeout=timeout).stdout
 
     def fetch(image):
         if shutil.disk_usage(cache).free < 18 * 1024**3:
             raise RuntimeError("可用磁盘少于18GiB，停止新的镜像下载；不自动清理其他资源")
         sha = invoke([crane, "digest", "--platform", "linux/amd64", image]).strip()
         manifest = json.loads(invoke([crane, "manifest", "--platform", "linux/amd64", image]))
-        if "huggingface/text-embeddings-inference" in image and sha != "sha256:c466c97680cc9c2968108c4b1b44ca7729a091a44b61c840d9487f07d42e9099":
-            raise ValueError("TEI镜像摘要与已核查版本不一致")
+        if image in locked and sha != locked[image]["linux_amd64_manifest_digest"]:
+            raise ValueError(f"镜像摘要与已核查版本不一致：{image}")
         expected_config = manifest["config"]["digest"]
+        if image in locked and locked[image].get("config_digest", expected_config) != expected_config:
+            raise ValueError(f"镜像配置摘要与已核查版本不一致：{image}")
         existing = subprocess.run(["docker", "image", "inspect", "--format", "{{.Id}}", image], capture_output=True, text=True)
         if existing.returncode == 0 and existing.stdout.strip() == expected_config:
             print(f"已有匹配镜像：{image}", flush=True)

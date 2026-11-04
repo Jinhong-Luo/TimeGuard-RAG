@@ -1,0 +1,81 @@
+{
+  "checked_at_utc": "2026-11-04T11:35:14Z",
+  "scope": "仅本地网络请求官方文档与小型 manifest；未下载镜像层、未操作远程服务器、未启动 SCP",
+  "fixed_upstream_commit": "8090ffd8ba6098813d7f7ec2c4b8774f36c8423a",
+  "official_sources": [
+    "https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/docker/.env#L264-L268",
+    "https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/README_zh.md#L195-L206"
+  ],
+  "dockerhub_reference": {
+    "source": "已完成下载的 metadata.json，只读核验；本次不重新下载",
+    "image": "infiniflow/ragflow:v0.27.3",
+    "linux_amd64_manifest_digest": "sha256:4ab74ec388e2d897419e01518a516e9386e5ff812587a1025e6f6a407b2ad067",
+    "config_digest": "sha256:ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc",
+    "layer_count": 39,
+    "compressed_layer_bytes": 3618041378,
+    "ordered_layer_digests": [
+      "sha256:f2b4ef06ff01a67d4bed7657a4ae379a7d07934b7c3e743454a22a0d5275fb2b",
+      "sha256:50ea8d962c24589bd33ce0cca789efc9eda153387a215aede89606ccced021e9",
+      "sha256:7a368b987df37a88e29f78040547cf824b1275b0507881292d8d01bf4ec631bb",
+      "sha256:b192bf1c771b21fda0a6f81a15bce014dfdbd32eb5260f004da7a96c2dc87c8f",
+      "sha256:f1a12c0a5639d1dcbd8e40b0ecde27bff384702492d2dc0e3b2f5b2bfeb1031d",
+      "sha256:bb63194fa6f3b4665a7675ab31c46ded4d9361ac4b549941205e1c78f34e5ef8",
+      "sha256:d820e7c5b3d55ed467875044f57f1ded11a8a7a460cac06d43f2b7d5a847c23b",
+      "sha256:ffd7476e5375666e10f15f861059500ab1de2e22692f7953b9456728bf448eea",
+      "sha256:2d0b39ac3458296eee29e65a8f5c6e7403ee24ff4d707a7ecbf36e835c29050e",
+      "sha256:19a927a61ce6fbaa34f877589b0c24db9ac05ede65fea7fb000d917fe4e7f5b6",
+      "sha256:916a9d7b57cba0cab637d4dc01e13b291a3c7e6c67c9a4695fb67d3153bcd065",
+      "sha256:197fad4b635fa44e203b6efb9be58097861670a7b8b2ff5b83b9e8666f0e5863",
+      "sha256:9463efc07861628d7470b7973884b5a17f0a51c9252547e5fcbd7fbb9dd2fcf6",
+      "sha256:6e02563d8a36ad8e3f17f0ea35f7465e47f30b236fe75a2db17463b74376404c",
+      "sha256:a74e3e30bb2b80f89cbe6ee1280bfb0b37b0ccf738f30a5db89115c06e81508e",
+      "sha256:45477c2377a7fcc3fa2aed54cd73c90c39ad826bc432d4f8c4556874b7b7ef42",
+      "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "sha256:30258378ebb95070586bbaafe2e40d7a41dfa553b62dca781e95506bbaa2ea91",
+      "sha256:3de85bcf86633d3b794dc7595110178b8f13b330d9a40ad829d2631eac6a1baa",
+      "sha256:8cfe2a074d99c497f33c7b452d07afe58b354cab64882a2aac690507cad60aeb",
+      "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "sha256:55ddffb8b05dd01b1b0d205da17ce4d53fc90221e8ee674a42e1bea51ad5700d",
+      "sha256:a3ac335a676fec4b5e2fc0c8b28bf3d297ef4c4369e67e11bff00e827aa1f1cb",
+      "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "sha256:3d5b41a1a1392123458cc1a763e7955a7d2fa458ff448f5a2e2c5fb3a90bf637",
+      "sha256:b60ef4a190606e0792c873a6eea9f1b101dfbd69d4f01016281064e054ab1ea8",
+      "sha256:eea9e33d0aa8980521753b1ffe4f3ad887ef0ba46022f7a59c16312023c16cc1",
+      "sha256:8923b918d9b25ae5d09a4552b2126108e40b56c2794107776e81b3de746764bd",
+      "sha256:5e6adc5aef0e3d84c01ff04c981f300927ab7dd4652502ba35ad3ccac3b06504",
+      "sha256:e2147b88da6b2730536641d959d9c91c5b1e9e28b5ace8e74d6a17cc356507ae",
+      "sha256:db2f11871f6ab246cee92ea045714c218856b03bb64fb5db29ca5dd87bad35b6",
+      "sha256:a3e8b63846f7fdd83f30fb3ff55e43a159d9d5eff7f3950eb023331ca32a4f6f",
+      "sha256:7c8ec0ffaef82346816420e110e2b9ac8a407bb9847b9c5f8da304957ee64345",
+      "sha256:c94f25017f448234ece0b28213a4e348238654dd86b01cf51ab6dd8fd3ab9404",
+      "sha256:e199d20c0beb2fbee68c91bc1c6cf36c93ff317007bb04cfb4c6b0658fb588b1",
+      "sha256:38418f45c632b6ead4a393b007e0ed86aaea6ac1a5a78e0a43336cb7fbda99d9",
+      "sha256:fd45fea3ebd9abfcb697668ac565f9775d5240f0ad2150a399f5b85242b8ec6f",
+      "sha256:37f0b0fad8529093bb0fb54474f9f59edbb8d5d44a5256336577281d185e4f12"
+    ]
+  },
+  "official_mirror_results": [
+    {
+      "registry": "swr.cn-north-4.myhuaweicloud.com",
+      "image": "swr.cn-north-4.myhuaweicloud.com/infiniflow/ragflow:v0.27.3",
+      "tag_manifest_status": 404,
+      "digest_manifest_status": 404,
+      "registry_error": "MANIFEST_UNKNOWN",
+      "content_identity_verified": false,
+      "reason": "标签与已知 DockerHub 不可变 manifest 摘要均不存在，无法比较内容。"
+    },
+    {
+      "registry": "registry.cn-hangzhou.aliyuncs.com",
+      "image": "registry.cn-hangzhou.aliyuncs.com/infiniflow/ragflow:v0.27.3",
+      "tag_manifest_status": 404,
+      "digest_manifest_status": 404,
+      "registry_error": "MANIFEST_UNKNOWN",
+      "content_identity_verified": false,
+      "reason": "标签与已知 DockerHub 不可变 manifest 摘要均不存在，无法比较内容。"
+    }
+  ],
+  "slim_status": "官方说明 v0.22 起标准 tag 已为不含 embedding 模型的 slim 发行版，不再附加 -slim 后缀；未换旧版、nightly 或陌生镜像。",
+  "conclusion": "本次核验时没有发现可用的官方国内同版本镜像；文档列出入口不等于对应 tag 已发布。不能声称服务器可从这些入口快速拉取。",
+  "remote_probe_status": "未执行；已将只读核验建议与证据交 TimeGuard 部署代理统一调度。"
+}

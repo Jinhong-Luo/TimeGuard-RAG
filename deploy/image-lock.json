@@ -1,7 +1,20 @@
 {
+  "ragflow_cpu": {
+    "image": "infiniflow/ragflow:v0.27.3",
+    "linux_amd64_manifest_digest": "sha256:4ab74ec388e2d897419e01518a516e9386e5ff812587a1025e6f6a407b2ad067",
+    "config_digest": "sha256:ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc",
+    "layer_count": 39,
+    "说明": "官方固定版本；归档导入前逐层校验 SHA256，导入后核对镜像配置摘要。"
+  },
+  "elasticsearch": {
+    "image": "elasticsearch:8.11.3",
+    "linux_amd64_manifest_digest": "sha256:0e47a784b266b7f30d8071a25f774b10a38f3bb9bb41e23a2767ba464aafcb21",
+    "config_digest": "sha256:ac1eef4151323a027507b73e0536f971b5a2181f3c0e77b37b335c84e37c1340"
+  },
   "tei_cpu": {
     "image": "ghcr.io/huggingface/text-embeddings-inference:cpu-1.8",
     "linux_amd64_manifest_digest": "sha256:c466c97680cc9c2968108c4b1b44ca7729a091a44b61c840d9487f07d42e9099",
-    "说明": "同版本官方轻量TEI镜像，保留原生HuggingFaceEmbed协议；镜像拉取或归档导入时验证摘要。"
+    "config_digest": "sha256:5368d285d6044ce93aa157c6d24877ff2896540ca1fea42cfd7c7c0e619ed823",
+    "说明": "同版本官方轻量 TEI 镜像，保留原生 HuggingFaceEmbed 协议。"
   }
 }

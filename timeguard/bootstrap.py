@@ -92,6 +92,8 @@ def main():
                 service_env[key] = env[key]
         if name == "mysql":
             service_env["MYSQL_ROOT_PASSWORD"] = env["MYSQL_PASSWORD"]
+        if name == "ragflow-cpu":
+            service_env["LLM_TIMEOUT_SECONDS"] = "180"
         if name == "minio":
             service_env["MINIO_ROOT_PASSWORD"] = env["MINIO_PASSWORD"]
         if name == "redis":
@@ -119,9 +121,7 @@ def main():
     config["networks"] = {k: {**v, "name": args.project + "_" + k} for k, v in config.get("networks", {}).items()}
     target = deploy / "compose.generated.json"
     write_json(target, config)
-    write_json(deploy / "image-lock.json", {"tei_cpu": {"image": "ghcr.io/huggingface/text-embeddings-inference:cpu-1.8",
-                "linux_amd64_manifest_digest": "sha256:c466c97680cc9c2968108c4b1b44ca7729a091a44b61c840d9487f07d42e9099",
-                "说明": "同版本官方轻量TEI镜像，保留原生HuggingFaceEmbed协议；镜像拉取或归档导入时验证摘要。"}})
+    # 镜像锁是已核验的静态来源记录，不在每次生成配置时覆盖。
     os.chmod(target, 0o600)
     print(f"已生成 {target}，仅开放回环端口 18080 / 19380；未启动容器")
     print(f"启动：docker compose -p {args.project} -f deploy/compose.generated.json up -d")

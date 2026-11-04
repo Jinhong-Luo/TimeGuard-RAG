@@ -42,11 +42,13 @@ python3 -m timeguard.data --pdfs
 
 ```bash
 export RAGFLOW_API_KEY='在本机环境中设置实际值'
-python3 -m timeguard.ingest --embedding-model 'BAAI/bge-small-en-v1.5@Builtin'
-python3 -m timeguard.ingest --embedding-model 'BAAI/bge-small-en-v1.5@Builtin' --status
+python3 -m timeguard.ingest --embedding-model 'BAAI/bge-small-en-v1.5@local_tei@HuggingFace'
+python3 -m timeguard.ingest --embedding-model 'BAAI/bge-small-en-v1.5@local_tei@HuggingFace' --status
 ```
 
 `--embedding-model` 必须与服务实际列出的完整标识一致。全部文档解析成功且分块数大于零才运行基线。导入中断后可续跑已保存步骤；极端情况下上传完成、导入记录尚未落盘之间中断，可能残留重复文档，需要先核对文档列表，不能称为严格事务恢复。
+
+也可运行 `python3 -m timeguard.setup_service --embedding`，经原生接口创建本项目账户、API key 和本地模型实例；凭证只存 `deploy/account.runtime.json`（权限0600、Git忽略），不输出终端。实际注册的完整模型标识为 `BAAI/bge-small-en-v1.5@local_tei@HuggingFace`，随后导入命令使用该标识。
 
 真实数据准备结果：150 题、84 份关联文档、32 家公司；按公司固定分成调优 88 题、开发 39 题、保留测试 23 题。公开完整 150 题可以单独报告，不能称为独立泛化成绩。`queries.jsonl` 只有题号、问题和集合；`gold.jsonl` 在离线评分阶段使用。PDF 来源、报告期和哈希保存在 `documents.jsonl`。
 
@@ -67,10 +69,10 @@ python3 -m timeguard.score runs/r0-default-dev
 思考强度候选为 `low medium high xhigh max ultra`。具体入口可能只支持其中一部分，先探测，再完整运行支持的档位；不能把不支持的档位自动降级成另一档。
 
 ```bash
-python3 -m timeguard.probe --base-url http://127.0.0.1:18861/v1 --model gpt-6.1-sol
+python3 -m timeguard.probe --base-url http://127.0.0.1:18863/v1 --model gpt-6.1-sol
 ```
 
-该探测读取 `OPENAI_API_KEY`。若桥接入口使用本地占位凭证，应按桥接服务说明配置，不把 ChatGPT 登录凭证复制进仓库。`accepted` 只说明接口接受请求，不能证明 RAGFlow 实际传递或模型实际采用该强度。
+该探测读取 `OPENAI_API_KEY`。当前部署的桥接入口要求独立随机令牌，应在当前进程内读取受限凭证文件，不把令牌或 ChatGPT 登录凭证复制进仓库。`accepted` 只说明接口接受请求，不能证明 RAGFlow 实际传递或模型实际采用该强度。
 
 **上游兼容性已核查：** RAGFlow 的 `Base._clean_conf` 会过滤 `reasoning_effort`，其 LiteLLM 分支有不同的允许列表。`prompt_config.reasoning` 也是另一个功能，不是模型的思考强度。必须选择实际支持的提供商路径、透明记录最小传输补丁，或使用经验证的模型别名 `gpt-6.1-sol@high`，再从模型入口日志核对最终请求。不能仅以保存聊天配置成功为依据。
 
@@ -105,7 +107,7 @@ python3 -m timeguard.score runs/r0-low-dev
 
 ```bash
 python3 -m timeguard.score runs/r0-low-dev --reviews runs/r0-low-dev/reviews.jsonl
-python3 -m timeguard.select runs/r0-low-dev runs/r0-medium-dev
+python3 -m timeguard.select runs/r0-low-dev runs/r0-medium-dev runs/r0-high-dev runs/r0-xhigh-dev runs/r0-max-dev runs/r0-ultra-dev
 ```
 
 选优规则预先固定：在同一开发集上，答案正确率距最好档不超过 2 个百分点时选平均耗时最短的一档；费用未知时不宣称最省钱。完成档位选择后冻结配置，再在保留测试集运行一次。开发集调参、最终保留评估和公开全量成绩分别报告。
@@ -117,7 +119,7 @@ python3 -m unittest discover -s tests -v
 python3 -m compileall -q timeguard
 ```
 
-目前 18 项离线测试通过，覆盖公司隔离、问题与金标分离、零召回/失败/未完成样本留分母、页码基准、重复样本拒绝、人工复核完整性，以及选优必须覆盖完整开发集和所有候选档位。实际模型调用与服务运行状态以主机报告为准。问题与处理记录见 [实现记录](docs/实现记录.md)。
+目前 29 项离线测试通过，覆盖公司隔离、问题与金标分离、零召回/失败/未完成样本留分母、页码基准、重复样本拒绝、模型裁判与人工复核分离，以及选优必须覆盖完整开发集和所有候选档位。实际模型调用与服务运行状态以主机报告为准。问题与处理记录见 [实现记录](docs/实现记录.md)。
 
 ## 核查依据
 
@@ -134,9 +136,9 @@ python3 -m compileall -q timeguard
 
 ```bash
 python3 model_bridge/codex_bridge.py --check
-python3 model_bridge/codex_bridge.py --port 18861 --runtime-dir /home/luojinghong/LLM_Proj/.bridge-runtime
+python3 model_bridge/codex_bridge.py --port 18863 --runtime-dir /home/luojinghong/LLM_Proj/.bridge-runtime
 # 在另一个终端运行；默认只测 low。
-python3 model_bridge/probe.py --base-url http://127.0.0.1:18861/v1 --effort low --output reports/bridge-smoke-low.json
+python3 model_bridge/probe.py --base-url http://127.0.0.1:18863/v1 --effort low --output reports/bridge-smoke-low.json
 ```
 
 完整六档链路验证加 `--all-efforts`。输出包含实际思考强度、模型名、耗时、token 与失败分类；它只是接入烟测，不能替代业务基线或据此选出最佳档位。固定标记 `codex-app-server-structured-output-v1`，不称为原生模型 API 等价实验。详细限制、Docker 网关接入和登录问题记录见 [桥接说明](model_bridge/README.md)。
