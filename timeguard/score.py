@@ -66,6 +66,12 @@ def summarize(expected_ids, gold, rows, k=6, reviews=None):
     durations = [r["elapsed_seconds"] for r in rows if r.get("elapsed_seconds") is not None]
     report["mean_seconds"] = statistics.mean(durations) if durations else None
     report["median_seconds"] = statistics.median(durations) if durations else None
+    # 覆盖率始终以全部计划题为分母；未复核、失败和不适用都不是有效布尔判断。
+    for target in ("numeric_and_scope_accuracy", "citation_support_rate",
+                   "model_numeric_and_scope_accuracy", "model_citation_support_rate"):
+        report[target + "_known_count"] = 0
+        report[target + "_unknown_count"] = n
+        report[target + "_coverage"] = 0.0
     if reviews is not None:
         if len({r["id"] for r in reviews}) != len(reviews) or {r["id"] for r in reviews} - set(expected_ids):
             raise ValueError("人工复核题号重复或超出运行集合")
@@ -80,10 +86,13 @@ def summarize(expected_ids, gold, rows, k=6, reviews=None):
         # 部分复核不能伪装成完整准确率。
         if len(valid) == n:
             report["answer_accuracy"] = sum(r["answer_correct"] for r in valid) / n
-            for source, target in [("numeric_and_scope_correct", "numeric_and_scope_accuracy"), ("citation_support", "citation_support_rate")]:
-                values = [r[source] for r in valid if isinstance(r.get(source), bool)]
-                if len(values) == n:
-                    report[target] = sum(values) / n
+        for source, target in [("numeric_and_scope_correct", "numeric_and_scope_accuracy"), ("citation_support", "citation_support_rate")]:
+            values = [r[source] for r in valid if isinstance(r.get(source), bool)]
+            report[target + "_known_count"] = len(values)
+            report[target + "_unknown_count"] = n - len(values)
+            report[target + "_coverage"] = len(values) / n
+            if len(values) == n:
+                report[target] = sum(values) / n
         model_rows = [review_map[i] for i in expected_ids if i in review_map
                       and review_map[i].get("judge_type") == "model"]
         report["model_judge_status_counts"] = dict(collections.Counter(r.get("judge_status", "missing") for r in model_rows))
@@ -92,11 +101,14 @@ def summarize(expected_ids, gold, rows, k=6, reviews=None):
         report["model_reviewed"] = len(model_valid)
         if len(model_valid) == n:
             report["model_answer_accuracy"] = sum(r["answer_correct"] for r in model_valid) / n
-            for source, target in [("numeric_and_scope_correct", "model_numeric_and_scope_accuracy"),
-                                   ("citation_support", "model_citation_support_rate")]:
-                values = [r[source] for r in model_valid if isinstance(r.get(source), bool)]
-                if len(values) == n:
-                    report[target] = sum(values) / n
+        for source, target in [("numeric_and_scope_correct", "model_numeric_and_scope_accuracy"),
+                               ("citation_support", "model_citation_support_rate")]:
+            values = [r[source] for r in model_valid if isinstance(r.get(source), bool)]
+            report[target + "_known_count"] = len(values)
+            report[target + "_unknown_count"] = n - len(values)
+            report[target + "_coverage"] = len(values) / n
+            if len(values) == n:
+                report[target] = sum(values) / n
         if model_rows:
             report["模型裁判说明"] = "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
     return report, scored, review_rows

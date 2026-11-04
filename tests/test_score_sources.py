@@ -32,6 +32,43 @@ class ReviewSourceTests(unittest.TestCase):
         self.assertEqual(report["answer_accuracy"], 1)
         self.assertIsNone(report["model_answer_accuracy"])
 
+    def test_unknown_model_fields_preserve_full_denominator(self):
+        gold = {ident: {**self.gold["q"], "id": ident} for ident in ("q", "r")}
+        rows = [{**self.result[0], "id": ident} for ident in gold]
+        reviews = [self.review, {**self.review, "id": "r", "numeric_and_scope_correct": None,
+                                "citation_support": None}]
+        report, _, _ = summarize(list(gold), gold, rows, reviews=reviews)
+        self.assertEqual(report["model_answer_accuracy"], 1)
+        for target in ("model_numeric_and_scope_accuracy", "model_citation_support_rate"):
+            self.assertIsNone(report[target])
+            self.assertEqual(report[target + "_known_count"], 1)
+            self.assertEqual(report[target + "_unknown_count"], 1)
+            self.assertEqual(report[target + "_coverage"], 0.5)
+
+    def test_failed_and_missing_judgements_do_not_improve_coverage(self):
+        gold = {ident: {**self.gold["q"], "id": ident} for ident in ("q", "r", "s")}
+        reviews = [self.review, {**self.review, "id": "r", "judge_status": "failed"}]
+        report, _, _ = summarize(list(gold), gold, self.result, reviews=reviews)
+        self.assertEqual(report["denominator"], 3)
+        self.assertIsNone(report["model_answer_accuracy"])
+        for target in ("model_numeric_and_scope_accuracy", "model_citation_support_rate"):
+            self.assertIsNone(report[target])
+            self.assertEqual(report[target + "_known_count"], 1)
+            self.assertEqual(report[target + "_unknown_count"], 2)
+            self.assertEqual(report[target + "_coverage"], 1 / 3)
+
+    def test_partial_human_and_absent_reviews_keep_unknown_counts(self):
+        gold = {ident: {**self.gold["q"], "id": ident} for ident in ("q", "r")}
+        review = {**self.review, "judge_type": "human", "reviewer": "人工复核人"}
+        for reviews, known in (([review], 1), (None, 0)):
+            report, _, _ = summarize(list(gold), gold, self.result, reviews=reviews)
+            for target in ("numeric_and_scope_accuracy", "citation_support_rate"):
+                self.assertIsNone(report[target])
+                self.assertEqual(report[target + "_known_count"], known)
+                self.assertEqual(report[target + "_unknown_count"], 2 - known)
+                self.assertEqual(report[target + "_coverage"], known / 2)
+            self.assertEqual(report["model_citation_support_rate_coverage"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
