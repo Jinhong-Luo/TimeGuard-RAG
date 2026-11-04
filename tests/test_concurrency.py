@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import tempfile
 import threading
+import time
 import unittest
 from unittest.mock import Mock, patch
 
@@ -94,7 +95,8 @@ class ConcurrencyTests(unittest.TestCase):
         rows = {row["id"]: row for row in read_jsonl(output)}
         self.assertEqual(rows["q1"]["judge_status"], "ok")
         self.assertEqual(rows["q2"]["judge_status"], "failed")
-        self.assertEqual(rows["q3"]["judge_status"], "skipped_generation_failure")
+        if "q3" in rows:
+            self.assertEqual(rows["q3"]["judge_status"], "skipped_generation_failure")
         self.assertEqual(len(requests), 2)
         self.assertEqual(len({thread for _, thread in requests}), 2)
         for payload, _ in requests:
@@ -159,10 +161,56 @@ class ConcurrencyTests(unittest.TestCase):
             summary = read_json(self.root / "model_reviews.summary.json")
             self.assertEqual(summary["denominator"], 3)
             self.assertEqual(summary["ok"], 1)
-            self.assertEqual(summary["failed_or_skipped"], 2)
+            self.assertEqual(summary["failed_or_skipped"] + summary["missing"], 2)
             argv[-2] = "1"
             with self.assertRaises(ValueError):
                 judge.main()
+
+    def test_generation_failure_stops_new_requests_and_drains_inflight(self):
+        self.check_fail_fast(False)
+
+    def test_judge_failure_stops_new_requests_and_drains_inflight(self):
+        self.check_fail_fast(True)
+
+    def check_fail_fast(self, judging):
+        output = self.root / "bounded.jsonl"
+        queries = [{"id": f"q{i}", "question": f"q{i}", "split": "dev"} for i in range(39)]
+        calls = []
+        status_key = "judge_status" if judging else "status"
+
+        def worker(query, *args):
+            ident = query["id"]
+            calls.append(ident)
+            if ident != "q0":
+                deadline = time.monotonic() + 5
+                # 确认失败行已落盘，再让另一个在途请求结束。
+                while not (output.exists() and output.stat().st_size):
+                    if time.monotonic() >= deadline:
+                        raise AssertionError("失败记录未及时落盘")
+                    time.sleep(0.01)
+            return {"id": ident, status_key: "failed" if ident == "q0" else "ok",
+                    "error": "UsageLimitExceeded" if ident == "q0" else None,
+                    "judge_type": "model", "judge_run_signature": "signature", "elapsed_seconds": 1}
+
+        def execute():
+            if judging:
+                by_id = {row["id"]: row for row in queries}
+                return judge.judge_queries(list(by_id), by_id, by_id, "signature", output,
+                                           "url", "token", 1, concurrency=2)
+            return run.run_queries(queries, self.config, "chat", output, concurrency=2)
+
+        target = "timeguard.judge.judge_one" if judging else "timeguard.run.run_one"
+        with patch(target, side_effect=worker), contextlib.redirect_stdout(io.StringIO()):
+            self.assertFalse(execute())
+        self.assertEqual(set(calls), {"q0", "q1"})
+        rows = read_jsonl(output)
+        self.assertEqual({row["id"] for row in rows}, {"q0", "q1"})
+        self.assertEqual(rows[0]["error"], "UsageLimitExceeded")
+        before = output.read_bytes()
+        with patch(target, side_effect=AssertionError("失败续跑不得继续发题")) as forbidden:
+            self.assertFalse(execute())
+        forbidden.assert_not_called()
+        self.assertEqual(output.read_bytes(), before)
 
 
 if __name__ == "__main__":

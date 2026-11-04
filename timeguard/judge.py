@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from datetime import datetime, timezone
 import json
 import math
@@ -245,20 +245,35 @@ def judge_queries(ids, gold, generated, signature, output, base_url, token, time
         raise ValueError("已有裁判记录与固定实验不一致")
     if any(row["id"] not in ids or (row["id"] in previous and row != previous[row["id"]]) for row in reuse_rows):
         raise ValueError("已保存裁判与冻结复用来源不符")
+    if any(row.get("judge_status") != "ok" for row in previous.values()):
+        return False
     request_fn = request_fn or post_completion
+    stopped = False
     with output.open("a", encoding="utf-8") as handle, ThreadPoolExecutor(max_workers=concurrency) as pool:
         for row in reuse_rows:
             if row["id"] not in previous:
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
                 handle.flush()
                 previous[row["id"]] = row
-        futures = [pool.submit(judge_one, gold[ident], generated.get(ident, {}), signature,
-                               base_url, token, timeout, request_fn) for ident in ids if ident not in previous]
-        for future in as_completed(futures):
-            row = future.result()
-            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
-            handle.flush()
-            print(f"{row['id']}：{row['judge_status']}，{row['elapsed_seconds']:.2f} 秒", flush=True)
+        remaining = iter(ident for ident in ids if ident not in previous)
+        pending = set()
+        while pending or not stopped:
+            while not stopped and len(pending) < concurrency:
+                ident = next(remaining, None)
+                if ident is None:
+                    break
+                pending.add(pool.submit(judge_one, gold[ident], generated.get(ident, {}), signature,
+                                        base_url, token, timeout, request_fn))
+            if not pending:
+                break
+            completed, pending = wait(pending, return_when=FIRST_COMPLETED)
+            for future in completed:
+                row = future.result()
+                handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+                handle.flush()
+                print(f"{row['id']}：{row['judge_status']}，{row['elapsed_seconds']:.2f} 秒", flush=True)
+                stopped = stopped or row.get("judge_status") != "ok"
+    return not stopped
 
 
 def reuse_judgements(source, identity, generation_manifest, gold, generated):
@@ -381,9 +396,9 @@ def main():
     started = time.perf_counter()
     status = "interrupted"
     try:
-        judge_queries(ids, gold, generated, signature, output, args.base_url, token, args.timeout, args.concurrency,
-                      reuse_rows=reused_rows)
-        status = "completed"
+        completed = judge_queries(ids, gold, generated, signature, output, args.base_url, token, args.timeout, args.concurrency,
+                                  reuse_rows=reused_rows)
+        status = "stopped_on_error" if completed is False else "completed"
     finally:
         after = read_jsonl(output) if output.exists() else []
         before_ids = {row["id"] for row in before}
@@ -402,6 +417,7 @@ def main():
                "reused_count": len(reused_rows), "newly_planned_count": len(ids) - len(reused_rows),
                "ok": sum(row["judge_status"] == "ok" for row in records),
                "failed_or_skipped": sum(row["judge_status"] != "ok" for row in records),
+               "missing": len(ids) - len(records),
                "human_spot_checks_completed": sum(bool(row.get("human_reviewer")) and row.get("human_spot_check") is not None for row in records), "cost_usd": None,
                "说明": "仅模型裁判结果，尚未人工抽查；不是人工准确率，不参与人工门槛的最终选优。"}
     write_json(output.with_suffix(".summary.json"), summary)

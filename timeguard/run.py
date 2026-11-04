@@ -1,7 +1,7 @@
 """R0 原生检索与问答运行器；不读取标准答案或标准证据。"""
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 import datetime
 import json
 import math
@@ -149,21 +149,36 @@ def run_queries(queries, config, chat_id, results_path, retrieval_only=False, co
     previous_by_id = {row["id"]: row for row in previous}
     if any(row["id"] not in ids or (row["id"] in done and row != previous_by_id[row["id"]]) for row in reuse_rows):
         raise ValueError("已保存的复用题与冻结来源不符")
+    if any(row.get("status") != "ok" for row in previous):
+        return False
+    stopped = False
     with results_path.open("a", encoding="utf-8") as handle, ThreadPoolExecutor(max_workers=concurrency) as pool:
         for row in reuse_rows:
             if row["id"] not in done:
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
                 handle.flush()
                 done.add(row["id"])
-        futures = [pool.submit(run_one, query, config, chat_id, retrieval_only, client_factory)
-                   for query in queries if query["id"] not in done]
-        for future in as_completed(futures):
-            row = future.result()
-            if run_signature:
-                row["generation_run_signature"] = run_signature
-            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
-            handle.flush()
-            print(f"{row['id']}：{row['status']}，{row['elapsed_seconds']:.2f} 秒", flush=True)
+        remaining = iter(query for query in queries if query["id"] not in done)
+        pending = set()
+        while pending or not stopped:
+            while not stopped and len(pending) < concurrency:
+                query = next(remaining, None)
+                if query is None:
+                    break
+                pending.add(pool.submit(run_one, query, config, chat_id, retrieval_only, client_factory))
+            if not pending:
+                break
+            completed, pending = wait(pending, return_when=FIRST_COMPLETED)
+            for future in completed:
+                row = future.result()
+                if run_signature:
+                    row["generation_run_signature"] = run_signature
+                handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+                handle.flush()
+                print(f"{row['id']}：{row['status']}，{row['elapsed_seconds']:.2f} 秒", flush=True)
+                # 首次失败后只收完已在途请求，不继续消耗额度，也不伪造未发题结果。
+                stopped = stopped or row.get("status") != "ok"
+    return not stopped
 
 
 def main():
@@ -271,9 +286,9 @@ def main():
     started = time.perf_counter()
     status = "interrupted"
     try:
-        run_queries(queries, config, manifest["chat_id"], results_path, args.retrieval_only, args.concurrency,
-                    client_factory=Client, reuse_rows=reused_rows, run_signature=digest(identity))
-        status = "completed"
+        completed = run_queries(queries, config, manifest["chat_id"], results_path, args.retrieval_only, args.concurrency,
+                                client_factory=Client, reuse_rows=reused_rows, run_signature=digest(identity))
+        status = "stopped_on_error" if completed is False else "completed"
     finally:
         after = read_jsonl(results_path) if results_path.exists() else []
         before_ids = {row["id"] for row in before}
@@ -287,6 +302,8 @@ def main():
                      "说明": "本次墙钟仅覆盖新增请求与写入；复用题原始墙钟见identity.reuse，不能将新增111题墙钟除以150。"}
         with (out / "execution_history.jsonl").open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(execution, ensure_ascii=False) + "\n")
+    if status == "stopped_on_error":
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

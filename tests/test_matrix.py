@@ -1,9 +1,15 @@
 """用离线元数据检查原生调用证据，防止缓存或重试被当成免费成功。"""
 
 import json
+import contextlib
+import io
+from pathlib import Path
+import tempfile
 import unittest
+from unittest.mock import patch
 
-from timeguard.matrix import audit_summary, same_bridge_as_history
+from timeguard.matrix import audit_summary, run_batch, same_bridge_as_history
+from timeguard.common import digest, read_jsonl, write_jsonl
 
 
 class MatrixAuditTests(unittest.TestCase):
@@ -41,6 +47,35 @@ class MatrixAuditTests(unittest.TestCase):
         missing = self.record("missing")
         missing.pop("instruction_source_sha256")
         self.assertFalse(audit_summary(self.encoded([missing]), "low", 1)["verified"])
+
+    def test_nonzero_batch_still_persists_failure_audit_and_partial_result_hash(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as directory:
+            root = Path(directory)
+            run = root / "run"
+            run.mkdir()
+            audit, ledger = root / "audit.jsonl", root / "ledger.jsonl"
+            audit.write_bytes(b"")
+            raw = self.encoded([self.record("failed", False), self.record("ok")])
+
+            def failed_command(*args):
+                audit.write_bytes(raw)
+                write_jsonl(run / "results.jsonl", [{"id": "q0", "status": "request_error"},
+                                                   {"id": "q1", "status": "ok"}])
+                return 1
+
+            with patch("timeguard.matrix.subprocess.call", side_effect=failed_command), \
+                    contextlib.redirect_stdout(io.StringIO()), self.assertRaises(RuntimeError):
+                run_batch("timeguard.run", [], run, "generation", "low", audit, ledger, {"index": "fixed"})
+            record = read_jsonl(ledger)[0]
+            self.assertEqual(record["returncode"], 1)
+            self.assertFalse(record["verified"])
+            self.assertEqual(record["actual_attempts"], 2)
+            self.assertEqual(record["failed_attempts"], 1)
+            self.assertEqual(record["usage_total_tokens"], 100)
+            self.assertEqual(record["new_result_count"], 2)
+            self.assertEqual(record["byte_end"], len(raw))
+            self.assertEqual(record["window_sha256"], digest(raw))
+            self.assertEqual(record["results_sha256"], digest((run / "results.jsonl").read_bytes()))
 
 
 if __name__ == "__main__":
