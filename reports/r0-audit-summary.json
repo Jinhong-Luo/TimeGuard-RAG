@@ -1,0 +1,426 @@
+{
+  "scope": "固定R0公开150题；含选档开发39题，独立保留测试为23题",
+  "chosen_effort": "low",
+  "selection_status": "模型裁判暂定推荐，未完成人工抽查",
+  "judge_type": "model",
+  "human_spot_check": null,
+  "answer_unknown_pending_review": [
+    {
+      "id": "financebench_id_00540",
+      "judgement_reason_sha256": "5e9ada512f52613ac7cf53ef68720e4b07feae4542b00ccd81ab62b7a950b4b7",
+      "summary_source_matched": true,
+      "reason_summary": "模型认为存货周转率采用期末存货或平均存货的口径不一致，待人工复核。",
+      "reason_source": "固定模型裁判，不是已确认的数据错误",
+      "human_review_completed": false
+    },
+    {
+      "id": "financebench_id_05718",
+      "judgement_reason_sha256": "43800e1335407407ed4396c9199de7f4a9224d67226819b0d721aa9d1103d8c0",
+      "summary_source_matched": true,
+      "reason_summary": "模型认为标准答案与证据换算后的数值不一致；可能涉及近似或舍入，待人工复核。",
+      "reason_source": "固定模型裁判，不是已确认的数据错误",
+      "human_review_completed": false
+    },
+    {
+      "id": "financebench_id_04854",
+      "judgement_reason_sha256": "4d250c6fcd3e729cdd02e403cabe43ca2abdea010bcffcbd5995e4e9d1fe0f3b",
+      "summary_source_matched": true,
+      "reason_summary": "模型认为由证据计算的差额与标准答案不一致；可能涉及舍入精度，待人工复核。",
+      "reason_source": "固定模型裁判，不是已确认的数据错误",
+      "human_review_completed": false
+    },
+    {
+      "id": "financebench_id_00080",
+      "judgement_reason_sha256": "dba5632129212c154ff178466bd5cd441e67b6901a736fbe502489f32a2cca3c",
+      "summary_source_matched": true,
+      "reason_summary": "模型认为营运资本按标准证据计算与标准答案不一致，待人工复核。",
+      "reason_source": "固定模型裁判，不是已确认的数据错误",
+      "human_review_completed": false
+    },
+    {
+      "id": "financebench_id_00283",
+      "judgement_reason_sha256": "c9b0f6fd77cc730fbd079220b3c02352255bd778bd6acf6f04ea9db657fbf611",
+      "summary_source_matched": true,
+      "reason_summary": "模型认为重组剩余成本按比例计算与标准答案不一致，待人工复核。",
+      "reason_source": "固定模型裁判，不是已确认的数据错误",
+      "human_review_completed": false
+    }
+  ],
+  "groups": {
+    "dev": {
+      "denominator": 39,
+      "raw_field_judgements": {
+        "answer_correct": {
+          "denominator": 39,
+          "true_count": 10,
+          "false_count": 29,
+          "null_count": 0,
+          "known_count": 39,
+          "coverage": 1.0,
+          "known_subset_accuracy": 0.2564102564102564,
+          "full_denominator_accuracy": 0.2564102564102564,
+          "unknown_outcome_bounds": {
+            "lower": 0.2564102564102564,
+            "upper": 0.2564102564102564
+          }
+        },
+        "numeric_and_scope_correct": {
+          "denominator": 39,
+          "true_count": 8,
+          "false_count": 26,
+          "null_count": 5,
+          "known_count": 34,
+          "coverage": 0.8717948717948718,
+          "known_subset_accuracy": 0.23529411764705882,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        },
+        "citation_support": {
+          "denominator": 39,
+          "true_count": 1,
+          "false_count": 29,
+          "null_count": 9,
+          "known_count": 30,
+          "coverage": 0.7692307692307693,
+          "known_subset_accuracy": 0.03333333333333333,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        }
+      },
+      "original_score_summary": {
+        "denominator": 39,
+        "completed": 39,
+        "status_counts": {
+          "ok": 39
+        },
+        "zero_retrieval_count": 0,
+        "page_hit_recall_at_k_proxy": 0.20512820512820512,
+        "strict_text_recall_at_k_proxy": 0.02564102564102564,
+        "k": 6,
+        "cost_usd": null,
+        "answer_accuracy": null,
+        "numeric_and_scope_accuracy": null,
+        "citation_support_rate": null,
+        "reviewed": 0,
+        "human_reviewed": 0,
+        "model_answer_accuracy": 0.2564102564102564,
+        "model_numeric_and_scope_accuracy": null,
+        "model_citation_support_rate": null,
+        "model_reviewed": 39,
+        "human_spot_check": null,
+        "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+        "mean_seconds": 9.068523606243662,
+        "median_seconds": 9.106192972976714,
+        "numeric_and_scope_accuracy_known_count": 0,
+        "numeric_and_scope_accuracy_unknown_count": 39,
+        "numeric_and_scope_accuracy_coverage": 0.0,
+        "citation_support_rate_known_count": 0,
+        "citation_support_rate_unknown_count": 39,
+        "citation_support_rate_coverage": 0.0,
+        "model_numeric_and_scope_accuracy_known_count": 34,
+        "model_numeric_and_scope_accuracy_unknown_count": 5,
+        "model_numeric_and_scope_accuracy_coverage": 0.8717948717948718,
+        "model_citation_support_rate_known_count": 30,
+        "model_citation_support_rate_unknown_count": 9,
+        "model_citation_support_rate_coverage": 0.7692307692307693,
+        "model_judge_status_counts": {
+          "ok": 39
+        },
+        "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+      }
+    },
+    "tune": {
+      "denominator": 88,
+      "raw_field_judgements": {
+        "answer_correct": {
+          "denominator": 88,
+          "true_count": 22,
+          "false_count": 62,
+          "null_count": 4,
+          "known_count": 84,
+          "coverage": 0.9545454545454546,
+          "known_subset_accuracy": 0.2619047619047619,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": {
+            "lower": 0.25,
+            "upper": 0.29545454545454547
+          }
+        },
+        "numeric_and_scope_correct": {
+          "denominator": 88,
+          "true_count": 26,
+          "false_count": 50,
+          "null_count": 12,
+          "known_count": 76,
+          "coverage": 0.8636363636363636,
+          "known_subset_accuracy": 0.34210526315789475,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        },
+        "citation_support": {
+          "denominator": 88,
+          "true_count": 2,
+          "false_count": 57,
+          "null_count": 29,
+          "known_count": 59,
+          "coverage": 0.6704545454545454,
+          "known_subset_accuracy": 0.03389830508474576,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        }
+      },
+      "original_score_summary": {
+        "denominator": 88,
+        "completed": 88,
+        "status_counts": {
+          "ok": 88
+        },
+        "zero_retrieval_count": 0,
+        "page_hit_recall_at_k_proxy": 0.2727272727272727,
+        "strict_text_recall_at_k_proxy": 0.03409090909090909,
+        "k": 6,
+        "cost_usd": null,
+        "answer_accuracy": null,
+        "numeric_and_scope_accuracy": null,
+        "citation_support_rate": null,
+        "reviewed": 0,
+        "human_reviewed": 0,
+        "model_answer_accuracy": null,
+        "model_numeric_and_scope_accuracy": null,
+        "model_citation_support_rate": null,
+        "model_reviewed": 84,
+        "human_spot_check": null,
+        "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+        "mean_seconds": 9.136407039464261,
+        "median_seconds": 8.705556340515614,
+        "numeric_and_scope_accuracy_known_count": 0,
+        "numeric_and_scope_accuracy_unknown_count": 88,
+        "numeric_and_scope_accuracy_coverage": 0.0,
+        "citation_support_rate_known_count": 0,
+        "citation_support_rate_unknown_count": 88,
+        "citation_support_rate_coverage": 0.0,
+        "model_numeric_and_scope_accuracy_known_count": 73,
+        "model_numeric_and_scope_accuracy_unknown_count": 15,
+        "model_numeric_and_scope_accuracy_coverage": 0.8295454545454546,
+        "model_citation_support_rate_known_count": 56,
+        "model_citation_support_rate_unknown_count": 32,
+        "model_citation_support_rate_coverage": 0.6363636363636364,
+        "model_judge_status_counts": {
+          "ok": 88
+        },
+        "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+      }
+    },
+    "test": {
+      "denominator": 23,
+      "raw_field_judgements": {
+        "answer_correct": {
+          "denominator": 23,
+          "true_count": 2,
+          "false_count": 20,
+          "null_count": 1,
+          "known_count": 22,
+          "coverage": 0.9565217391304348,
+          "known_subset_accuracy": 0.09090909090909091,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": {
+            "lower": 0.08695652173913043,
+            "upper": 0.13043478260869565
+          }
+        },
+        "numeric_and_scope_correct": {
+          "denominator": 23,
+          "true_count": 2,
+          "false_count": 19,
+          "null_count": 2,
+          "known_count": 21,
+          "coverage": 0.9130434782608695,
+          "known_subset_accuracy": 0.09523809523809523,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        },
+        "citation_support": {
+          "denominator": 23,
+          "true_count": 0,
+          "false_count": 17,
+          "null_count": 6,
+          "known_count": 17,
+          "coverage": 0.7391304347826086,
+          "known_subset_accuracy": 0.0,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        }
+      },
+      "original_score_summary": {
+        "denominator": 23,
+        "completed": 23,
+        "status_counts": {
+          "ok": 23
+        },
+        "zero_retrieval_count": 0,
+        "page_hit_recall_at_k_proxy": 0.08695652173913043,
+        "strict_text_recall_at_k_proxy": 0.043478260869565216,
+        "k": 6,
+        "cost_usd": null,
+        "answer_accuracy": null,
+        "numeric_and_scope_accuracy": null,
+        "citation_support_rate": null,
+        "reviewed": 0,
+        "human_reviewed": 0,
+        "model_answer_accuracy": null,
+        "model_numeric_and_scope_accuracy": null,
+        "model_citation_support_rate": null,
+        "model_reviewed": 22,
+        "human_spot_check": null,
+        "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+        "mean_seconds": 9.171149983212514,
+        "median_seconds": 8.801088229054585,
+        "numeric_and_scope_accuracy_known_count": 0,
+        "numeric_and_scope_accuracy_unknown_count": 23,
+        "numeric_and_scope_accuracy_coverage": 0.0,
+        "citation_support_rate_known_count": 0,
+        "citation_support_rate_unknown_count": 23,
+        "citation_support_rate_coverage": 0.0,
+        "model_numeric_and_scope_accuracy_known_count": 21,
+        "model_numeric_and_scope_accuracy_unknown_count": 2,
+        "model_numeric_and_scope_accuracy_coverage": 0.9130434782608695,
+        "model_citation_support_rate_known_count": 16,
+        "model_citation_support_rate_unknown_count": 7,
+        "model_citation_support_rate_coverage": 0.6956521739130435,
+        "model_judge_status_counts": {
+          "ok": 23
+        },
+        "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+      }
+    },
+    "all": {
+      "denominator": 150,
+      "raw_field_judgements": {
+        "answer_correct": {
+          "denominator": 150,
+          "true_count": 34,
+          "false_count": 111,
+          "null_count": 5,
+          "known_count": 145,
+          "coverage": 0.9666666666666667,
+          "known_subset_accuracy": 0.23448275862068965,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": {
+            "lower": 0.22666666666666666,
+            "upper": 0.26
+          }
+        },
+        "numeric_and_scope_correct": {
+          "denominator": 150,
+          "true_count": 36,
+          "false_count": 95,
+          "null_count": 19,
+          "known_count": 131,
+          "coverage": 0.8733333333333333,
+          "known_subset_accuracy": 0.2748091603053435,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        },
+        "citation_support": {
+          "denominator": 150,
+          "true_count": 3,
+          "false_count": 103,
+          "null_count": 44,
+          "known_count": 106,
+          "coverage": 0.7066666666666667,
+          "known_subset_accuracy": 0.02830188679245283,
+          "full_denominator_accuracy": null,
+          "unknown_outcome_bounds": null
+        }
+      },
+      "original_score_summary": {
+        "denominator": 150,
+        "completed": 150,
+        "status_counts": {
+          "ok": 150
+        },
+        "zero_retrieval_count": 0,
+        "page_hit_recall_at_k_proxy": 0.22666666666666666,
+        "strict_text_recall_at_k_proxy": 0.03333333333333333,
+        "k": 6,
+        "cost_usd": null,
+        "answer_accuracy": null,
+        "numeric_and_scope_accuracy": null,
+        "citation_support_rate": null,
+        "reviewed": 0,
+        "human_reviewed": 0,
+        "model_answer_accuracy": null,
+        "model_numeric_and_scope_accuracy": null,
+        "model_citation_support_rate": null,
+        "model_reviewed": 145,
+        "human_spot_check": null,
+        "说明": "页命中与标准证据全文归一化匹配均为代理指标，不能等同于语义证据支持率；费用未返回时保留为空。",
+        "mean_seconds": 9.124084598201637,
+        "median_seconds": 8.833154454012401,
+        "numeric_and_scope_accuracy_known_count": 0,
+        "numeric_and_scope_accuracy_unknown_count": 150,
+        "numeric_and_scope_accuracy_coverage": 0.0,
+        "citation_support_rate_known_count": 0,
+        "citation_support_rate_unknown_count": 150,
+        "citation_support_rate_coverage": 0.0,
+        "model_numeric_and_scope_accuracy_known_count": 128,
+        "model_numeric_and_scope_accuracy_unknown_count": 22,
+        "model_numeric_and_scope_accuracy_coverage": 0.8533333333333334,
+        "model_citation_support_rate_known_count": 102,
+        "model_citation_support_rate_unknown_count": 48,
+        "model_citation_support_rate_coverage": 0.68,
+        "model_judge_status_counts": {
+          "ok": 150
+        },
+        "模型裁判说明": "模型评分不等同于人工正确率；尚无人工抽查证据时 human_spot_check 保留为空，不能声称人工核验完成。"
+      }
+    }
+  },
+  "说明": [
+    "逐字段计数来自成功裁判原始布尔/null；null可能是非数值、不适用、证据不足或标准材料冲突。",
+    "known_subset_accuracy仅限已判定子集，须同时读取known_count和coverage；不是全量准确率。",
+    "unknown_outcome_bounds仅给未知项最终全错至全对的算术界限，不是置信区间，也没有强行赋值。",
+    "原score的数值/引用覆盖率还要求该题answer_correct为布尔；original_score_summary保留该既有门槛，逐字段原始计数不更改评分或选档。",
+    "页命中与标准文本匹配均为独立诊断检索的代理，不是语义证据召回或问答实际上下文召回。",
+    "模型批次时间/调用量不含部署、烟测、编程代理或人工整理成本；金额未知。"
+  ],
+  "formal_model_calls": {
+    "batches": 14,
+    "planned_successful_calls": 690,
+    "actual_attempts": 690,
+    "successful_calls": 690,
+    "failed_attempts": 0,
+    "total_tokens_including_failures": 6943672,
+    "failed_attempt_tokens": 0,
+    "selected_150_including_source_39_calls": 300,
+    "selected_150_including_source_39_tokens": 2920227,
+    "cost_usd": null
+  },
+  "wall_seconds": {
+    "generation_source_39_wall_seconds": 177.61914651398547,
+    "generation_new_111_wall_seconds": 508.1160192070529,
+    "judge_source_39_wall_seconds": 171.97395805711858,
+    "judge_new_111_wall_seconds": 515.8072771381121
+  },
+  "source_39_unchanged": {
+    "generation_manifest": true,
+    "generation_results": true,
+    "selection": true,
+    "judge_manifest": true,
+    "judge_results": true
+  },
+  "source_files": {
+    "reports/effort_selection.json": "c1e2498f5ffcadebaaa6105fafd879f9e060f9ed4699b927a183deef2197e7dc",
+    "runs/all-selected/low/manifest.json": "dc4382f8bdb8545c6c34b195d5cbbb06b37a7cc4634e3e5539dee1fd9ae27dcf",
+    "runs/all-selected/low/results.jsonl": "1cc5f84201a6a8921f2947c0d09b33ebf727bcffdf17cf150d6234c4298d1c3b",
+    "runs/all-selected/low/model_reviews.manifest.json": "b535141ef0365904178395b6fc5e4be39c796de91493254b8285c880a969931e",
+    "runs/all-selected/low/model_reviews.jsonl": "19da73cfdb7e22764e8bb2ff8de07a1caecdc13051851bba722504a395316946",
+    "runs/dev-complete/low/manifest.json": "09215bc185017a6e812b3dfdb48bdaf2ea3a1247e40ec01be90bce35b415fffe",
+    "runs/dev-complete/low/results.jsonl": "1ef4cee2df964f1c70119286ba03f75b6d88c8a7e3b2f9b2f54b7a00f76017e6",
+    "runs/dev-complete/low/model_reviews.manifest.json": "7e86a7edc314c6fd8f0622dd09db1e923278251edb35e1e33a2215fbe17acb5b",
+    "runs/dev-complete/low/model_reviews.jsonl": "198d307a751db87dc932f3c211af0b8bfb2074711a832a2dcf937fc1ca71f363",
+    "runs/matrix-execution.jsonl": "be64850e3f3077feef89e25fd9eeac3d240fbc4e6df5436aa448696950d203b0",
+    "reports/r0-final-summary.json": "c799ca8335d02d178c8fdbad3efa323148c3eed329cc4282de8eb0e1fb6a770d",
+    "/home/luojinghong/LLM_Proj/TimeGuard-RAG/timeguard/report_baseline.py": "72e1170d154a5f6a9dffa11913e134e1e0cae4e44b439211b895f4f1cc24e0bc"
+  }
+}
