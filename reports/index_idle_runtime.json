@@ -1,0 +1,73 @@
+{
+  "sampled_at_utc": "2026-11-04T20:11:32.121782+00:00",
+  "services": [
+    {
+      "service": "ragflow-cpu",
+      "status": "running",
+      "health": null,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    {
+      "service": "es01",
+      "status": "running",
+      "health": "healthy",
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    {
+      "service": "minio",
+      "status": "running",
+      "health": "healthy",
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    {
+      "service": "tei-cpu",
+      "status": "running",
+      "health": null,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    {
+      "service": "redis",
+      "status": "running",
+      "health": "healthy",
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    {
+      "service": "mysql",
+      "status": "running",
+      "health": "healthy",
+      "oom_killed": false,
+      "restart_count": 0
+    }
+  ],
+  "web_http_status": 200,
+  "api_document_statuses": {
+    "DONE": 84
+  },
+  "queues": [
+    {
+      "queue": "te.0.common",
+      "group": "rag_flow_svr_task_broker",
+      "pending": 0,
+      "lag": 0
+    },
+    {
+      "queue": "te.1.common",
+      "group": "rag_flow_svr_task_broker",
+      "pending": 0,
+      "lag": 0
+    }
+  ],
+  "ragflow_cpu_percent": "3.29%",
+  "ragflow_memory": "44.4GiB / 64GiB",
+  "gpu_memory_used_mib": 6377,
+  "gpu_memory_free_mib": 17750,
+  "gpu_utilization_percent": 0,
+  "workspace_disk_free_bytes": 359555256320,
+  "services_stopped": false,
+  "说明": "在84文档完整只读审计通过后采样一次；本项目原生队列无在途或未消费消息，保持服务与12个空闲执行器，不为采样重启或停服务。单次资源值不代表整个实验平均。"
+}

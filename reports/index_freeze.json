@@ -1,0 +1,63 @@
+{
+  "frozen_at_utc": "2026-11-04T20:10:15.721763+00:00",
+  "dataset_id": "b7c95010d85711f1b0f349057592f04c",
+  "document_count": 84,
+  "pages": 12013,
+  "audit_report": "reports/full_index_audit.json",
+  "audit_report_sha256": "4ca2b18fdf1d3606d1bb4686d8b4380e61ee60d7a12495d4d1c25eb942fb6820",
+  "state_sha256": "0aa880fba3ec469fd1992364a7fe189eb8f2960f53c1093ab1dc7abb2f1d62d9",
+  "parse_profile_path": "deploy/parse-profile.gpu.corpus.json",
+  "parse_profile_sha256": "f0855a18ddfcd0f897e03751ccba65de0c9033511658d6ff4df28e9eb48d67ef",
+  "index_snapshot_sha256": "ede41916d6f69c78bc08cce0ddf2b9ffb51164c65054ec91b0058a3d372ca1d4",
+  "content_positions_sha256": "d8ae4b95411b2e06c4eac0a9cb0b6ebeeb7f0a72a00d832dccff64c17a559783",
+  "verified_document_totals": {
+    "metadata_chunk_count": 33322,
+    "unique_available_chunk_count": 33109,
+    "text_chunk_count": 33048,
+    "nontext_image_chunk_count": 61,
+    "within_task_duplicate_entries": 316,
+    "cross_task_duplicate_entries": 213,
+    "covered_pages": 12013
+  },
+  "execution_hardware_provenance": {
+    "mixed_hardware": true,
+    "primary_execution_route": "原生DeepDOC GPU辅助解析",
+    "device_field_scope": "device=gpu描述当前执行器目标设备，不证明全部历史页段都在GPU处理；路径中的gpu也是历史名称。",
+    "known_cpu_completed_task_count": 1,
+    "known_cpu_completed_page_count": 12,
+    "known_cpu_completed_segments": [
+      {
+        "document_key": "ADOBE_2022_10K",
+        "document_id": "4a8436ced86011f18b1eef68ca6e58af",
+        "task_id": "5c053d30d86011f18b1eef68ca6e58af",
+        "pages_zero_based_half_open": [
+          12,
+          24
+        ],
+        "pages_one_based_inclusive": [
+          13,
+          24
+        ],
+        "native_times_utc": {
+          "开始": "2026-11-04T15:24:27.237000+00:00",
+          "索引提交": "2026-11-04T15:27:43.065000+00:00",
+          "完成": "2026-11-04T15:27:43.085000+00:00"
+        },
+        "unique_task_chunk_id_count": 38,
+        "native_chunk_ids_text_sha256": "7970286d3e7359a5fdf53fbeadc9d172dfddd62fcbc8d0e547fee40833a79213",
+        "sorted_unique_chunk_ids_sha256": "2908ba8de2a19f473abfb09ccfb6e010ff1d467b5ded6130d61de17a46da0fe0",
+        "rest_matched_available_chunk_count": 38,
+        "rest_text_chunk_count": 38,
+        "rest_image_only_chunk_count": 0,
+        "rest_content_positions_sha256": "5e1164633b9470e3e1414968a5453a0e00dd07d2147e81666c55f939460fee32"
+      }
+    ],
+    "source_audit": "reports/cpu_completed_segment_audit.json",
+    "source_audit_sha256": "e27f0017e35b710effe835cb56a8db3dce8b4c203c42ba11f83441f82f88063f",
+    "gpu_evidence_boundary": "早期GPU执行器主要保留原生设备日志，未逐进程保存实际session provider；恢复后的12进程均有真实CUDA运算和原生四会话provider证据。不能把后来的启动预检倒推为所有早期Task的逐项证明。",
+    "preservation_decision": "同算法、权重、分块及默认旋转的CPU完成页段保留；避免重写跨任务共享ID与原生累计。六档共用同一最终冻结索引。",
+    "throughput_rule": "总体页数包含该CPU页段；GPU资源吞吐需排除或分列已知CPU的12页，不将总体速率冒称纯GPU速率。"
+  },
+  "vector_values_audited": false,
+  "说明": "只读逐文档Task页段、计数与REST全部ID/正文位置摘要核验通过后冻结；包含已披露的1个CPU页段，不是全GPU或原始图像无损声明。"
+}

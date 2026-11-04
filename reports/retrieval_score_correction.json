@@ -1,0 +1,42 @@
+{
+  "recorded_at_utc": "2026-11-04T20:16:58.894544+00:00",
+  "run_path": "runs/r0-gpu-retrieval-all",
+  "cause": "原生检索用document_keyword返回文档名；旧score.doc_name仅兼容document_name/docnm_kwd，导致离线文档匹配全部失败。",
+  "correction": "只补文档名字段兼容及针对测试，离线重算原结果；未重新检索，未改变检索参数、原始结果、运行清单、索引或生成代码。",
+  "archived_before": "runs/r0-gpu-retrieval-all/score-before-document-keyword-fix",
+  "before_files_sha256": {
+    "timeguard/score.py": "d261ce11470beef0f88d73b9eb15c478f66ac964b8408a908510d6b6976638cd",
+    "runs/r0-gpu-retrieval-all/summary.json": "f2ee6ec7d232e216a7c174690394745a788c1405549b4ae37857ab719a0d9f67",
+    "runs/r0-gpu-retrieval-all/scored.jsonl": "42631632221512d0c801405ccfccb25358f7daa34b8072d7a05aea2463fe9f9d",
+    "runs/r0-gpu-retrieval-all/manifest.json": "09226e8101ae31a11f7b23db381c80ddc284f2b23300e5919d7a341b1d8bf00d",
+    "runs/r0-gpu-retrieval-all/results.jsonl": "2bd9758c60c2b82f5dd78e8a5143a715949a7103ab7406dc382f1b33ad0c5214"
+  },
+  "after_files_sha256": {
+    "timeguard/score.py": "cb0bf25067a690ae0fbe314b957f733dedc666053a58a271b7af31f5c7a9738e",
+    "runs/r0-gpu-retrieval-all/summary.json": "c529ec9208a973e8e960a6136d1e1c1bc11645be2e3813c75ebc52a9f69e7832",
+    "runs/r0-gpu-retrieval-all/scored.jsonl": "8365eafc39c4a9cd43a6c879006dae81746f960a1a6dd72d6d8c05697e5fb4bf",
+    "runs/r0-gpu-retrieval-all/manifest.json": "09226e8101ae31a11f7b23db381c80ddc284f2b23300e5919d7a341b1d8bf00d",
+    "runs/r0-gpu-retrieval-all/results.jsonl": "2bd9758c60c2b82f5dd78e8a5143a715949a7103ab7406dc382f1b33ad0c5214"
+  },
+  "raw_manifest_and_results_unchanged": true,
+  "before_metrics": {
+    "page_hit_recall_at_k_proxy": 0.0,
+    "strict_text_recall_at_k_proxy": 0.0
+  },
+  "after_metrics": {
+    "page_hit_recall_at_k_proxy": 0.22666666666666666,
+    "strict_text_recall_at_k_proxy": 0.03333333333333333
+  },
+  "saved_chunk_schema_observation": {
+    "total_saved_chunks": 900,
+    "with_document_keyword": 900,
+    "with_positions": 900,
+    "with_content": 900
+  },
+  "model_generation_calls": 0,
+  "tests_passed": 85,
+  "limitations": [
+    "两个指标为按题平均的证据页/归一化全文匹配代理，非语义Recall或答案正确率。",
+    "未调整参数追求金标匹配；金标只用于离线评分，不进入检索。"
+  ]
+}

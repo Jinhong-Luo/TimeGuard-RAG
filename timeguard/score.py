@@ -14,8 +14,12 @@ def normal(value):
 
 
 def doc_name(chunk):
-    name = chunk.get("document_name", chunk.get("docnm_kwd", ""))
-    return Path(name).stem.casefold()
+    # v0.27.3 原生检索使用 document_keyword；空值不能遮蔽后续有效字段。
+    name = next((chunk[key].strip() for key in ("document_name", "document_keyword", "docnm_kwd")
+                 if isinstance(chunk.get(key), str) and chunk[key].strip()), "")
+    name = name.replace("\\", "/").rsplit("/", 1)[-1]
+    # 本语料均为 PDF，仅去掉实际后缀，保留公司或文档标识中的其他句点。
+    return (name[:-4] if name.casefold().endswith(".pdf") else name).casefold()
 
 
 def evidence_metrics(gold, chunks, k):

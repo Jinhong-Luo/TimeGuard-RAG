@@ -1,0 +1,18 @@
+{
+  "recorded_at_utc": "2026-11-04T20:09:41.713091+00:00",
+  "planned_documents": 84,
+  "documents": 84,
+  "tasks": 1041,
+  "all_task_progress_one": true,
+  "current_corpus_pending_messages": 0,
+  "current_corpus_undelivered_messages": 0,
+  "task_retry_counts": {
+    "1": 1030,
+    "2": 11
+  },
+  "native_metadata_chunks": 33322,
+  "private_snapshot": "data/index_tasks.snapshot.json",
+  "snapshot_sha256": "fd983a728f2da03795e8b2aa8b3d642b2e2ac77a106d1ce854c9fb17385a989a",
+  "exporter_sha256": "6a5cfe38aff9fc51887074b6cb4ee17de0a74da097676b41aaaf4774e8e79012",
+  "说明": "仅执行SELECT与Redis只读查询；快照含全部原始任务字段，不输出正文，不修改任务或计数。逐文档页段和REST唯一集合由下一步audit_index独立核验。"
+}

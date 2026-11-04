@@ -5,7 +5,7 @@ import unittest
 
 from timeguard.data import prepare
 from timeguard.run import chat_body, retrieval_body
-from timeguard.score import evidence_metrics, summarize
+from timeguard.score import doc_name, evidence_metrics, summarize
 
 
 class BaselineTests(unittest.TestCase):
@@ -33,6 +33,18 @@ class BaselineTests(unittest.TestCase):
     def test_wrong_document_cannot_hit_same_page(self):
         chunk = {**self.chunk, "document_name": "B_2024.pdf"}
         self.assertEqual(evidence_metrics(self.gold, [chunk], 6)["page_hit_recall"], 0)
+
+    def test_native_document_keyword_matches_gold_evidence(self):
+        chunk = {key: value for key, value in self.chunk.items() if key != "document_name"}
+        chunk["document_keyword"] = "A_2024.pdf"
+        metrics = evidence_metrics(self.gold, [chunk], 6)
+        self.assertEqual(metrics, {"page_hit_recall": 1, "strict_text_recall": 1})
+
+    def test_document_name_fallback_paths_and_actual_pdf_suffix(self):
+        self.assertEqual(doc_name({"document_name": None, "document_keyword": r"C:\reports\A_2024.PDF"}), "a_2024")
+        self.assertEqual(doc_name({"document_name": " ", "document_keyword": "", "docnm_kwd": "/reports/A_2024.pdf"}), "a_2024")
+        self.assertEqual(doc_name({"document_name": "A.2024", "document_keyword": "B.pdf"}), "a.2024")
+        self.assertEqual(doc_name({"document_name": 123}), "")
 
     def test_page_base_and_k_boundary(self):
         wrong = {**self.chunk, "positions": [[9, 0, 0, 0, 0]]}
