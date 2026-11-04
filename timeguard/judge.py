@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -63,7 +65,9 @@ def citation_context(generated):
     answer = visible_answer(generated.get("answer"))
     matches = list(CITATION_MARKER.finditer(answer))
     indexes = list(dict.fromkeys(int(match.group(1)) for match in matches))
-    malformed = [m.group(0) for m in re.finditer(r"\[ID:[^\]]*\]", answer)
+    # 官方修复器会保留越界的非标准标记；这些是无法映射，不应被误判成没有引用。
+    explicit_markers = r"\[\s*ID\b[^\]]*\]|【\s*ID\b[^】]*】|\(\s*ID\b[^)]*\)|ref\s*\d+"
+    malformed = [m.group(0) for m in re.finditer(explicit_markers, answer, flags=re.IGNORECASE)
                  if not CITATION_MARKER.fullmatch(m.group(0))]
     reference = generated.get("reference")
     chunks = reference.get("chunks") if isinstance(reference, dict) else None
@@ -154,7 +158,7 @@ def parse_judgement(response):
         raise ValueError("裁判响应缺少 Codex 传输变体标记")
     if response.get("model") not in (MODEL, "openai/" + MODEL):
         raise ValueError("裁判响应模型与固定模型不符")
-    if metadata.get("actual_model", MODEL) != MODEL:
+    if metadata.get("actual_model") != MODEL:
         raise ValueError("裁判实际模型不符")
     message = response["choices"][0]["message"]
     if message.get("tool_calls"):
@@ -208,12 +212,12 @@ def judge_one(gold, generated, signature, base_url, token, timeout, request_fn=p
     if generated.get("status") != "ok" or not generated.get("answer"):
         record.update({"judge_status": "skipped_generation_failure", "failure_category": "生成失败或缺失，未送裁判"})
     else:
-        payload = build_request(gold, generated)
-        record["citation_mapping"] = {key: value for key, value in citation_context(generated).items()
-                                      if key != "citations"}
-        record["judge_input_sha256"] = digest(payload)
-        record["model_call_attempted"] = True
         try:
+            payload = build_request(gold, generated)
+            record["citation_mapping"] = {key: value for key, value in citation_context(generated).items()
+                                          if key != "citations"}
+            record["judge_input_sha256"] = digest(payload)
+            record["model_call_attempted"] = True
             response = request_fn(base_url, payload, token, timeout)
             # 即使格式校验失败，也保留已返回用量和原始最终判断，避免漏记裁判成本。
             record["usage"] = response.get("usage")
@@ -229,6 +233,88 @@ def judge_one(gold, generated, signature, base_url, token, timeout, request_fn=p
     return record
 
 
+def judge_queries(ids, gold, generated, signature, output, base_url, token, timeout,
+                  concurrency=1, request_fn=None, reuse_rows=()):
+    """独立裁判请求不共享对话；主线程逐条持久化，续跑只补未记录题。"""
+    if type(concurrency) is not int or concurrency < 1:
+        raise ValueError("并发数必须是正整数")
+    previous = unique_rows(read_jsonl(output), "裁判结果") if output.exists() else {}
+    if (len(ids) != len(set(ids)) or previous.keys() - set(ids)
+            or any(row.get("judge_run_signature") != signature or row.get("judge_type") != "model"
+                   for row in previous.values())):
+        raise ValueError("已有裁判记录与固定实验不一致")
+    if any(row["id"] not in ids or (row["id"] in previous and row != previous[row["id"]]) for row in reuse_rows):
+        raise ValueError("已保存裁判与冻结复用来源不符")
+    request_fn = request_fn or post_completion
+    with output.open("a", encoding="utf-8") as handle, ThreadPoolExecutor(max_workers=concurrency) as pool:
+        for row in reuse_rows:
+            if row["id"] not in previous:
+                handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+                handle.flush()
+                previous[row["id"]] = row
+        futures = [pool.submit(judge_one, gold[ident], generated.get(ident, {}), signature,
+                               base_url, token, timeout, request_fn) for ident in ids if ident not in previous]
+        for future in as_completed(futures):
+            row = future.result()
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+            handle.flush()
+            print(f"{row['id']}：{row['judge_status']}，{row['elapsed_seconds']:.2f} 秒", flush=True)
+
+
+def reuse_judgements(source, identity, generation_manifest, gold, generated):
+    """只有生成原文、金标、提示与裁判条件完全一致时才重新绑定原39条判断。"""
+    source = Path(source)
+    source_manifest = read_json(source.with_suffix(".manifest.json"))
+    original = source_manifest["identity"]
+    generation_identity = generation_manifest["identity"]
+    origin = generation_identity.get("reuse") or {}
+    ignored = {"expected_ids", "generation_manifest_sha256", "generation_results_sha256"}
+    if (generation_identity.get("split") != "all" or len(identity["expected_ids"]) != 150
+            or origin.get("reused_count") != 39 or len(original["expected_ids"]) != 39
+            or len(set(original["expected_ids"])) != 39
+            or digest(original) != source_manifest.get("signature")
+            or original["generation_manifest_sha256"] != origin.get("manifest_sha256")
+            or original["generation_results_sha256"] != origin.get("results_sha256")
+            or {key: value for key, value in original.items() if key not in ignored}
+            != {key: value for key, value in identity.items() if key not in ignored}):
+        raise ValueError("裁判复用必须绑定已选开发集，且金标、固定模型、并发、源码、提示与schema完全一致")
+    lines = [line for line in source.read_bytes().splitlines() if line.strip()]
+    rows = [json.loads(line) for line in lines]
+    indexed = unique_rows(rows, "复用裁判")
+    if set(indexed) != set(original["expected_ids"]):
+        raise ValueError("复用裁判必须覆盖源开发集全部39题")
+    for row in rows:
+        if (row.get("judge_type") != "model" or row.get("judge_status") != "ok"
+                or row.get("judge_run_signature") != source_manifest["signature"]
+                or type(row.get("answer_correct")) is not bool
+                or type(row.get("elapsed_seconds")) not in (int, float)
+                or not math.isfinite(row["elapsed_seconds"]) or row["elapsed_seconds"] <= 0
+                or row.get("judge_input_sha256") != digest(build_request(gold[row["id"]], generated[row["id"]]))):
+            raise ValueError("原判断未成功完整覆盖答案，或当前生成原文/金标/引用与原裁判输入不一致")
+        parsed, _ = parse_judgement({"model": row.get("judge_model"), "bridge_metadata": row.get("bridge_metadata"),
+                                     "choices": [{"message": {"content": row.get("raw_judgement")}}]})
+        context = citation_context(generated[row["id"]])
+        expected = apply_citation_policy(parsed, context)
+        if (any(row.get(key) != expected[key] for key in (*FIELDS, "has_factual_claims"))
+                or row.get("citation_mapping") != {key: value for key, value in context.items() if key != "citations"}):
+            raise ValueError("复用判断与原始模型输出或当前答案引用映射不符")
+    history_path = source.with_suffix(".execution.jsonl")
+    history = read_jsonl(history_path)
+    if not history or any(row.get("judge_run_signature") != source_manifest["signature"]
+                          or type(row.get("wall_time_seconds")) not in (int, float)
+                          or not math.isfinite(row["wall_time_seconds"]) or row["wall_time_seconds"] < 0 for row in history):
+        raise ValueError("复用裁判缺少原始执行墙钟记录")
+    proof = {"source_reviews": str(source), "reviews_sha256": digest(source.read_bytes()),
+             "manifest_sha256": digest(source.with_suffix(".manifest.json").read_bytes()),
+             "judge_run_signature": source_manifest["signature"], "reused_count": 39, "new_count": 111,
+             "execution_history_sha256": digest(history_path.read_bytes()),
+             "source_wall_time_seconds": sum(row["wall_time_seconds"] for row in history)}
+    for row, line in zip(rows, lines):
+        row["reuse_origin"] = {"reviews_sha256": proof["reviews_sha256"], "row_sha256": digest(line),
+                               "judge_run_signature": source_manifest["signature"]}
+    return rows, proof
+
+
 def main():
     parser = argparse.ArgumentParser(description="独立模型裁判；金标只用于离线评审，不回写生成端")
     parser.add_argument("run", type=Path)
@@ -236,8 +322,12 @@ def main():
     parser.add_argument("--output", type=Path, help="默认写入运行目录下 model_reviews.jsonl；不要复用人工复核文件")
     parser.add_argument("--base-url", default=os.environ.get("CODEX_BRIDGE_BASE_URL", "http://127.0.0.1:18862/v1"))
     parser.add_argument("--timeout", type=float, default=360)
+    parser.add_argument("--concurrency", type=int, default=1, help="固定写入裁判配置签名的并发数，默认1")
+    parser.add_argument("--reuse-reviews", type=Path, help="全量运行复用已选开发集裁判；逐题输入及完整来源必须一致")
     parser.add_argument("--execute", action="store_true", help="实际调用固定模型，未提供时只显示计划")
     args = parser.parse_args()
+    if args.concurrency < 1:
+        parser.error("--concurrency 必须为正整数")
     manifest_path, results_path = args.run / "manifest.json", args.run / "results.jsonl"
     manifest = read_json(manifest_path)
     ids = manifest["identity"]["query_ids"]
@@ -249,15 +339,22 @@ def main():
         raise ValueError("金标题号缺失或生成结果超出固定清单")
     identity = {
         "version": JUDGE_VERSION, "judge_type": "model", "model": MODEL, "effort": EFFORT,
-        "transport": TRANSPORT, "expected_ids": ids,
+        "transport": TRANSPORT, "expected_ids": ids, "concurrency": args.concurrency,
         "generation_manifest_sha256": digest(manifest_path.read_bytes()),
         "generation_results_sha256": digest(results_path.read_bytes()),
         "gold_sha256": digest(args.gold.read_bytes()), "prompt_sha256": digest(INSTRUCTIONS),
         "code_sha256": digest(Path(__file__).read_bytes()), "schema": SCHEMA,
     }
+    reused_rows = []
+    if args.reuse_reviews:
+        reused_rows, reuse_proof = reuse_judgements(args.reuse_reviews, identity, manifest, gold, generated)
+        identity["reuse"] = reuse_proof
     signature = digest(identity)
+    for row in reused_rows:
+        row["judge_run_signature"] = signature
     output = args.output or args.run / "model_reviews.jsonl"
     print(json.dumps({"questions": len(ids), "model": MODEL, "effort": EFFORT, "execute": args.execute,
+                      "concurrency": args.concurrency,
                       "output": str(output), "judge_run_signature": signature}, ensure_ascii=False))
     if not args.execute:
         return
@@ -271,21 +368,31 @@ def main():
     else:
         write_json(judge_manifest_path, {"identity": identity, "signature": signature,
                                         "created_at_utc": datetime.now(timezone.utc).isoformat()})
-    previous = unique_rows(read_jsonl(output), "裁判结果") if output.exists() else {}
-    if previous.keys() - set(ids) or any(row.get("judge_run_signature") != signature or row.get("judge_type") != "model" for row in previous.values()):
-        raise ValueError("已有裁判记录与固定实验不一致")
     token = os.environ.get("CODEX_BRIDGE_TOKEN") or "local-codex"
-    with output.open("a", encoding="utf-8") as handle:
-        for ident in ids:
-            if ident in previous:
-                continue
-            row = judge_one(gold[ident], generated.get(ident, {}), signature, args.base_url, token, args.timeout)
-            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
-            handle.flush()
-            print(f"{ident}：{row['judge_status']}，{row['elapsed_seconds']:.2f} 秒", flush=True)
+    before = read_jsonl(output) if output.exists() else []
+    started_at = datetime.now(timezone.utc).isoformat()
+    started = time.perf_counter()
+    status = "interrupted"
+    try:
+        judge_queries(ids, gold, generated, signature, output, args.base_url, token, args.timeout, args.concurrency,
+                      reuse_rows=reused_rows)
+        status = "completed"
+    finally:
+        after = read_jsonl(output) if output.exists() else []
+        before_ids = {row["id"] for row in before}
+        added = [row for row in after if row["id"] not in before_ids]
+        execution = {"started_at_utc": started_at, "status": status,
+                     "judge_run_signature": signature,
+                     "wall_time_seconds": time.perf_counter() - started, "concurrency": args.concurrency,
+                     "planned_denominator": len(ids),
+                     "new_model_call_count": sum(row.get("model_call_attempted", False) and "reuse_origin" not in row for row in added),
+                     "reused_result_count": sum("reuse_origin" in row for row in added)}
+        with output.with_suffix(".execution.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(execution, ensure_ascii=False) + "\n")
     # 失败不被重试覆盖；如需再次裁判，用另一个新输出文件并保留旧记录。
     records = read_jsonl(output)
     summary = {"judge_type": "model", "signature": signature, "denominator": len(ids),
+               "reused_count": len(reused_rows), "newly_planned_count": len(ids) - len(reused_rows),
                "ok": sum(row["judge_status"] == "ok" for row in records),
                "failed_or_skipped": sum(row["judge_status"] != "ok" for row in records),
                "human_spot_checks_completed": sum(bool(row.get("human_reviewer")) and row.get("human_spot_check") is not None for row in records), "cost_usd": None,

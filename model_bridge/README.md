@@ -22,6 +22,8 @@ RAGFlow 在容器内运行时，容器的 `127.0.0.1` 指向容器自身。可�
 
 默认只并发一个请求。每次请求启动独立 app-server 和临时线程，防止题目、用户模拟器和裁判共享历史。启动成本计入端到端耗时。
 
+可选参数 `--audit-log .cache/bridge-audit.jsonl` 会追加逐请求元数据。记录请求编号、UTC 时间、通过严格校验的模型别名与请求强度、`thread/start` 实际返回的模型及强度、耗时、成功或失败类型、已知 token 用量、启动时桥接源码 SHA-256 和外部指令文件 SHA-256。文件权限为 `0600`，不记录提示、回复、认证头、令牌或异常全文。认证失败不读取正文；未获得的实际模型或用量保持 `null`。启用日志但落盘失败时返回明确错误。`success` 表示模型完成且结果已通过桥接校验，不代表客户端已确认收取。RAGFlow 丢弃响应元数据时，可用该日志保留旁路证据；请保留日志及实验时间窗口，不把它误写成逐题天然关联。未设置参数时不创建日志。
+
 ## 模型与思考强度
 
 只允许 `gpt-6.1-sol`。六个待测档位为 `low`、`medium`、`high`、`xhigh`、`max`、`ultra`，默认 `low`。支持请求字段 `reasoning_effort` 或模型别名，例如 `gpt-6.1-sol@high`；两者冲突时报错。每次线程启动都核对实际模型名和实际思考强度，不允许静默切换。
@@ -61,6 +63,6 @@ python3 probe.py --base-url http://127.0.0.1:18861/v1 --all-efforts --output ../
 
 每档默认包含普通回答、虚拟订单工具和 JSON 裁判三个请求；使用 `--cases tool` 可只测工具格式。探测脚本不执行工具，默认仅测 low。报告保存每条请求的输出、模型名、实际强度元数据、token、耗时和错误分类，每次完成请求即落盘。烟测通过只能证明接入链路和输出格式可用，不能替代业务基线或选优。
 
-2026-11-04 初次服务器调用曾遇到 `workspace routing discovery failed`；经出口代理后错误明确为 `workspace routing discovery unauthorized (401)`，`account/read` 返回 `requiresOpenaiAuth=true`。这属于登录认证阻塞，应在服务器重新完成 Codex 登录后重试；不能记为模型解题失败，也不能填入成功率或最佳档位。模型目录与线程预检成功不代表登录凭据仍可用于推理。
+2026-11-04 初次服务器调用曾遇到 `workspace routing discovery failed`；经出口代理后错误明确为 `workspace routing discovery unauthorized (401)`，`account/read` 返回 `requiresOpenaiAuth=true`。这属于登录认证阻塞，不能记为模型解题失败，也不能填入成功率或最佳档位。随后用户重新完成 Codex 登录，代理出口下 low、medium、high、xhigh、max、ultra 六档的真实普通回复探测均已通过；这只是接入验证，业务基线与档位选优仍须以正式任务报告为准。模型目录与线程预检成功不代表登录凭据仍可用于推理。
 
 协议依据：[Codex App Server 官方文档](https://developers.openai.com/codex/app-server/)、[配置参考](https://developers.openai.com/codex/config-reference/)，并以安装的 `codex app-server generate-json-schema --experimental` 输出核对字段。协议属于实验接口，升级 Codex 后应重新预检。

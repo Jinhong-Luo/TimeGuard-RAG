@@ -69,7 +69,7 @@ def main():
     if not allowed <= config["services"].keys():
         raise ValueError("上游缺少预期的 CPU/Elasticsearch/MySQL/MinIO/Redis 服务，停止生成")
     config["services"] = {k: v for k, v in config["services"].items() if k in allowed}
-    limits = {"ragflow-cpu": ("8g", 4), "es01": ("4g", 2), "mysql": ("2g", 1), "minio": ("1g", 1), "redis": ("512m", 1),
+    limits = {"ragflow-cpu": ("24g", 16), "es01": ("4g", 2), "mysql": ("2g", 1), "minio": ("1g", 1), "redis": ("512m", 1),
               "tei-cpu": ("2g", 2)}
     for name, service in config["services"].items():
         service.pop("container_name", None)
@@ -94,6 +94,8 @@ def main():
             service_env["MYSQL_ROOT_PASSWORD"] = env["MYSQL_PASSWORD"]
         if name == "ragflow-cpu":
             service_env["LLM_TIMEOUT_SECONDS"] = "180"
+            service_env.update({"MAX_CONCURRENT_TASKS": "4", "MAX_CONCURRENT_CHUNK_BUILDERS": "4",
+                                "OCR_INTRA_OP_NUM_THREADS": "2", "OCR_INTER_OP_NUM_THREADS": "2"})
         if name == "minio":
             service_env["MINIO_ROOT_PASSWORD"] = env["MINIO_PASSWORD"]
         if name == "redis":
@@ -116,6 +118,10 @@ def main():
             # Elasticsearch 以当前目录所有者运行，避免对共享主机使用全局宽权限。
             service["user"] = f"{os.getuid() if hasattr(os, 'getuid') else 1000}:0"
             service_env["ES_JAVA_OPTS"] = "-Xms1g -Xmx1g"
+            # 共享大分区按绝对剩余空间保护本项目，避免95%使用率直接阻止小型基线索引。
+            service_env.update({"cluster.routing.allocation.disk.watermark.low": "20gb",
+                                "cluster.routing.allocation.disk.watermark.high": "15gb",
+                                "cluster.routing.allocation.disk.watermark.flood_stage": "10gb"})
     config["name"] = args.project
     config["volumes"] = {}
     config["networks"] = {k: {**v, "name": args.project + "_" + k} for k, v in config.get("networks", {}).items()}

@@ -87,8 +87,10 @@ class JudgeTests(unittest.TestCase):
         self.assertEqual([c["content"] for c in context["citations"]], ["未引用的候选，不能用来补证据", "收入100万元"])
 
     def test_malformed_explicit_marker_is_unknown(self):
-        self.generated["answer"] = "收入100万元[ID:unknown]"
-        self.assertIsNone(self.judge()["citation_support"])
+        for marker in ("[ID:unknown]", "[ ID: 999 ]", "【ID: 999】", "(ID:999)", "ref999"):
+            with self.subTest(marker=marker):
+                self.generated["answer"] = "收入100万元" + marker
+                self.assertIsNone(self.judge()["citation_support"])
 
     def test_thinking_citations_do_not_count_as_answer_citations(self):
         self.generated["answer"] = "<think>候选[ID:0]</think>收入100万元。"

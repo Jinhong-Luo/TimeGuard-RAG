@@ -1,0 +1,13 @@
+{
+  "image": "infiniflow/ragflow:v0.27.3",
+  "linux_amd64_manifest_digest": "sha256:4ab74ec388e2d897419e01518a516e9386e5ff812587a1025e6f6a407b2ad067",
+  "config_digest": "sha256:ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc",
+  "layer_count": 39,
+  "说明": "官方固定版本；归档导入前逐层校验 SHA256，导入后核对镜像配置摘要。",
+  "actual_config_digest": "sha256:ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc",
+  "architecture": "amd64",
+  "uncompressed_bytes": 8064366940,
+  "verified_at": "2026-11-04T12:36:56.629734+00:00",
+  "distribution": "官方CDN内容寻址分段；末尾缺段可由本地相同已验证内容补齐",
+  "validation": "config和39层逐个SHA256全部通过后组包，docker load后再次核对config摘要"
+}

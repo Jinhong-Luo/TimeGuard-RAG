@@ -1,0 +1,15 @@
+{
+  "profile": "cpu16-tasks4",
+  "parser": "DeepDOC",
+  "device": "cpu",
+  "onnx_provider": "CPUExecutionProvider",
+  "onnxruntime_gpu_version": "1.23.2",
+  "image_config_digest": "sha256:ccc3109ccfd456550a73d8015abc02b265843033267843b422be681143ee21cc",
+  "cpus": 16,
+  "memory_gib": 24,
+  "task_executors": 1,
+  "max_concurrent_tasks": 4,
+  "max_concurrent_chunk_builders": 4,
+  "ocr_intra_op_num_threads": 2,
+  "ocr_inter_op_num_threads": 2
+}

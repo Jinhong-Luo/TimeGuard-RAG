@@ -1,0 +1,26 @@
+{
+  "removed": [
+    {
+      "path": "cdn-image",
+      "bytes": 7251887965
+    },
+    {
+      "path": "upload-ragflow",
+      "bytes": 617938944
+    },
+    {
+      "path": "images",
+      "bytes": 495677272
+    },
+    {
+      "path": "es-linux-image.tar",
+      "bytes": 673320960
+    },
+    {
+      "path": "ragflow-linux-image.tar",
+      "bytes": 197394432
+    }
+  ],
+  "reclaimed_bytes": 9236219573,
+  "说明": "仅清理本次已验证镜像的临时分段和归档；保留完整manifest、SHA及诊断日志，未清理任何共享Docker资源。"
+}

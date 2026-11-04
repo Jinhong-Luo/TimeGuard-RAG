@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import ipaddress
 import json
@@ -72,6 +73,44 @@ BRIDGE_INSTRUCTIONS = """你是评测中的对话模型。输入是一个包含�
 
 class BridgeError(RuntimeError):
     """用于向调用者报告可追溯的适配错误。"""
+
+
+class AuditLog:
+    """可选的白名单审计日志，只保存调用元数据。"""
+
+    FIELDS = {"request_id", "timestamp_utc", "requested_model", "requested_effort", "actual_model",
+              "reasoning_effort", "elapsed_seconds", "success", "error_type", "http_status",
+              "usage", "bridge_source_sha256", "instruction_source_sha256"}
+
+    def __init__(self, path=None):
+        self.path = Path(path) if path else None
+        self.lock = threading.Lock()
+        self.source_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest() if self.path else None
+        if self.path:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            flags = os.O_APPEND | os.O_CREAT | os.O_WRONLY | getattr(os, "O_NOFOLLOW", 0)
+            with os.fdopen(os.open(self.path, flags, 0o600), "a", encoding="utf-8"):
+                pass
+            os.chmod(self.path, 0o600)
+
+    def append(self, record):
+        if not self.path:
+            return
+        safe = {key: value for key, value in record.items() if key in self.FIELDS}
+        safe["bridge_source_sha256"] = self.source_sha256
+        # 不保存异常全文，防止第三方错误中夹带请求或认证材料。
+        with self.lock:
+            flags = os.O_APPEND | os.O_WRONLY | getattr(os, "O_NOFOLLOW", 0)
+            with os.fdopen(os.open(self.path, flags), "a", encoding="utf-8") as handle:
+                handle.write(json.dumps(safe, ensure_ascii=False) + "\n")
+
+
+def audit_usage(tokens):
+    """用量只记录协议中的非负整数；缺失值保留未知。"""
+    if not isinstance(tokens, dict):
+        return None
+    keys = ("inputTokens", "outputTokens", "totalTokens", "cachedInputTokens", "reasoningOutputTokens")
+    return {key: tokens[key] for key in keys if type(tokens.get(key)) is int and tokens[key] >= 0} or None
 
 
 def parse_model_effort(body: dict[str, Any], default_effort: str) -> tuple[str, str]:
@@ -203,6 +242,10 @@ class CodexSession:
         self.process = None
         self.tmp = None
         self.diagnostics = []
+        self.actual_model = None
+        self.actual_effort = None
+        self.last_usage = None
+        self.instruction_hashes = {}
 
     def __enter__(self):
         self.runtime_dir.mkdir(parents=True, exist_ok=True)
@@ -327,6 +370,8 @@ class CodexSession:
             "developerInstructions": "本实验不得使用任何运行时工具。业务操作只能作为结构化文本返回。",
             "config": {"model_reasoning_effort": effort, "project_doc_max_bytes": 0},
         })
+        self.actual_model = started.get("model") if isinstance(started.get("model"), str) else None
+        self.actual_effort = started.get("reasoningEffort") if isinstance(started.get("reasoningEffort"), str) else None
         if started.get("model") != MODEL:
             raise BridgeError("Codex 实际模型与固定模型不符")
         if started.get("reasoningEffort") != effort:
@@ -367,6 +412,7 @@ class CodexSession:
                     final_text = item.get("text")
             if method == "thread/tokenUsage/updated":
                 usage = params.get("tokenUsage", {}).get("total")
+                self.last_usage = usage
             if method == "turn/completed":
                 turn = params.get("turn", {})
                 if turn.get("status") != "completed":
@@ -383,6 +429,7 @@ class BridgeServer(ThreadingHTTPServer):
     def __init__(self, args):
         self.args = args
         self.semaphore = threading.BoundedSemaphore(args.concurrency)
+        self.audit = AuditLog(getattr(args, "audit_log", None))
         host = validate_bind_host(args.host, os.environ.get("CODEX_BRIDGE_TOKEN"))
         super().__init__((host, args.port), BridgeHandler)
 
@@ -411,9 +458,22 @@ class BridgeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path not in {"/chat/completions", "/v1/chat/completions"}:
             return self.respond(404, {"error": {"message": "接口不存在"}})
+        begin = time.monotonic()
+        request_id = "chatcmpl-" + uuid.uuid4().hex
+        audit = {"request_id": request_id, "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                 "requested_model": None, "requested_effort": None, "actual_model": None,
+                 "reasoning_effort": None, "success": False, "error_type": None,
+                 "usage": None, "instruction_source_sha256": None}
         token = os.environ.get("CODEX_BRIDGE_TOKEN")
-        if token and not secrets.compare_digest(self.headers.get("Authorization", ""), "Bearer " + token):
+        if token and not secrets.compare_digest(self.headers.get("Authorization", "").encode(), ("Bearer " + token).encode()):
+            audit.update(http_status=401, error_type="authentication_rejected", elapsed_seconds=time.monotonic() - begin)
+            try:
+                self.server.audit.append(audit)
+            except OSError:
+                return self.respond(502, {"error": {"message": "审计日志写入失败"}})
             return self.respond(401, {"error": {"message": "本地桥接认证失败"}})
+        session = None
+        tokens = None
         try:
             size = int(self.headers.get("Content-Length", "0"))
             if size <= 0 or size > MAX_REQUEST_BYTES:
@@ -421,39 +481,53 @@ class BridgeHandler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(size))
             if not isinstance(body, dict):
                 raise BridgeError("请求必须是 JSON 对象")
-            validate_request(body)
             model, effort = parse_model_effort(body, self.server.args.default_effort)
-            begin = time.monotonic()
+            # 仅在严格模型解析通过后记录别名，避免把恶意 model 字段原文写入日志。
+            audit.update(requested_model=body.get("model", model), requested_effort=effort)
+            validate_request(body)
             with self.server.semaphore:
                 with CodexSession(self.server.args.codex, Path(self.server.args.runtime_dir), self.server.args.timeout) as session:
                     message, tokens = session.complete(body, effort)
             response = {
-                "id": "chatcmpl-" + uuid.uuid4().hex, "object": "chat.completion", "created": int(time.time()),
+                "id": request_id, "object": "chat.completion", "created": int(time.time()),
                 "model": body.get("model", model),
                 "choices": [{"index": 0, "message": message, "finish_reason": "tool_calls" if message.get("tool_calls") else "stop"}],
                 "bridge_metadata": {"transport": TRANSPORT, "api_equivalent": False, "actual_model": MODEL, "reasoning_effort": effort, "billed_cost": None, "wall_seconds": time.monotonic() - begin, "sampling_parameters_applied": False, "multi_agent_enabled": False, "environment_access": False, "instruction_source_sha256": session.instruction_hashes},
             }
             if tokens:
                 response["usage"] = {"prompt_tokens": tokens["inputTokens"], "completion_tokens": tokens["outputTokens"], "total_tokens": tokens["totalTokens"], "prompt_tokens_details": {"cached_tokens": tokens.get("cachedInputTokens", 0)}, "completion_tokens_details": {"reasoning_tokens": tokens.get("reasoningOutputTokens", 0)}}
-            if body.get("stream"):
-                self.send_response(200)
-                self.send_header("Content-Type", "text/event-stream")
-                self.send_header("Cache-Control", "no-cache")
-                self.end_headers()
-                delta = dict(message)
-                if "tool_calls" in delta:
-                    delta["tool_calls"] = [{"index": i, **call} for i, call in enumerate(delta["tool_calls"])]
-                chunk = {key: response[key] for key in ("id", "created", "model")}
-                chunk.update({"object": "chat.completion.chunk", "choices": [{"index": 0, "delta": delta, "finish_reason": None}]})
-                self.wfile.write(("data: " + json.dumps(chunk, ensure_ascii=False) + "\n\n").encode())
-                chunk["choices"] = [{"index": 0, "delta": {}, "finish_reason": response["choices"][0]["finish_reason"]}]
-                if "usage" in response:
-                    chunk["usage"] = response["usage"]
-                self.wfile.write(("data: " + json.dumps(chunk) + "\n\ndata: [DONE]\n\n").encode())
-            else:
-                self.respond(200, response)
-        except (BridgeError, ValueError, OSError, KeyError) as error:
-            self.respond(502, {"error": {"message": str(error), "type": "codex_bridge_error"}})
+            status = 200
+            audit["success"] = True
+        except Exception as error:
+            status = 502
+            response = {"error": {"message": str(error), "type": "codex_bridge_error"}}
+            audit["error_type"] = type(error).__name__
+        if session is not None:
+            audit.update(actual_model=session.actual_model, reasoning_effort=session.actual_effort,
+                         instruction_source_sha256=session.instruction_hashes,
+                         usage=audit_usage(tokens or session.last_usage))
+        audit.update(http_status=status, elapsed_seconds=time.monotonic() - begin)
+        try:
+            # 在返回成功结果之前落盘；日志不可写时不将调用宣称为可审计的成功。
+            self.server.audit.append(audit)
+        except OSError:
+            return self.respond(502, {"error": {"message": "审计日志写入失败", "type": "audit_write_error"}})
+        if status != 200 or not body.get("stream"):
+            return self.respond(status, response)
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+        delta = dict(message)
+        if "tool_calls" in delta:
+            delta["tool_calls"] = [{"index": i, **call} for i, call in enumerate(delta["tool_calls"])]
+        chunk = {key: response[key] for key in ("id", "created", "model")}
+        chunk.update({"object": "chat.completion.chunk", "choices": [{"index": 0, "delta": delta, "finish_reason": None}]})
+        self.wfile.write(("data: " + json.dumps(chunk, ensure_ascii=False) + "\n\n").encode())
+        chunk["choices"] = [{"index": 0, "delta": {}, "finish_reason": response["choices"][0]["finish_reason"]}]
+        if "usage" in response:
+            chunk["usage"] = response["usage"]
+        self.wfile.write(("data: " + json.dumps(chunk) + "\n\ndata: [DONE]\n\n").encode())
 
 
 def main():
@@ -465,6 +539,7 @@ def main():
     parser.add_argument("--concurrency", type=int, default=1)
     parser.add_argument("--default-effort", choices=EFFORTS, default="low")
     parser.add_argument("--runtime-dir", default=str(Path.cwd() / ".bridge-runtime"))
+    parser.add_argument("--audit-log", help="可选 JSONL 调用元数据日志；不记录提示、回复或认证材料")
     parser.add_argument("--check", action="store_true", help="只检查模型目录和线程隔离，不运行模型")
     args = parser.parse_args()
     if args.check:

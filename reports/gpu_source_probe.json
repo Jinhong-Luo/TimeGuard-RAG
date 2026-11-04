@@ -1,0 +1,20 @@
+[
+  {
+    "name": "torch",
+    "host": "download-r2.pytorch.org",
+    "status": "ok",
+    "bytes": 1048576,
+    "seconds": 3.5529960941057652,
+    "MB_per_second": 0.29512444489864,
+    "sample_sha256": "443f2190de8f887ad8e21730ec20c7e29bc85a469428d70fed7b3acd37041950"
+  },
+  {
+    "name": "nvidia-cudnn-cu12",
+    "host": "files.pythonhosted.org",
+    "status": "ok",
+    "bytes": 1048576,
+    "seconds": 0.4464266689028591,
+    "MB_per_second": 2.3488202498676585,
+    "sample_sha256": "b18b7cbec45cb386dd377c8c652b1be8e5e5849061b1c3809e2801bfd08fe939"
+  }
+]

@@ -59,7 +59,8 @@ def main():
         entry = {**doc, "source_commit": lock["commit"], "pdf_sha256": None,
                  "download_url": base + "/pdfs/" + quote(doc["doc_name"] + ".pdf", safe=""),
                  "local_path": "pdfs/" + doc["doc_name"] + ".pdf"}
-        if args.pdfs:
+        # 再次生成清单时保留并校验已经落盘的PDF，不因省略--pdfs丢失摘要。
+        if args.pdfs or (root / entry["local_path"]).exists():
             entry["pdf_sha256"] = download(entry["download_url"], root / entry["local_path"])
             if not (root / entry["local_path"]).read_bytes().startswith(b"%PDF"):
                 raise ValueError(f"不是有效 PDF 文件：{doc['doc_name']}")

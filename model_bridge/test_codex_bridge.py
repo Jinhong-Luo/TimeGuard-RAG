@@ -1,17 +1,21 @@
 """验证桥接边界；这些测试不连接 Codex 或执行模型。"""
 
 import json
+import io
+import os
 from pathlib import Path
 import tempfile
 import subprocess
 import time
 import unittest
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 from codex_bridge import (
-    BridgeError, CodexSession, DISABLED_FEATURES, MODEL,
+    AuditLog, BridgeError, BridgeHandler, CodexSession, DISABLED_FEATURES, MODEL,
     completion_message, parse_model_effort, validate_request,
     validate_bind_host,
+    audit_usage,
 )
 from probe import check_response, classify_failure
 
@@ -138,6 +142,102 @@ class BridgeTests(unittest.TestCase):
         response["choices"][0]["message"]["tool_calls"][0]["function"]["arguments"] = '{}'
         with self.assertRaises(ValueError):
             check_response("tool", response, "low")
+
+    def make_handler(self, audit, body):
+        handler = object.__new__(BridgeHandler)
+        handler.path = "/v1/chat/completions"
+        raw = json.dumps(body).encode()
+        handler.headers = {"Content-Length": str(len(raw))}
+        handler.rfile = io.BytesIO(raw)
+        handler.respond = Mock()
+        handler.server = SimpleNamespace(audit=audit, semaphore=__import__("threading").BoundedSemaphore(1),
+                                         args=SimpleNamespace(default_effort="low", codex="codex", runtime_dir=".", timeout=1))
+        return handler
+
+    def fake_session(self):
+        session = Mock()
+        session.actual_model = MODEL
+        session.actual_effort = "high"
+        session.instruction_hashes = {"AGENTS.md": "a" * 64}
+        session.last_usage = {"inputTokens": 7, "outputTokens": 3, "totalTokens": 10}
+        session.__enter__ = Mock(return_value=session)
+        session.__exit__ = Mock(return_value=False)
+        session.complete.return_value = ({"role": "assistant", "content": "回复中的私密文本"}, session.last_usage)
+        return session
+
+    def test_audit_success_has_actual_identity_but_no_conversation(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            handler = self.make_handler(AuditLog(path), {"model": MODEL + "@high", "messages": [{"role": "user", "content": "提示中的私密文本"}]})
+            with patch.dict(os.environ, {"CODEX_BRIDGE_TOKEN": ""}), patch("codex_bridge.CodexSession", return_value=self.fake_session()):
+                handler.do_POST()
+            raw = path.read_text(encoding="utf-8")
+            row = json.loads(raw)
+            self.assertTrue(row["success"])
+            self.assertEqual(row["requested_model"], MODEL + "@high")
+            self.assertEqual((row["actual_model"], row["reasoning_effort"]), (MODEL, "high"))
+            self.assertEqual(row["usage"]["totalTokens"], 10)
+            self.assertEqual(len(row["bridge_source_sha256"]), 64)
+            self.assertEqual(row["request_id"], handler.respond.call_args.args[1]["id"])
+            self.assertNotIn("私密文本", raw)
+
+    def test_audit_failure_keeps_usage_not_error_text(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            handler = self.make_handler(AuditLog(path), {"model": MODEL + "@high", "messages": [{"role": "user", "content": "问题"}]})
+            session = self.fake_session()
+            session.complete.side_effect = BridgeError("错误中包含秘密凭据")
+            with patch.dict(os.environ, {"CODEX_BRIDGE_TOKEN": ""}), patch("codex_bridge.CodexSession", return_value=session):
+                handler.do_POST()
+            raw = path.read_text(encoding="utf-8")
+            row = json.loads(raw)
+            self.assertFalse(row["success"])
+            self.assertEqual(row["error_type"], "BridgeError")
+            self.assertEqual(row["usage"]["totalTokens"], 10)
+            self.assertNotIn("秘密凭据", raw)
+
+    def test_audit_auth_failure_does_not_read_body_or_header(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            handler = self.make_handler(AuditLog(path), {"model": "不能写入日志的秘密"})
+            handler.headers["Authorization"] = "Bearer 错误密钥"
+            with patch.dict(os.environ, {"CODEX_BRIDGE_TOKEN": "正确密钥"}), patch("codex_bridge.CodexSession") as session:
+                handler.do_POST()
+            session.assert_not_called()
+            raw = path.read_text(encoding="utf-8")
+            self.assertEqual(json.loads(raw)["http_status"], 401)
+            self.assertNotIn("密钥", raw)
+            self.assertNotIn("秘密", raw)
+            self.assertEqual(handler.rfile.tell(), 0)
+
+    def test_audit_write_failure_blocks_success_response(self):
+        handler = self.make_handler(Mock(append=Mock(side_effect=OSError("不可写"))), {"model": MODEL + "@high", "messages": [{"role": "user", "content": "问题"}]})
+        with patch.dict(os.environ, {"CODEX_BRIDGE_TOKEN": ""}), patch("codex_bridge.CodexSession", return_value=self.fake_session()):
+            handler.do_POST()
+        self.assertEqual(handler.respond.call_args.args[0], 502)
+        self.assertEqual(handler.respond.call_args.args[1]["error"]["type"], "audit_write_error")
+
+    def test_audit_is_optional_and_discards_unknown_fields(self):
+        AuditLog().append({"prompt": "不落盘"})
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            AuditLog(path).append({"request_id": "abc", "prompt": "不落盘", "Authorization": "不落盘"})
+            row = json.loads(path.read_text(encoding="utf-8"))
+            self.assertNotIn("prompt", row)
+            self.assertNotIn("Authorization", row)
+        self.assertIsNone(audit_usage(None))
+        self.assertEqual(audit_usage({"totalTokens": 5, "inputTokens": -1, "secret": "不能保存"}), {"totalTokens": 5})
+
+    def test_invalid_model_value_is_not_copied_to_audit(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            handler = self.make_handler(AuditLog(path), {"model": "夹带私密文本", "messages": []})
+            with patch.dict(os.environ, {"CODEX_BRIDGE_TOKEN": ""}), patch("codex_bridge.CodexSession") as session:
+                handler.do_POST()
+            session.assert_not_called()
+            raw = path.read_text(encoding="utf-8")
+            self.assertIsNone(json.loads(raw)["requested_model"])
+            self.assertNotIn("私密文本", raw)
 
 
 if __name__ == "__main__":
