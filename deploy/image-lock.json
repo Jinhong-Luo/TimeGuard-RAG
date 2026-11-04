@@ -1,0 +1,7 @@
+{
+  "tei_cpu": {
+    "image": "ghcr.io/huggingface/text-embeddings-inference:cpu-1.8",
+    "linux_amd64_manifest_digest": "sha256:c466c97680cc9c2968108c4b1b44ca7729a091a44b61c840d9487f07d42e9099",
+    "说明": "同版本官方轻量TEI镜像，保留原生HuggingFaceEmbed协议；镜像拉取或归档导入时验证摘要。"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source_commit": "cc39aeb4afdf33909ee1412188bf89035950c2eb",
+  "questions": 150,
+  "documents": 84,
+  "companies": 32,
+  "split_counts": {
+    "tune": 88,
+    "test": 23,
+    "dev": 39
+  },
+  "source_sha256": {
+    "financebench_open_source.jsonl": "a5a2aa673e573e55675fc3c0f9aa38c1cf59d2abc91edb077534f71f10a71877",
+    "financebench_document_information.jsonl": "1c69127783879de8cdadb159d2181f39bc3123b8e0ebf74031c3969d69189575"
+  },
+  "queries_sha256": "e54a9c23fa134d6d1319c4d1001c9b55e967d3d282c7d53491d71dfb395045d3",
+  "pdfs_downloaded": 0,
+  "说明": "按公司隔离，测试答案和标准证据仅在离线评分使用；完整150题报告不等于独立泛化成绩。"
+}

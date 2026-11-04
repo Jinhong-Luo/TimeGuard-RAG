@@ -1,0 +1,20 @@
+{
+  "variant": "R0",
+  "base_url": "http://127.0.0.1:19380",
+  "model": "gpt-6.1-sol",
+  "dataset_ids": [],
+  "retrieval": {
+    "page": 1,
+    "page_size": 6,
+    "similarity_threshold": 0.2,
+    "vector_similarity_weight": 0.3,
+    "top_k": 1024,
+    "rerank_id": "",
+    "keyword": false,
+    "use_kg": false,
+    "toc_enhance": false
+  },
+  "llm_setting": {},
+  "efforts_to_probe": ["low", "medium", "high", "xhigh", "max", "ultra"],
+  "request_timeout_seconds": 300
+}

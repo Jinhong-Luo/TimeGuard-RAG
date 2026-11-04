@@ -1,0 +1,14 @@
+{
+  "ragflow": {
+    "url": "https://github.com/infiniflow/ragflow.git",
+    "tag": "v0.27.3",
+    "commit": "8090ffd8ba6098813d7f7ec2c4b8774f36c8423a",
+    "image": "infiniflow/ragflow:v0.27.3"
+  },
+  "financebench": {
+    "url": "https://github.com/patronus-ai/financebench",
+    "commit": "cc39aeb4afdf33909ee1412188bf89035950c2eb",
+    "questions_git_blob": "4aef1d43a443474ba193f158f2baf70550ff528d",
+    "documents_git_blob": "decdfa948630f289d05cc0048417b3b9107cfb9f"
+  }
+}

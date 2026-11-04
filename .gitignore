@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+vendor/
+data/
+runs/
+*.log
+.cache/
+deploy/runtime.env
+deploy/compose.generated.json
