@@ -1,0 +1,93 @@
+{
+  "recorded_at_utc": "2026-11-04T14:39:43.052980+00:00",
+  "image_config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+  "directory": "/ragflow/rag/res/deepdoc",
+  "files": [
+    {
+      "name": "README.md",
+      "bytes": 119,
+      "sha256": "a083f9c317aa0bda6ceca5a1dec4055066e2d3f98c76f20be9142b45223fcc50"
+    },
+    {
+      "name": "det.onnx",
+      "bytes": 4745517,
+      "sha256": "30a86f5731181461d08021402766601e4302a9b9b9666be8aff402696339cdff"
+    },
+    {
+      "name": "det.ort",
+      "bytes": 4885936,
+      "sha256": "fd62614cbae0b073aa203b2393081e641826ecfc85414669458506d91e23c095"
+    },
+    {
+      "name": "layout.laws.onnx",
+      "bytes": 75726930,
+      "sha256": "de401c03ee30b1c120416dc06f0705237f0c36d3cdb692c9bfefe8a8f98a4b70"
+    },
+    {
+      "name": "layout.laws.ort",
+      "bytes": 75986208,
+      "sha256": "8f4dcc3771c53c2eefc4472a6bd4133017ff3392f870cd8bd3ff040a87a01f54"
+    },
+    {
+      "name": "layout.manual.onnx",
+      "bytes": 75726930,
+      "sha256": "de401c03ee30b1c120416dc06f0705237f0c36d3cdb692c9bfefe8a8f98a4b70"
+    },
+    {
+      "name": "layout.manual.ort",
+      "bytes": 75986208,
+      "sha256": "a464bad88bc9707cd9fd63671c832b5a3a37ed0d3766d04d8224dbbe8a278a89"
+    },
+    {
+      "name": "layout.onnx",
+      "bytes": 75726930,
+      "sha256": "de401c03ee30b1c120416dc06f0705237f0c36d3cdb692c9bfefe8a8f98a4b70"
+    },
+    {
+      "name": "layout.ort",
+      "bytes": 75986208,
+      "sha256": "55e3e5743ba2f2a03879578ac818089afa32bdedda51159d340bc2eec968b030"
+    },
+    {
+      "name": "layout.paper.onnx",
+      "bytes": 75726930,
+      "sha256": "de401c03ee30b1c120416dc06f0705237f0c36d3cdb692c9bfefe8a8f98a4b70"
+    },
+    {
+      "name": "layout.paper.ort",
+      "bytes": 75986208,
+      "sha256": "6f6843d301af5dd652969232aab95aafd267923141985edef8ba8ab4ac838764"
+    },
+    {
+      "name": "ocr.res",
+      "bytes": 26249,
+      "sha256": "28b2362ad4ab2dc38769aa72feb535e3a9ddb3fd2a7585a05920e6393b1dc7f7"
+    },
+    {
+      "name": "rec.onnx",
+      "bytes": 10826336,
+      "sha256": "1c7cf60de2afd728d512f4190cf37455092b45f06175365c6fc58d8cd7e2a68b"
+    },
+    {
+      "name": "rec.ort",
+      "bytes": 10959944,
+      "sha256": "a6eb83a8943d2dca6de8e1393420904bddd4dded455d72ca177ade63b56533d0"
+    },
+    {
+      "name": "tsr.onnx",
+      "bytes": 12243033,
+      "sha256": "1585f88015c60209f16a079a26d944afca790ab7022fe7d0574113ccb9a6f9b4"
+    },
+    {
+      "name": "tsr.ort",
+      "bytes": 12343760,
+      "sha256": "24930ee6d025dc8e5c17587713d74a7d665d3ca8a464df015afb6e939af0d2f7"
+    },
+    {
+      "name": "updown_concat_xgb.model",
+      "bytes": 5906150,
+      "sha256": "50516159cd0aab5f3499e1edccffdf1d6141f5ae513fdba003a18cbefa823f62"
+    }
+  ],
+  "说明": "在最终8×1服务重建并确认空队列就绪后，逐个读取当前原生DeepDOC模型目录的文件大小与完整SHA256。"
+}

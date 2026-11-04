@@ -1,0 +1,71 @@
+{
+  "recorded_at_utc": "2026-11-04T14:38:39.474861+00:00",
+  "profile": {
+    "profile": "single-gpu-cpu16-workers8-tasks1",
+    "parser": "DeepDOC",
+    "device": "gpu",
+    "onnx_provider": "CUDAExecutionProvider",
+    "onnxruntime_gpu_version": "1.23.2",
+    "image_config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+    "cpus": 16,
+    "memory_gib": 48,
+    "task_executors": 8,
+    "max_concurrent_tasks": 1,
+    "max_concurrent_chunk_builders": 1,
+    "ocr_intra_op_num_threads": 2,
+    "ocr_inter_op_num_threads": 2,
+    "total_task_limit": 8,
+    "gpu_uuid": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+    "visible_gpu_count": 1,
+    "ocr_gpu_mem_limit_mb": 8192,
+    "ocr_arena_extend_strategy": "kSameAsRequested",
+    "ocr_gpumem_arena_shrinkage": true,
+    "table_auto_rotate": true,
+    "torch_version": "2.8.0+cu128",
+    "torch_cuda": "12.8",
+    "gpu_model": "NVIDIA GeForce RTX 3090",
+    "wheel_lock_sha256": "b4a16ad0df7f36d6f7a6b92fd3ceb23f26b144cbc87b45b0ba1c005aff9867f0",
+    "constraints_sha256": "c53c80512cedb1dfd41f69b569c622009f9c04535bd269cf0c4086e05047371e"
+  },
+  "worker_processes": [
+    "128 python3 rag/svr/task_executor.py -i 9266d4734226_0 -t common",
+    "190 python3 rag/svr/task_executor.py -i 9266d4734226_1 -t common",
+    "233 python3 rag/svr/task_executor.py -i 9266d4734226_2 -t common",
+    "397 python3 rag/svr/task_executor.py -i 9266d4734226_3 -t common",
+    "441 python3 rag/svr/task_executor.py -i 9266d4734226_4 -t common",
+    "485 python3 rag/svr/task_executor.py -i 9266d4734226_5 -t common",
+    "530 python3 rag/svr/task_executor.py -i 9266d4734226_6 -t common",
+    "617 python3 rag/svr/task_executor.py -i 9266d4734226_7 -t common"
+  ],
+  "worker_count": 8,
+  "queue_stats": {
+    "te.0.common": {
+      "length": 16,
+      "groups": [
+        {
+          "name": "rag_flow_svr_task_broker",
+          "pending": 0,
+          "lag": 0
+        }
+      ]
+    },
+    "te.1.common": {
+      "length": 0,
+      "groups": [
+        {
+          "name": "rag_flow_svr_task_broker",
+          "pending": 0,
+          "lag": 0
+        }
+      ]
+    }
+  },
+  "model_files_match_long_smoke": true,
+  "model_file_manifest_sha256": "7e09808ca53fe39e0109895dd30757b76de8cc355a9b7a0979ebe518cf87b0d1",
+  "preserved_document_id": "b7d3d102d85711f1b0f349057592f04c",
+  "preserved_document_chunks": 462,
+  "container_memory": "12.25GiB / 48GiB",
+  "container_cpu_percent": "1.60%",
+  "container_oom_killed": false,
+  "说明": "长文全部DONE后重建为原生8执行器，每进程解析与分块各1，任务总上限保持8；只使用同一GPU，已核验全部原生模型文件SHA相同和队列无待执行任务，尚未提交其余83文档。"
+}

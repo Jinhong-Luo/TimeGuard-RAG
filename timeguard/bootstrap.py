@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--project", default="timeguard_ljh")
     parser.add_argument("--gpu-uuid", help="启用已验证派生镜像，并只暴露指定的一张GPU")
     parser.add_argument("--gpu-image-lock", default="deploy/gpu-image-lock.json")
-    parser.add_argument("--task-workers", type=int, choices=[1, 2, 4], default=1,
+    parser.add_argument("--task-workers", type=int, choices=[1, 2, 4, 8], default=1,
                         help="GPU解析的原生执行器进程数；需先验证资源余量")
     parser.add_argument("--tasks-per-worker", type=int, choices=[1, 2, 4], default=4,
                         help="每个GPU执行器的任务与分块并发上限")
@@ -88,7 +88,10 @@ def main():
     if not allowed <= config["services"].keys():
         raise ValueError("上游缺少预期的 CPU/Elasticsearch/MySQL/MinIO/Redis 服务，停止生成")
     config["services"] = {k: v for k, v in config["services"].items() if k in allowed}
-    limits = {"ragflow-cpu": ("24g", 16), "es01": ("4g", 2), "mysql": ("2g", 1), "minio": ("1g", 1), "redis": ("512m", 1),
+    ragflow_memory_gib = 48 if gpu and args.task_workers == 8 else 24
+    if gpu and args.task_workers == 8 and args.tasks_per_worker != 1:
+        raise ValueError("8个执行器只允许每进程1个解析/分块任务，总上限保持8")
+    limits = {"ragflow-cpu": (f"{ragflow_memory_gib}g", 16), "es01": ("4g", 2), "mysql": ("2g", 1), "minio": ("1g", 1), "redis": ("512m", 1),
               "tei-cpu": ("2g", 2)}
     for name, service in config["services"].items():
         service.pop("container_name", None)
@@ -130,7 +133,7 @@ def main():
                                     "MAX_CONCURRENT_CHUNK_BUILDERS": str(args.tasks_per_worker),
                                     "OCR_GPU_MEM_LIMIT_MB": "8192",
                                     "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
-                                    "OCR_GPUMEM_ARENA_SHRINKAGE": "1"})
+                                    "OCR_GPUMEM_ARENA_SHRINKAGE": "1", "TABLE_AUTO_ROTATE": "true"})
                 service["deploy"] = {"resources": {"reservations": {"devices": [
                     {"driver": "nvidia", "device_ids": [args.gpu_uuid], "capabilities": ["gpu"]}]}}}
         if name == "minio":
@@ -168,12 +171,14 @@ def main():
     if gpu:
         profile = read_json(deploy / "parse-profile.cpu.json")
         profile.update({"profile": f"single-gpu-cpu16-workers{args.task_workers}-tasks{args.tasks_per_worker}", "device": "gpu",
+                        "memory_gib": ragflow_memory_gib,
                         "task_executors": args.task_workers, "max_concurrent_tasks": args.tasks_per_worker,
                         "max_concurrent_chunk_builders": args.tasks_per_worker,
                         "total_task_limit": args.task_workers * args.tasks_per_worker,
                         "onnx_provider": "CUDAExecutionProvider", "image_config_digest": gpu["config_digest"],
                         "gpu_uuid": args.gpu_uuid, "visible_gpu_count": 1, "ocr_gpu_mem_limit_mb": 8192,
                         "ocr_arena_extend_strategy": "kSameAsRequested", "ocr_gpumem_arena_shrinkage": True,
+                        "table_auto_rotate": True,
                         "torch_version": gpu["native_cuda_probe"]["torch"],
                         "torch_cuda": gpu["native_cuda_probe"]["torch_cuda"],
                         "gpu_model": gpu["native_cuda_probe"]["device_name"],

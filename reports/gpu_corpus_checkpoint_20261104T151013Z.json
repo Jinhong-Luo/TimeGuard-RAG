@@ -1,0 +1,807 @@
+{
+  "recorded_at_utc": "2026-11-04T15:10:13.016141+00:00",
+  "dataset_id": "b7c95010d85711f1b0f349057592f04c",
+  "state_sha256": "44aab5544a777e2721ac3407b53c22de4106bde7de1fad767fb8633891194570",
+  "expected_documents": 84,
+  "listed_documents": 84,
+  "status_counts": {
+    "RUNNING": 82,
+    "DONE": 2
+  },
+  "completed_pages_including_reused_160": 480,
+  "completed_new_pages": 320,
+  "native_metadata_chunk_count": 1352,
+  "actual_unique_chunks_all_documents": null,
+  "error_markers": 0,
+  "runtime_profile": {
+    "profile": "single-gpu-cpu16-workers8-tasks1",
+    "parser": "DeepDOC",
+    "device": "gpu",
+    "onnx_provider": "CUDAExecutionProvider",
+    "onnxruntime_gpu_version": "1.23.2",
+    "image_config_digest": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+    "cpus": 16,
+    "memory_gib": 48,
+    "task_executors": 8,
+    "max_concurrent_tasks": 1,
+    "max_concurrent_chunk_builders": 1,
+    "ocr_intra_op_num_threads": 2,
+    "ocr_inter_op_num_threads": 2,
+    "total_task_limit": 8,
+    "gpu_uuid": "GPU-71384a25-5e87-bd05-8f42-8117a841e9fc",
+    "visible_gpu_count": 1,
+    "ocr_gpu_mem_limit_mb": 8192,
+    "ocr_arena_extend_strategy": "kSameAsRequested",
+    "ocr_gpumem_arena_shrinkage": true,
+    "table_auto_rotate": true,
+    "torch_version": "2.8.0+cu128",
+    "torch_cuda": "12.8",
+    "gpu_model": "NVIDIA GeForce RTX 3090",
+    "wheel_lock_sha256": "b4a16ad0df7f36d6f7a6b92fd3ceb23f26b144cbc87b45b0ba1c005aff9867f0",
+    "constraints_sha256": "c53c80512cedb1dfd41f69b569c622009f9c04535bd269cf0c4086e05047371e"
+  },
+  "container_memory": "28.39GiB / 48GiB",
+  "container_cpu_percent": "724.72%",
+  "sampled_gpu_memory_max_mib": 5204,
+  "sample_window_start_utc": "2026-11-04T15:01:25.938782+00:00",
+  "sample_window_end_utc": "2026-11-04T15:09:45.365248+00:00",
+  "documents": [
+    {
+      "id": "5b08d6bcd86011f18b1eef68ca6e58af",
+      "name": "WALMART_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00482454,
+      "chunk_count": 0,
+      "size": 1132390,
+      "update_time": 1793805011857
+    },
+    {
+      "id": "5a2419e6d86011f18b1eef68ca6e58af",
+      "name": "WALMART_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00876716,
+      "chunk_count": 0,
+      "size": 7211754,
+      "update_time": 1793805011848
+    },
+    {
+      "id": "59e8dea8d86011f18b1eef68ca6e58af",
+      "name": "WALMART_2018_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00664723,
+      "chunk_count": 0,
+      "size": 1599075,
+      "update_time": 1793805011839
+    },
+    {
+      "id": "59ad3ed4d86011f18b1eef68ca6e58af",
+      "name": "VERIZON_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00974594,
+      "chunk_count": 0,
+      "size": 2315268,
+      "update_time": 1793805011830
+    },
+    {
+      "id": "59773b7cd86011f18b1eef68ca6e58af",
+      "name": "VERIZON_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.000579711,
+      "chunk_count": 0,
+      "size": 2098068,
+      "update_time": 1793805011820
+    },
+    {
+      "id": "592fa438d86011f18b1eef68ca6e58af",
+      "name": "ULTABEAUTY_2023_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00454714,
+      "chunk_count": 0,
+      "size": 4954215,
+      "update_time": 1793805011811
+    },
+    {
+      "id": "591a9566d86011f18b1eef68ca6e58af",
+      "name": "ULTABEAUTY_2023Q4_EARNINGS.pdf",
+      "run": "RUNNING",
+      "progress": 0.00296358,
+      "chunk_count": 0,
+      "size": 99758,
+      "update_time": 1793805011801
+    },
+    {
+      "id": "58ffe900d86011f18b1eef68ca6e58af",
+      "name": "Pfizer_2023Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.0049302,
+      "chunk_count": 0,
+      "size": 743533,
+      "update_time": 1793805011793
+    },
+    {
+      "id": "58d6644ad86011f18b1eef68ca6e58af",
+      "name": "PFIZER_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00272435,
+      "chunk_count": 0,
+      "size": 1171782,
+      "update_time": 1793805011784
+    },
+    {
+      "id": "585c2bdad86011f18b1eef68ca6e58af",
+      "name": "PEPSICO_2023_8K_dated-2023-05-30.pdf",
+      "run": "RUNNING",
+      "progress": 0.00892866,
+      "chunk_count": 0,
+      "size": 1460889,
+      "update_time": 1793805011775
+    },
+    {
+      "id": "5844f348d86011f18b1eef68ca6e58af",
+      "name": "PEPSICO_2023_8K_dated-2023-05-05.pdf",
+      "run": "RUNNING",
+      "progress": 0.00662916,
+      "chunk_count": 0,
+      "size": 102321,
+      "update_time": 1793805011765
+    },
+    {
+      "id": "58243946d86011f18b1eef68ca6e58af",
+      "name": "PEPSICO_2023Q1_EARNINGS.pdf",
+      "run": "RUNNING",
+      "progress": 0.00557519,
+      "chunk_count": 0,
+      "size": 987394,
+      "update_time": 1793805011757
+    },
+    {
+      "id": "57334068d86011f18b1eef68ca6e58af",
+      "name": "PEPSICO_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00773195,
+      "chunk_count": 0,
+      "size": 2993516,
+      "update_time": 1793805011748
+    },
+    {
+      "id": "56e7343ed86011f18b1eef68ca6e58af",
+      "name": "PEPSICO_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00957051,
+      "chunk_count": 0,
+      "size": 2139398,
+      "update_time": 1793805011737
+    },
+    {
+      "id": "56ae27ded86011f18b1eef68ca6e58af",
+      "name": "PAYPAL_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00927945,
+      "chunk_count": 0,
+      "size": 4371232,
+      "update_time": 1793805011726
+    },
+    {
+      "id": "567525c4d86011f18b1eef68ca6e58af",
+      "name": "NIKE_2023_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00399944,
+      "chunk_count": 0,
+      "size": 3463188,
+      "update_time": 1793805011718
+    },
+    {
+      "id": "5649f746d86011f18b1eef68ca6e58af",
+      "name": "NIKE_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00269984,
+      "chunk_count": 0,
+      "size": 877882,
+      "update_time": 1793805011710
+    },
+    {
+      "id": "56244532d86011f18b1eef68ca6e58af",
+      "name": "NIKE_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00801925,
+      "chunk_count": 0,
+      "size": 909932,
+      "update_time": 1793805011702
+    },
+    {
+      "id": "55fea8b8d86011f18b1eef68ca6e58af",
+      "name": "NIKE_2018_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00187325,
+      "chunk_count": 0,
+      "size": 962221,
+      "update_time": 1793805011694
+    },
+    {
+      "id": "55df1908d86011f18b1eef68ca6e58af",
+      "name": "NETFLIX_2017_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00829127,
+      "chunk_count": 0,
+      "size": 651011,
+      "update_time": 1793805011687
+    },
+    {
+      "id": "55c1576ad86011f18b1eef68ca6e58af",
+      "name": "NETFLIX_2015_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00710983,
+      "chunk_count": 0,
+      "size": 578489,
+      "update_time": 1793805011679
+    },
+    {
+      "id": "559b0f10d86011f18b1eef68ca6e58af",
+      "name": "MICROSOFT_2023_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00674965,
+      "chunk_count": 0,
+      "size": 726155,
+      "update_time": 1793805011672
+    },
+    {
+      "id": "5574f3cad86011f18b1eef68ca6e58af",
+      "name": "MICROSOFT_2016_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00859335,
+      "chunk_count": 0,
+      "size": 838415,
+      "update_time": 1793805011664
+    },
+    {
+      "id": "555aedf4d86011f18b1eef68ca6e58af",
+      "name": "MGMRESORTS_2023Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.0025152,
+      "chunk_count": 0,
+      "size": 661891,
+      "update_time": 1793805011655
+    },
+    {
+      "id": "5529657cd86011f18b1eef68ca6e58af",
+      "name": "MGMRESORTS_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00573128,
+      "chunk_count": 0,
+      "size": 1755866,
+      "update_time": 1793805011648
+    },
+    {
+      "id": "550c8e48d86011f18b1eef68ca6e58af",
+      "name": "MGMRESORTS_2022Q4_EARNINGS.pdf",
+      "run": "RUNNING",
+      "progress": 0.00466812,
+      "chunk_count": 0,
+      "size": 737922,
+      "update_time": 1793805011640
+    },
+    {
+      "id": "54dcd2b6d86011f18b1eef68ca6e58af",
+      "name": "MGMRESORTS_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00856103,
+      "chunk_count": 0,
+      "size": 1383002,
+      "update_time": 1793805011632
+    },
+    {
+      "id": "54abb8cad86011f18b1eef68ca6e58af",
+      "name": "MGMRESORTS_2018_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00818121,
+      "chunk_count": 0,
+      "size": 1421540,
+      "update_time": 1793805011625
+    },
+    {
+      "id": "54891b6cd86011f18b1eef68ca6e58af",
+      "name": "LOCKHEEDMARTIN_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00761223,
+      "chunk_count": 0,
+      "size": 1398312,
+      "update_time": 1793805011584
+    },
+    {
+      "id": "5465a7ccd86011f18b1eef68ca6e58af",
+      "name": "LOCKHEEDMARTIN_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00369243,
+      "chunk_count": 0,
+      "size": 1347017,
+      "update_time": 1793805011577
+    },
+    {
+      "id": "544489e8d86011f18b1eef68ca6e58af",
+      "name": "LOCKHEEDMARTIN_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00375922,
+      "chunk_count": 0,
+      "size": 1372193,
+      "update_time": 1793805011571
+    },
+    {
+      "id": "5417aad6d86011f18b1eef68ca6e58af",
+      "name": "KRAFTHEINZ_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.000941943,
+      "chunk_count": 0,
+      "size": 1531923,
+      "update_time": 1793805011564
+    },
+    {
+      "id": "53e04baed86011f18b1eef68ca6e58af",
+      "name": "JPMORGAN_2023Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.00977614,
+      "chunk_count": 0,
+      "size": 2573600,
+      "update_time": 1793805011557
+    },
+    {
+      "id": "5383622cd86011f18b1eef68ca6e58af",
+      "name": "JPMORGAN_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00742818,
+      "chunk_count": 0,
+      "size": 6947859,
+      "update_time": 1793805011549
+    },
+    {
+      "id": "5349c9a4d86011f18b1eef68ca6e58af",
+      "name": "JPMORGAN_2022Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.000361436,
+      "chunk_count": 0,
+      "size": 2290421,
+      "update_time": 1793805011540
+    },
+    {
+      "id": "531c819cd86011f18b1eef68ca6e58af",
+      "name": "JPMORGAN_2021Q1_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.00096364,
+      "chunk_count": 0,
+      "size": 2285253,
+      "update_time": 1793805011533
+    },
+    {
+      "id": "52dd2376d86011f18b1eef68ca6e58af",
+      "name": "JOHNSON_JOHNSON_2023_8K_dated-2023-08-30.pdf",
+      "run": "RUNNING",
+      "progress": 0.00869618,
+      "chunk_count": 0,
+      "size": 455282,
+      "update_time": 1793805011522
+    },
+    {
+      "id": "52c42c36d86011f18b1eef68ca6e58af",
+      "name": "JOHNSON_JOHNSON_2023Q2_EARNINGS.pdf",
+      "run": "RUNNING",
+      "progress": 0.00398118,
+      "chunk_count": 0,
+      "size": 1212840,
+      "update_time": 1793805011512
+    },
+    {
+      "id": "519b2a30d86011f18b1eef68ca6e58af",
+      "name": "JOHNSON_JOHNSON_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00165699,
+      "chunk_count": 0,
+      "size": 1941368,
+      "update_time": 1793805011506
+    },
+    {
+      "id": "518036dad86011f18b1eef68ca6e58af",
+      "name": "JOHNSON_JOHNSON_2022Q4_EARNINGS.pdf",
+      "run": "RUNNING",
+      "progress": 0.00886301,
+      "chunk_count": 0,
+      "size": 729392,
+      "update_time": 1793805011499
+    },
+    {
+      "id": "5158a138d86011f18b1eef68ca6e58af",
+      "name": "GENERALMILLS_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00841251,
+      "chunk_count": 0,
+      "size": 1083414,
+      "update_time": 1793805011493
+    },
+    {
+      "id": "513652e0d86011f18b1eef68ca6e58af",
+      "name": "GENERALMILLS_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00582387,
+      "chunk_count": 0,
+      "size": 2342475,
+      "update_time": 1793805011487
+    },
+    {
+      "id": "510c7f24d86011f18b1eef68ca6e58af",
+      "name": "GENERALMILLS_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00804298,
+      "chunk_count": 0,
+      "size": 920782,
+      "update_time": 1793805011480
+    },
+    {
+      "id": "50ed2d0ed86011f18b1eef68ca6e58af",
+      "name": "FOOTLOCKER_2022_8K_dated_2022-08-19.pdf",
+      "run": "RUNNING",
+      "progress": 0.008935,
+      "chunk_count": 0,
+      "size": 316459,
+      "update_time": 1793805011473
+    },
+    {
+      "id": "50d86e32d86011f18b1eef68ca6e58af",
+      "name": "FOOTLOCKER_2022_8K_dated-2022-05-20.pdf",
+      "run": "RUNNING",
+      "progress": 0.00197875,
+      "chunk_count": 0,
+      "size": 116133,
+      "update_time": 1793805011463
+    },
+    {
+      "id": "50a9e1c0d86011f18b1eef68ca6e58af",
+      "name": "CVSHEALTH_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.000309089,
+      "chunk_count": 0,
+      "size": 1898137,
+      "update_time": 1793805011455
+    },
+    {
+      "id": "50697e28d86011f18b1eef68ca6e58af",
+      "name": "CVSHEALTH_2018_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00407146,
+      "chunk_count": 0,
+      "size": 1868195,
+      "update_time": 1793805011444
+    },
+    {
+      "id": "504c4628d86011f18b1eef68ca6e58af",
+      "name": "COSTCO_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00260473,
+      "chunk_count": 0,
+      "size": 765319,
+      "update_time": 1793805011433
+    },
+    {
+      "id": "501b0586d86011f18b1eef68ca6e58af",
+      "name": "CORNING_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00571466,
+      "chunk_count": 0,
+      "size": 1399926,
+      "update_time": 1793805011424
+    },
+    {
+      "id": "4ff09cb0d86011f18b1eef68ca6e58af",
+      "name": "CORNING_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.0035172,
+      "chunk_count": 0,
+      "size": 1131912,
+      "update_time": 1793805011413
+    },
+    {
+      "id": "4fc437d8d86011f18b1eef68ca6e58af",
+      "name": "CORNING_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00819822,
+      "chunk_count": 0,
+      "size": 1180865,
+      "update_time": 1793805011404
+    },
+    {
+      "id": "4f51973cd86011f18b1eef68ca6e58af",
+      "name": "COCACOLA_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00308936,
+      "chunk_count": 0,
+      "size": 9485744,
+      "update_time": 1793805011394
+    },
+    {
+      "id": "4ee00fa4d86011f18b1eef68ca6e58af",
+      "name": "COCACOLA_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00463713,
+      "chunk_count": 0,
+      "size": 9762541,
+      "update_time": 1793805011384
+    },
+    {
+      "id": "4e9dcda6d86011f18b1eef68ca6e58af",
+      "name": "COCACOLA_2017_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00940206,
+      "chunk_count": 0,
+      "size": 1790599,
+      "update_time": 1793805011374
+    },
+    {
+      "id": "4e695094d86011f18b1eef68ca6e58af",
+      "name": "BOEING_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00270965,
+      "chunk_count": 0,
+      "size": 1366995,
+      "update_time": 1793805011364
+    },
+    {
+      "id": "4e3e8864d86011f18b1eef68ca6e58af",
+      "name": "BOEING_2018_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00534909,
+      "chunk_count": 0,
+      "size": 967741,
+      "update_time": 1793805011354
+    },
+    {
+      "id": "4e13723cd86011f18b1eef68ca6e58af",
+      "name": "BLOCK_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00162378,
+      "chunk_count": 0,
+      "size": 1159158,
+      "update_time": 1793805011345
+    },
+    {
+      "id": "4df2893cd86011f18b1eef68ca6e58af",
+      "name": "BLOCK_2016_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00616317,
+      "chunk_count": 0,
+      "size": 864350,
+      "update_time": 1793805011335
+    },
+    {
+      "id": "4ddabab4d86011f18b1eef68ca6e58af",
+      "name": "BESTBUY_2024Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.000708225,
+      "chunk_count": 0,
+      "size": 442386,
+      "update_time": 1793805011325
+    },
+    {
+      "id": "4dbe656cd86011f18b1eef68ca6e58af",
+      "name": "BESTBUY_2023_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00280629,
+      "chunk_count": 0,
+      "size": 703034,
+      "update_time": 1793805011317
+    },
+    {
+      "id": "4d9a2dbed86011f18b1eef68ca6e58af",
+      "name": "BESTBUY_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00714961,
+      "chunk_count": 0,
+      "size": 782117,
+      "update_time": 1793805011308
+    },
+    {
+      "id": "4d7b70f4d86011f18b1eef68ca6e58af",
+      "name": "BESTBUY_2017_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.0024505,
+      "chunk_count": 0,
+      "size": 776434,
+      "update_time": 1793805011299
+    },
+    {
+      "id": "4d3257f2d86011f18b1eef68ca6e58af",
+      "name": "AMERICANWATERWORKS_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.000186972,
+      "chunk_count": 0,
+      "size": 2729077,
+      "update_time": 1793805011290
+    },
+    {
+      "id": "4cfadf16d86011f18b1eef68ca6e58af",
+      "name": "AMERICANWATERWORKS_2021_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00110746,
+      "chunk_count": 0,
+      "size": 1975636,
+      "update_time": 1793805011280
+    },
+    {
+      "id": "4cca29a2d86011f18b1eef68ca6e58af",
+      "name": "AMERICANWATERWORKS_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 2.58905e-05,
+      "chunk_count": 0,
+      "size": 1437123,
+      "update_time": 1793805011271
+    },
+    {
+      "id": "4c79c8b8d86011f18b1eef68ca6e58af",
+      "name": "AMERICANEXPRESS_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00973729,
+      "chunk_count": 0,
+      "size": 2436166,
+      "update_time": 1793805011263
+    },
+    {
+      "id": "4c2e757ad86011f18b1eef68ca6e58af",
+      "name": "AMD_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00711179,
+      "chunk_count": 0,
+      "size": 5122473,
+      "update_time": 1793805011253
+    },
+    {
+      "id": "4bf16112d86011f18b1eef68ca6e58af",
+      "name": "AMD_2015_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00266187,
+      "chunk_count": 0,
+      "size": 2474122,
+      "update_time": 1793805011245
+    },
+    {
+      "id": "4bc2d572d86011f18b1eef68ca6e58af",
+      "name": "AMCOR_2023_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00227312,
+      "chunk_count": 0,
+      "size": 1108309,
+      "update_time": 1793805011236
+    },
+    {
+      "id": "4baf4372d86011f18b1eef68ca6e58af",
+      "name": "AMCOR_2023Q4_EARNINGS.pdf",
+      "run": "RUNNING",
+      "progress": 0.00586271,
+      "chunk_count": 0,
+      "size": 244702,
+      "update_time": 1793805011228
+    },
+    {
+      "id": "4b97d5e8d86011f18b1eef68ca6e58af",
+      "name": "AMCOR_2023Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.0021718,
+      "chunk_count": 0,
+      "size": 455017,
+      "update_time": 1793805011221
+    },
+    {
+      "id": "4b87e4e4d86011f18b1eef68ca6e58af",
+      "name": "AMCOR_2022_8K_dated-2022-07-01.pdf",
+      "run": "RUNNING",
+      "progress": 0.00755337,
+      "chunk_count": 0,
+      "size": 147921,
+      "update_time": 1793805011211
+    },
+    {
+      "id": "4b4d7a0cd86011f18b1eef68ca6e58af",
+      "name": "AMCOR_2020_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00839368,
+      "chunk_count": 0,
+      "size": 8364895,
+      "update_time": 1793805011201
+    },
+    {
+      "id": "4b2337ced86011f18b1eef68ca6e58af",
+      "name": "AMAZON_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00597623,
+      "chunk_count": 0,
+      "size": 619184,
+      "update_time": 1793805011192
+    },
+    {
+      "id": "4b034860d86011f18b1eef68ca6e58af",
+      "name": "AMAZON_2017_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00619831,
+      "chunk_count": 0,
+      "size": 627047,
+      "update_time": 1793805011184
+    },
+    {
+      "id": "4ac5b3f6d86011f18b1eef68ca6e58af",
+      "name": "AES_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00329893,
+      "chunk_count": 0,
+      "size": 4479324,
+      "update_time": 1793805011174
+    },
+    {
+      "id": "4a8436ced86011f18b1eef68ca6e58af",
+      "name": "ADOBE_2022_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00652296,
+      "chunk_count": 0,
+      "size": 620288,
+      "update_time": 1793805011162
+    },
+    {
+      "id": "4a5202f8d86011f18b1eef68ca6e58af",
+      "name": "ADOBE_2017_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00821635,
+      "chunk_count": 0,
+      "size": 4028448,
+      "update_time": 1793805011154
+    },
+    {
+      "id": "4a23b164d86011f18b1eef68ca6e58af",
+      "name": "ADOBE_2016_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00621459,
+      "chunk_count": 0,
+      "size": 4171413,
+      "update_time": 1793805011145
+    },
+    {
+      "id": "49fb85ead86011f18b1eef68ca6e58af",
+      "name": "ADOBE_2015_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.00613579,
+      "chunk_count": 0,
+      "size": 1457725,
+      "update_time": 1793805011133
+    },
+    {
+      "id": "49cd21f0d86011f18b1eef68ca6e58af",
+      "name": "ACTIVISIONBLIZZARD_2019_10K.pdf",
+      "run": "RUNNING",
+      "progress": 0.265882,
+      "chunk_count": 72,
+      "size": 1274941,
+      "update_time": 1793805011101
+    },
+    {
+      "id": "497ac2f2d86011f18b1eef68ca6e58af",
+      "name": "3M_2023Q2_10Q.pdf",
+      "run": "RUNNING",
+      "progress": 0.815,
+      "chunk_count": 140,
+      "size": 5287301,
+      "update_time": 1793805011088
+    },
+    {
+      "id": "492a07e0d86011f18b1eef68ca6e58af",
+      "name": "3M_2022_10K.pdf",
+      "run": "DONE",
+      "progress": 1.0,
+      "chunk_count": 678,
+      "size": 1655681,
+      "update_time": 1793804896508
+    },
+    {
+      "id": "b7d3d102d85711f1b0f349057592f04c",
+      "name": "3M_2018_10K.pdf",
+      "run": "DONE",
+      "progress": 1.0,
+      "chunk_count": 462,
+      "size": 1252586,
+      "update_time": 1793802630068
+    }
+  ],
+  "说明": "固定时间检查点，非完整基线。native_metadata_chunk_count是原生累加值，可能包含跨任务同ID计数；全库唯一块数将在84全部DONE后逐文档校验。保留文档已证明454文字+1非文字图像，原生计数462；图像ID碰撞限制未在R0修改。"
+}

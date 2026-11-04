@@ -1,0 +1,133 @@
+{
+  "version": "timeguard-corpus-extension-v1",
+  "created_at_utc": "2026-11-04T14:59:07.457370+00:00",
+  "source_files": {
+    "source_state": {
+      "path": "data/gpu_long_smoke_ingestion.json",
+      "sha256": "24eb08df344c1e407ecc5168beee1cdfc37861353cc756b9420e1f9333ddcf14"
+    },
+    "source_ledger": {
+      "path": "data/long-smoke/documents.jsonl",
+      "sha256": "e09f292f9fe97fd17895d43cd27a70845dc056414bf520e9184d33c2d2ec3a9f"
+    },
+    "full_ledger": {
+      "path": "data/financebench/documents.jsonl",
+      "sha256": "8920958f9782d84b7afec059d8aac88d0aed2e1e6a9ca28cbe5a8bd3b2b07aea"
+    },
+    "final_runtime_profile": {
+      "path": "deploy/parse-profile.gpu.json",
+      "sha256": "e877e36fb979c646d9a3d09137fd873e2ce43eed9f682e2b67332957f92755fe"
+    },
+    "resource_evidence_0": {
+      "path": "reports/gpu_long_smoke_resource_stages.json",
+      "sha256": "26da91a8890fa6740969af3888cdcac077ffbc1afc80f6aad6bef76791705c8b"
+    },
+    "resource_evidence_1": {
+      "path": "reports/gpu_long_smoke_complete.json",
+      "sha256": "eff5f79a406d17fc8916e601cbd3ae5c7623195da6407495754c9639702f3bc1"
+    },
+    "resource_evidence_2": {
+      "path": "reports/gpu_final_runtime_ready.json",
+      "sha256": "8e4668c16ae5d2f7e68d1813f5b6699ae59d2eaf4cb7aeb4d21634fef0bf5103"
+    },
+    "source_models": {
+      "path": "reports/deepdoc_model_files.json",
+      "sha256": "7e09808ca53fe39e0109895dd30757b76de8cc355a9b7a0979ebe518cf87b0d1"
+    },
+    "final_models": {
+      "path": "reports/deepdoc_model_files.final.json",
+      "sha256": "4c377286d478df3eeaace080c58aecbd858ac7ac8cf1b73ab524960fa4a3a426"
+    },
+    "source_parser": {
+      "path": "reports/gpu_long_smoke_parser_evidence.json",
+      "sha256": "a8ebdcf087839c5b1bfea848ece1b58b04cc3be23cc6cb1f29614c9e6519a61c"
+    },
+    "final_parser": {
+      "path": "reports/gpu_final_parser_evidence.json",
+      "sha256": "68c734caa051341d1f8c2bbfed96876009b16c78221da69b69f808f633da7535"
+    },
+    "task_accounting": {
+      "path": "reports/long_smoke_chunk_accounting.json",
+      "sha256": "797d010d718976b3af4f79ced14b8b363e1dd969b60355008ab0718ae33945b7"
+    }
+  },
+  "reused_documents": 1,
+  "new_documents": 83,
+  "final_documents": 84,
+  "source_corpus_sha256": "8be43ded656db4339a78652789d78f4e18c353fc53a8ab756dde1c38f63ef74a",
+  "target_corpus_sha256": "c84a1a7c1460bfa856fec06d9c09bc76f3a6c1bd32d97081aedf263152d14e3e",
+  "source_document": "3M_2018_10K",
+  "native_validation": {
+    "dataset_id": "b7c95010d85711f1b0f349057592f04c",
+    "document_snapshot": {
+      "id": "b7d3d102d85711f1b0f349057592f04c",
+      "name": "3M_2018_10K.pdf",
+      "run": "DONE",
+      "chunk_count": 462,
+      "size": 1252586,
+      "update_time": 1793802630068
+    },
+    "chunk_count": 455,
+    "native_document_chunk_count": 462,
+    "unique_available_chunk_count": 455,
+    "text_chunk_count": 454,
+    "nontext_image_chunk_count": 1,
+    "task_count_reconciliation": {
+      "task_count": 14,
+      "source_pages": 160,
+      "raw_task_chunk_id_count": 476,
+      "sum_per_task_unique_chunk_id_count": 462,
+      "global_unique_chunk_id_count": 455,
+      "within_task_duplicate_entries": 14,
+      "cross_task_duplicate_entries": 7,
+      "global_unique_ids_sha256": "67e8c60b407a09956d023d84ab98125d9b95cd3dafe673bb43b63194b3b78b0f",
+      "task_retry_counts": {
+        "1": 14
+      },
+      "retry_count_semantics": "原生字段初始0，每次领取任务即加1；1表示首次领取，不等于一次失败重试。"
+    },
+    "unique_chunk_ids_sha256": "67e8c60b407a09956d023d84ab98125d9b95cd3dafe673bb43b63194b3b78b0f",
+    "chunk_content_and_positions_sha256": "10ff1c375eee2377f5977caddb3167529c19d2480241d3e421e3046e13ef2753",
+    "parser_config_sha256": "a78401d02b621371d287dcb3561a64cef077f99b4ab2881ce2f1e8af8d6d0639",
+    "embedding_model": "BAAI/bge-small-en-v1.5@local_tei@HuggingFace",
+    "read_only_native_check": true
+  },
+  "resource_changes": {
+    "max_concurrent_chunk_builders": {
+      "before": 4,
+      "after": 1
+    },
+    "max_concurrent_tasks": {
+      "before": 4,
+      "after": 1
+    },
+    "memory_gib": {
+      "before": 24,
+      "after": 48
+    },
+    "profile": {
+      "before": "single-gpu-cpu16-tasks4",
+      "after": "single-gpu-cpu16-workers8-tasks1"
+    },
+    "task_executors": {
+      "before": 1,
+      "after": 8
+    },
+    "total_task_limit": {
+      "before": null,
+      "after": 8
+    }
+  },
+  "table_auto_rotate": true,
+  "parser_artifacts": {
+    "model_files_count": 17,
+    "model_files_sha256": "cadacbcec8d04a3e1126d41c1396ffa898b78ec6d7952db29c88c1944598b924",
+    "pdf_parser_source_sha256": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475",
+    "table_auto_rotate": true
+  },
+  "table_rotation_source": "固定v0.27.3缺省为true；源字段缺失不代表关闭，后续显式true。",
+  "code_sha256": "3d1c4c9a8e19fcc0284c8bdeace30215f3822dd11aebb16c360c8a08c18997e8",
+  "target_profile_sha256": "6f71b781c510604de71bb89f3525214c5fe701f584dcdb96697566c138c73717",
+  "target_state_sha256": "bb3630ca80bc9058827da681544c3fda8af5d89f7308492ae58fa4b58d08ff41",
+  "说明": "只扩充导入台账；既有1份parse_requested=true保持，后续原生ingest仅上传并解析83份。未运行问答或读取金标。"
+}

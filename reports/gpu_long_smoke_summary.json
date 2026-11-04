@@ -1,0 +1,20 @@
+{
+  "native_parse_start_local": "2026-11-04 21:57:51 +0800",
+  "native_final_task_done_local": "2026-11-04 22:30:30 +0800",
+  "native_elapsed_wall_seconds": 1959.0,
+  "total_pages": 160,
+  "completed_task_intervals": 14,
+  "error_markers": 0,
+  "sampled_gpu_memory_max_mib": 3098,
+  "container_lifetime_memory_peak_bytes": 20183097344,
+  "sample_count": 177,
+  "resource_stage_report": "reports/gpu_long_smoke_resource_stages.json",
+  "model_file_manifest": "reports/deepdoc_model_files.json",
+  "说明": "全部160页成功；期间由1执行器逐步增至4，原生算法/单GPU/表格旋转未变，因此不是固定进程数的吞吐对照。GPU数字为约11秒间隔采样最大值；内存为本容器生命周期cgroup峰值。",
+  "native_metadata_chunk_count": 462,
+  "actual_unique_indexed_chunks": 455,
+  "text_chunks": 454,
+  "nontext_image_chunks": 1,
+  "chunk_accounting_report": "reports/long_smoke_chunk_accounting.json",
+  "native_limitation": "原生块ID仅由content+docID生成；任务中空文本图像ID出现22次，最终保留1个索引项。任务ID并集完整不等于原PDF图像无损保留；R0未修改ID算法。"
+}

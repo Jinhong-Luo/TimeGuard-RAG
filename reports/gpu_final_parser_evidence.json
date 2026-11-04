@@ -1,0 +1,16 @@
+{
+  "container_image_config": "sha256:2ad0977259ee97c3d48d0562e5c378d9471ab536b06eb5024f63758f0a639cd4",
+  "upstream_commit": "8090ffd8ba6098813d7f7ec2c4b8774f36c8423a",
+  "pdf_parser_source_sha256": "f12ad8b1e40e70c2841a4ae7f6373a09263decedf599bb11ee0ffc4743ffc475",
+  "table_auto_rotate_env": "true",
+  "table_auto_rotate_effective": true,
+  "default_verified_in_fixed_source": true,
+  "ocr_environment": {
+    "OCR_GPU_MEM_LIMIT_MB": "8192",
+    "OCR_ARENA_EXTEND_STRATEGY": "kSameAsRequested",
+    "OCR_GPUMEM_ARENA_SHRINKAGE": "1",
+    "OCR_INTRA_OP_NUM_THREADS": "2",
+    "OCR_INTER_OP_NUM_THREADS": "2"
+  },
+  "说明": "在最终8×1容器空队列就绪后只读记录白名单环境；env缺失按已核验固定源码默认true解释，不含账户或桥凭证。"
+}

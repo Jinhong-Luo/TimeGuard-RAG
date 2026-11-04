@@ -1,0 +1,9 @@
+{
+  "recorded_at_utc": "2026-11-04T14:44:51.015413+00:00",
+  "failed_dataset_id": "25ed085ed85611f199056d29a87deaaa",
+  "source_state_path": "data/ingestion.json",
+  "archived_state_path": "data/ingestion-gpu-arena2048-failed.original.json",
+  "state_sha256": "ab923fb4a39aa75cd0af36563dc046d9194738354e5714a96979ee8765abf6a1",
+  "duplicate_safety_archive": "data/ingestion-gpu-arena2048-failed.json",
+  "说明": "目标导入state原属于已记录的2048MiB显存失败尝试，逐字节核对现存备份后归档腾出新state路径；未删除原PDF、失败记录或原生知识库。"
+}

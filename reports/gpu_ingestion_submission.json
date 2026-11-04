@@ -1,0 +1,13 @@
+{
+  "recorded_at_utc": "2026-11-04T15:04:19.621540+00:00",
+  "dataset_id": "b7c95010d85711f1b0f349057592f04c",
+  "display_name": "TimeGuard-FinanceBench-R0-GPU-84",
+  "expected_documents": 84,
+  "retained_completed_documents": 1,
+  "new_parse_requests": 83,
+  "state_sha256_at_submission": "44aab5544a777e2721ac3407b53c22de4106bde7de1fad767fb8633891194570",
+  "corpus_profile_sha256": "6f71b781c510604de71bb89f3525214c5fe701f584dcdb96697566c138c73717",
+  "extension_report_sha256": "e1d7e24e44360974566de75bc7ad5ef31a41b55e1f2afd04a30519f4f1e7ba40",
+  "table_auto_rotate": true,
+  "说明": "来源审计通过后，原生ingest保留完成的160页文档并只补83份；现已全部上传并提交解析，完整84索引尚未完成。知识库显示名已改为正式项目名，算法与分块参数未变。"
+}
