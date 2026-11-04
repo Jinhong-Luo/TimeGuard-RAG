@@ -268,6 +268,10 @@ def reuse_judgements(source, identity, generation_manifest, gold, generated):
     original = source_manifest["identity"]
     generation_identity = generation_manifest["identity"]
     origin = generation_identity.get("reuse") or {}
+    selected_source = origin.get("selection_source_hashes") or {}
+    if (selected_source.get("model_reviews_manifest") != digest(source.with_suffix(".manifest.json").read_bytes())
+            or selected_source.get("model_reviews") != digest(source.read_bytes())):
+        raise ValueError("复用裁判不是冻结选档时绑定的那一版原始文件，拒绝自洽替换或修改")
     ignored = {"expected_ids", "generation_manifest_sha256", "generation_results_sha256"}
     if (generation_identity.get("split") != "all" or len(identity["expected_ids"]) != 150
             or origin.get("reused_count") != 39 or len(original["expected_ids"]) != 39
@@ -328,6 +332,8 @@ def main():
     args = parser.parse_args()
     if args.concurrency < 1:
         parser.error("--concurrency 必须为正整数")
+    if not math.isfinite(args.timeout) or args.timeout <= 0:
+        parser.error("--timeout 必须为有限正数")
     manifest_path, results_path = args.run / "manifest.json", args.run / "results.jsonl"
     manifest = read_json(manifest_path)
     ids = manifest["identity"]["query_ids"]
@@ -340,6 +346,7 @@ def main():
     identity = {
         "version": JUDGE_VERSION, "judge_type": "model", "model": MODEL, "effort": EFFORT,
         "transport": TRANSPORT, "expected_ids": ids, "concurrency": args.concurrency,
+        "request_timeout_seconds": args.timeout,
         "generation_manifest_sha256": digest(manifest_path.read_bytes()),
         "generation_results_sha256": digest(results_path.read_bytes()),
         "gold_sha256": digest(args.gold.read_bytes()), "prompt_sha256": digest(INSTRUCTIONS),

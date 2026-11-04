@@ -1,0 +1,327 @@
+{
+  "scope": "独立CPU烟测，非正式六档矩阵",
+  "official_matrix": false,
+  "started_at_utc": "2026-11-04T13:24:56.010124+00:00",
+  "dataset_id": "e89f5b36d84c11f1b11effc6441485b6",
+  "query_id": "smoke-document-reporting-period",
+  "question": "What company and reporting period does this document cover?",
+  "queries_sha256": "ae0b48be8d469654bd64d9cc38629daec0e312197ab42e6a4d18056ae7e29b7b",
+  "diagnostic_retrieval_count": 6,
+  "document_snapshot": [
+    {
+      "id": "e8a8b960d84c11f1b11effc6441485b6",
+      "name": "AMCOR_2022_8K_dated-2022-07-01.pdf",
+      "run": "DONE",
+      "chunk_count": 18,
+      "update_time": 1793796275487
+    }
+  ],
+  "retrieval_config": {
+    "page": 1,
+    "page_size": 6,
+    "similarity_threshold": 0.2,
+    "vector_similarity_weight": 0.3,
+    "top_k": 1024,
+    "rerank_id": "",
+    "keyword": false,
+    "use_kg": false,
+    "toc_enhance": false
+  },
+  "requested_concurrency": 1,
+  "gateway_concurrency": 2,
+  "timeouts_seconds": {
+    "ragflow_llm": 180,
+    "bridge": 300,
+    "outer_request": 300
+  },
+  "probe_source_sha256": "90f44cc7f93b42188ec527167d9535c69252625e963f7bccbe9b47c1e2d11627",
+  "upstream_lock_sha256": "65b449a09725bdf85e38249bcbd4e61bae339329e3d6638f7233fd6526aa74c1",
+  "results": [
+    {
+      "effort": "low",
+      "expected_model_alias": "gpt-6.1-sol@low@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:24:56.011644+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "2087d306d85311f186606f5660765f41",
+      "saved_effort_matches": true,
+      "session_id": "20a70456d85311f186606f5660765f41",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 13.482028072001413,
+      "audit_window": {
+        "byte_start": 688,
+        "byte_end": 1377,
+        "line_start": 1,
+        "line_end": 2,
+        "records": [
+          {
+            "request_id": "chatcmpl-14a42cb9c5834abeb41ac5bf599844e9",
+            "timestamp_utc": "2026-11-04T13:24:57.979841+00:00",
+            "requested_model": "gpt-6.1-sol@low",
+            "requested_effort": "low",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "low",
+            "elapsed_seconds": 11.295369447907433,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8503,
+              "outputTokens": 70,
+              "totalTokens": 8573,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 0
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:25:09.494318+00:00",
+      "answer_sha256": "5529d471b02db5f90801eef07bdd1a046eb01bbfbe0636e790306a5e1bba82fc",
+      "reference_sha256": "0d87519fbedb689045c36a2ca1600acb659317527a2ddd72dd64516ad9b6311b"
+    },
+    {
+      "effort": "medium",
+      "expected_model_alias": "gpt-6.1-sol@medium@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:25:09.496099+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "28571baad85311f186606f5660765f41",
+      "saved_effort_matches": true,
+      "session_id": "2859bb8ad85311f186606f5660765f41",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 9.401567990891635,
+      "audit_window": {
+        "byte_start": 1377,
+        "byte_end": 2074,
+        "line_start": 2,
+        "line_end": 3,
+        "records": [
+          {
+            "request_id": "chatcmpl-287e027e428b4c1d860c11ce3a2d5c17",
+            "timestamp_utc": "2026-11-04T13:25:10.292122+00:00",
+            "requested_model": "gpt-6.1-sol@medium",
+            "requested_effort": "medium",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "medium",
+            "elapsed_seconds": 8.473429665900767,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8503,
+              "outputTokens": 74,
+              "totalTokens": 8577,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 0
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:25:18.902789+00:00",
+      "answer_sha256": "970f730a551c671f819b725a73776c43ff8295523628f1300585361c899c08f2",
+      "reference_sha256": "0d87519fbedb689045c36a2ca1600acb659317527a2ddd72dd64516ad9b6311b"
+    },
+    {
+      "effort": "high",
+      "expected_model_alias": "gpt-6.1-sol@high@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:25:18.906073+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "2e02c4a0d85311f186606f5660765f41",
+      "saved_effort_matches": true,
+      "session_id": "2e11c57cd85311f186606f5660765f41",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 9.604125225916505,
+      "audit_window": {
+        "byte_start": 2074,
+        "byte_end": 2767,
+        "line_start": 3,
+        "line_end": 4,
+        "records": [
+          {
+            "request_id": "chatcmpl-787563748e73469fb75fd139e281bca2",
+            "timestamp_utc": "2026-11-04T13:25:19.693104+00:00",
+            "requested_model": "gpt-6.1-sol@high",
+            "requested_effort": "high",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "high",
+            "elapsed_seconds": 8.783171250019222,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8503,
+              "outputTokens": 153,
+              "totalTokens": 8656,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 78
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:25:28.512895+00:00",
+      "answer_sha256": "8e5777c1e4b7d06dc3157ec21a83bb6bf806a51cbfd8d89eb374741bbc95e47d",
+      "reference_sha256": "0d87519fbedb689045c36a2ca1600acb659317527a2ddd72dd64516ad9b6311b"
+    },
+    {
+      "effort": "xhigh",
+      "expected_model_alias": "gpt-6.1-sol@xhigh@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:25:28.515603+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "33c9a16ad85311f186606f5660765f41",
+      "saved_effort_matches": true,
+      "session_id": "33e8ddf0d85311f186606f5660765f41",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 16.682060107123107,
+      "audit_window": {
+        "byte_start": 2767,
+        "byte_end": 3465,
+        "line_start": 4,
+        "line_end": 5,
+        "records": [
+          {
+            "request_id": "chatcmpl-f0ddde4efe3a42e79b6f6e659d432a43",
+            "timestamp_utc": "2026-11-04T13:25:30.483661+00:00",
+            "requested_model": "gpt-6.1-sol@xhigh",
+            "requested_effort": "xhigh",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "xhigh",
+            "elapsed_seconds": 14.484285826794803,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8503,
+              "outputTokens": 550,
+              "totalTokens": 9053,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 483
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:25:45.200108+00:00",
+      "answer_sha256": "2fdcc8343280e18731147f5ea28bc3d2ddd8839d83d8ef7b36da0a821efa1103",
+      "reference_sha256": "0d87519fbedb689045c36a2ca1600acb659317527a2ddd72dd64516ad9b6311b"
+    },
+    {
+      "effort": "max",
+      "expected_model_alias": "gpt-6.1-sol@max@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:25:45.207955+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "3dcc53ced85311f186606f5660765f41",
+      "saved_effort_matches": true,
+      "session_id": "3dddef08d85311f186606f5660765f41",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 18.691505366005003,
+      "audit_window": {
+        "byte_start": 3465,
+        "byte_end": 4157,
+        "line_start": 5,
+        "line_end": 6,
+        "records": [
+          {
+            "request_id": "chatcmpl-5759d1bffc6e4a52a05c0ec66b21d9d4",
+            "timestamp_utc": "2026-11-04T13:25:46.896729+00:00",
+            "requested_model": "gpt-6.1-sol@max",
+            "requested_effort": "max",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "max",
+            "elapsed_seconds": 16.861250397982076,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8503,
+              "outputTokens": 586,
+              "totalTokens": 9089,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 516
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:26:03.906294+00:00",
+      "answer_sha256": "95d36960a7c1bd6bb4772b4330650a39f8674f0f47925e22f48ce2ab566e3667",
+      "reference_sha256": "0d87519fbedb689045c36a2ca1600acb659317527a2ddd72dd64516ad9b6311b"
+    },
+    {
+      "effort": "ultra",
+      "expected_model_alias": "gpt-6.1-sol@ultra@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:26:03.914840+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "48e5abacd85311f186606f5660765f41",
+      "saved_effort_matches": true,
+      "session_id": "490f3256d85311f186606f5660765f41",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 18.171538724098355,
+      "audit_window": {
+        "byte_start": 4157,
+        "byte_end": 4855,
+        "line_start": 6,
+        "line_end": 7,
+        "records": [
+          {
+            "request_id": "chatcmpl-1a2f26e059b14ff494b47eaeae38c327",
+            "timestamp_utc": "2026-11-04T13:26:06.112354+00:00",
+            "requested_model": "gpt-6.1-sol@ultra",
+            "requested_effort": "ultra",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "ultra",
+            "elapsed_seconds": 15.830028166994452,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8550,
+              "outputTokens": 441,
+              "totalTokens": 8991,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 373
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:26:22.091569+00:00",
+      "answer_sha256": "d5ee85e00c39314166d6c571db74f6914640350d0a33c0bdc714166efeb1493a",
+      "reference_sha256": "0d87519fbedb689045c36a2ca1600acb659317527a2ddd72dd64516ad9b6311b"
+    }
+  ],
+  "finished_at_utc": "2026-11-04T13:26:22.105445+00:00",
+  "all_efforts_verified": true,
+  "raw_private_report_sha256": "c57eb1592e6b75c6ee6720fb7db1a94ef03635539289c29b78ef1d931cf8c7c4",
+  "public_report_policy": "只保留汇总与请求元数据；原始答案和候选证据保存在Git忽略的本地目录。"
+}

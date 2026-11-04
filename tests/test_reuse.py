@@ -89,6 +89,14 @@ class ReuseTests(unittest.TestCase):
             with self.assertRaises(SystemExit) as exited:
                 judge.main()
             self.assertEqual(exited.exception.code, 0)
+            if root == self.dev:
+                # 模拟选档时冻结第一次完成的裁判文件，后续重跑不得更新旧选择。
+                selection = read_json(self.selection)
+                selected = selection["source_runs"][0]
+                if "model_reviews" not in selected:
+                    selected.update(model_reviews=digest((root / "model_reviews.jsonl").read_bytes()),
+                                    model_reviews_manifest=digest((root / "model_reviews.manifest.json").read_bytes()))
+                    write_json(self.selection, selection)
             return request.call_count
 
     def test_generation_reuses_39_only_calls_111_and_keeps_original_costs(self):
@@ -168,6 +176,43 @@ class ReuseTests(unittest.TestCase):
         self.generate_all()
         with self.assertRaises(ValueError):
             self.evaluate(self.all, ["--reuse-reviews", str(self.dev / "model_reviews.jsonl"), "--concurrency", "1"])
+
+    def test_judge_timeout_is_signed_and_cannot_change_on_resume_or_reuse(self):
+        self.evaluate(self.dev)
+        identity = read_json(self.dev / "model_reviews.manifest.json")["identity"]
+        self.assertEqual(identity["request_timeout_seconds"], 360)
+        with self.assertRaises(ValueError):
+            self.evaluate(self.dev, ["--timeout", "420"])
+        self.generate_all()
+        with self.assertRaises(ValueError):
+            self.evaluate(self.all, ["--reuse-reviews", str(self.dev / "model_reviews.jsonl"), "--timeout", "420"])
+
+    def test_reuse_rejects_self_consistent_review_replacement_after_selection(self):
+        self.evaluate(self.dev)
+        original_generation = (self.dev / "results.jsonl").read_bytes()
+        source = self.dev / "model_reviews.jsonl"
+        rows = read_jsonl(source)
+        rows[0]["answer_correct"] = False
+        parsed = json.loads(rows[0]["raw_judgement"])
+        parsed["answer_correct"] = False
+        rows[0]["raw_judgement"] = json.dumps(parsed)
+        write_jsonl(source, rows)
+        # 生成端只核对选择元数据，不读取裁判；真正的旧裁判文件绑定在裁判端核验。
+        self.generate_all()
+        self.assertEqual(original_generation, (self.dev / "results.jsonl").read_bytes())
+        with self.assertRaisesRegex(ValueError, "冻结选档"):
+            self.evaluate(self.all, ["--reuse-reviews", str(source)])
+
+    def test_reuse_rejects_changed_review_manifest_bytes(self):
+        self.evaluate(self.dev)
+        source = self.dev / "model_reviews.jsonl"
+        manifest_path = source.with_suffix(".manifest.json")
+        manifest = read_json(manifest_path)
+        manifest["created_at_utc"] = "另一次自洽裁判运行"
+        write_json(manifest_path, manifest)
+        self.generate_all()
+        with self.assertRaisesRegex(ValueError, "冻结选档"):
+            self.evaluate(self.all, ["--reuse-reviews", str(source)])
 
     def test_bad_saved_chat_effort_is_rejected_on_resume(self):
         manifest_path = self.dev / "manifest.json"

@@ -1,0 +1,50 @@
+{
+  "version": "timeguard-r0-runtime-v1",
+  "status": "最终统一预算已通过一次low原生问答；正式完整GPU索引尚未冻结",
+  "bridge_timeout_seconds": 300,
+  "ragflow_llm_timeout_seconds": 330,
+  "ragflow_llm_max_retries": 0,
+  "openai_sdk_version": "2.41.0",
+  "openai_sdk_max_retries": 2,
+  "sdk_max_attempts": 3,
+  "outer_request_timeout_seconds": 1200,
+  "judge_request_timeout_seconds": 360,
+  "generation_concurrency": 2,
+  "judge_concurrency": 2,
+  "bridge_concurrency": 2,
+  "retry_budget_seconds": 1110,
+  "retry_budget_formula": "3 × 330 + 2 × 60；另留90秒用于原生处理与调度。",
+  "retry_budget_scope": "非流式正常网络下保守预算；SDK超时按连接/读写阶段计，不是严格的请求总墙钟上限。桥启动和排队也计入外层等待。",
+  "native_zero_retries_means": "range(self.max_retries + 1)；0表示保留1次正常调用，不代表零次调用。",
+  "sdk_retry_conditions": [
+    "连接错误",
+    "超时",
+    "HTTP408",
+    "HTTP409",
+    "HTTP429",
+    "HTTP>=500",
+    "x-should-retry响应头"
+  ],
+  "sdk_backoff_seconds": [
+    0.5,
+    1.0
+  ],
+  "sdk_retry_after_max_seconds": 60,
+  "native_extra_retries_disabled": true,
+  "sdk_retries_disabled": false,
+  "cache_audit": "原生非流式dialog_service调用LLMBundle.async_chat，未发现回答缓存读取；正式逐批桥审计另核对真实调用次数。",
+  "latency_conditions": "完整GPU索引先做150题纯检索预热；正式延迟不是冷启动延迟。不得混用CPU烟测质量结果。",
+  "sources": [
+    "https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/rag/llm/chat_model.py#L355-L374",
+    "https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/rag/llm/chat_model.py#L1018-L1030",
+    "https://github.com/infiniflow/ragflow/blob/8090ffd8ba6098813d7f7ec2c4b8774f36c8423a/api/db/services/llm_service.py#L492-L532",
+    "https://github.com/openai/openai-python/blob/v2.41.0/src/openai/_base_client.py"
+  ],
+  "installed_source_sha256": {
+    "openai_base_client": "de8a3777d353122a242dd7376bf814668d7557675b81fe36b994d3f65a598c83",
+    "ragflow_llm_service": "b00f07b3e6720bafd6dfb4cfa95f8883e9ec0c66fde84962519b7dc90bd8a0c1",
+    "ragflow_dialog_service": "38a875d4167248f9858f12d7f00feef333072e449de8b9da73cfb804db00cdbb"
+  },
+  "final_budget_smoke": "reports/rag-final-budget-smoke.json",
+  "final_budget_smoke_sha256": "c1caaf1b3550b7255dd0196eb6975afc9c64fb1722f464497c4f8818db28047e"
+}

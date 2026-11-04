@@ -20,12 +20,15 @@ def validate_model_reviews(record, ids):
     signature = manifest.get("signature")
     required = {"version", "judge_type", "model", "effort", "transport", "expected_ids",
                 "generation_manifest_sha256", "generation_results_sha256", "gold_sha256",
-                "prompt_sha256", "code_sha256", "schema"}
+                "prompt_sha256", "code_sha256", "schema", "concurrency", "request_timeout_seconds"}
     if (not required.issubset(identity) or digest(identity) != signature
             or identity["expected_ids"] != ids
             or identity["judge_type"] != "model" or identity["version"] != judge.JUDGE_VERSION
             or identity["model"] != judge.MODEL or identity["effort"] != judge.EFFORT
             or identity["transport"] != judge.TRANSPORT or identity["schema"] != judge.SCHEMA
+            or type(identity["concurrency"]) is not int or identity["concurrency"] < 1
+            or type(identity["request_timeout_seconds"]) not in (int, float)
+            or not math.isfinite(identity["request_timeout_seconds"]) or identity["request_timeout_seconds"] <= 0
             or identity["prompt_sha256"] != digest(judge.INSTRUCTIONS)
             or identity["code_sha256"] != digest(Path(judge.__file__).read_bytes())):
         raise ValueError("缺少有效的当前固定模型裁判清单，或模型、强度、提示、代码与评分口径不符")
@@ -34,6 +37,10 @@ def validate_model_reviews(record, ids):
            for key in ("gold_sha256", "generation_manifest_sha256", "generation_results_sha256")):
         raise ValueError("裁判的金标或生成文件摘要无效")
     sources = record.get("source_hashes") or {}
+    if any(not isinstance(sources.get(key), str) or len(sources[key]) != 64
+           or any(char not in "0123456789abcdef" for char in sources[key])
+           for key in ("model_reviews_manifest", "model_reviews")):
+        raise ValueError("选择报告必须绑定本次裁判清单和判断文件的原始字节摘要")
     if (identity["generation_manifest_sha256"] != sources.get("manifest")
             or identity["generation_results_sha256"] != sources.get("results")):
         raise ValueError("模型裁判并非针对这份生成清单和结果，拒绝复用其他运行判断")
@@ -199,7 +206,9 @@ def main():
                           model_reviews=read_jsonl(root / "model_reviews.jsonl"),
                           generated_rows=read_jsonl(root / "results.jsonl"),
                           source_hashes={"manifest": digest((root / "manifest.json").read_bytes()),
-                                         "results": digest((root / "results.jsonl").read_bytes())})
+                                         "results": digest((root / "results.jsonl").read_bytes()),
+                                         "model_reviews_manifest": digest((root / "model_reviews.manifest.json").read_bytes()),
+                                         "model_reviews": digest((root / "model_reviews.jsonl").read_bytes())})
         records.append(record)
     result = choose(records, args.tolerance, args.review_source)
     write_json(args.output, result)

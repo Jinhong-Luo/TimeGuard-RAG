@@ -115,6 +115,7 @@ class ModelSelectionTests(unittest.TestCase):
             sources = {"manifest": digest(manifest), "results": digest(generated)}
             judge_identity = {"version": judge.JUDGE_VERSION, "judge_type": "model", "model": judge.MODEL,
                               "effort": judge.EFFORT, "transport": judge.TRANSPORT, "expected_ids": ids,
+                              "concurrency": 2, "request_timeout_seconds": 360,
                               "generation_manifest_sha256": sources["manifest"], "generation_results_sha256": sources["results"],
                               "gold_sha256": digest("固定金标"), "prompt_sha256": digest(judge.INSTRUCTIONS),
                               "code_sha256": digest(Path(judge.__file__).read_bytes()), "schema": judge.SCHEMA}
@@ -130,6 +131,8 @@ class ModelSelectionTests(unittest.TestCase):
                                              if key != "citations"},
                         "bridge_metadata": {"transport": judge.TRANSPORT, "api_equivalent": False,
                                             "actual_model": judge.MODEL, "reasoning_effort": judge.EFFORT}} for ident in ids]
+            sources.update(model_reviews_manifest=digest({"identity": judge_identity, "signature": signature}),
+                           model_reviews=digest(reviews))
             records.append({"run": effort, "manifest": manifest,
                             "summary": {"completed": 39, "denominator": 39, "reviewed": 0, "answer_accuracy": None,
                                         "mean_seconds": seconds, "status_counts": {"ok": 39}},
@@ -254,6 +257,22 @@ class ModelSelectionTests(unittest.TestCase):
                     for row in record["model_reviews"]:
                         row["judge_run_signature"] = signature
             with self.subTest(target=target), self.assertRaises(ValueError):
+                choose(records, review_source="model")
+
+    def test_rejects_different_or_missing_judge_timeout(self):
+        for value in (420, None):
+            records = self.records()
+            record = records[0]
+            identity = record["judge_manifest"]["identity"]
+            if value is None:
+                identity.pop("request_timeout_seconds")
+            else:
+                identity["request_timeout_seconds"] = value
+            signature = digest(identity)
+            record["judge_manifest"]["signature"] = signature
+            for row in record["model_reviews"]:
+                row["judge_run_signature"] = signature
+            with self.subTest(value=value), self.assertRaises(ValueError):
                 choose(records, review_source="model")
 
 

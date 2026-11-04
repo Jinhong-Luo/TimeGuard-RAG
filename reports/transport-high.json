@@ -1,0 +1,46 @@
+{
+  "model": "gpt-6.1-sol@high@codex_local@OpenAI-API-Compatible",
+  "verified_efforts": [
+    "high"
+  ],
+  "actual_model": "gpt-6.1-sol",
+  "transport": "codex-app-server-structured-output-v1",
+  "api_equivalent": false,
+  "evidence_file": "reports/rag-native-effort-smoke.json",
+  "evidence_sha256": "13c3e10ffc77693fb62d16ac235321a8e7550c112d30b19fe948d8e19c0aa0ea",
+  "scope": "仅验证别名与强度真实传递，CPU小文档烟测不进入正式GPU质量矩阵",
+  "status": "ok",
+  "model_inference_verified": true,
+  "reference_chunk_count": 6,
+  "audit_window": {
+    "byte_start": 2074,
+    "byte_end": 2767,
+    "line_start": 3,
+    "line_end": 4,
+    "records": [
+      {
+        "request_id": "chatcmpl-787563748e73469fb75fd139e281bca2",
+        "timestamp_utc": "2026-11-04T13:25:19.693104+00:00",
+        "requested_model": "gpt-6.1-sol@high",
+        "requested_effort": "high",
+        "actual_model": "gpt-6.1-sol",
+        "reasoning_effort": "high",
+        "elapsed_seconds": 8.783171250019222,
+        "success": true,
+        "error_type": null,
+        "http_status": 200,
+        "usage": {
+          "inputTokens": 8503,
+          "outputTokens": 153,
+          "totalTokens": 8656,
+          "cachedInputTokens": 3456,
+          "reasoningOutputTokens": 78
+        },
+        "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+        "instruction_source_sha256": {
+          "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+        }
+      }
+    ]
+  }
+}

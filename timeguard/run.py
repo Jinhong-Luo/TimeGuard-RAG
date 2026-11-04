@@ -95,6 +95,10 @@ def reuse_dev(source, selection_path, identity, queries):
         raise ValueError("复用源缺少真实运行墙钟记录，不能把复用成本当零")
     proof = {"source_run": str(source), "manifest_sha256": manifest_hash, "results_sha256": result_hash,
              "selection_sha256": digest(Path(selection_path).read_bytes()), "selection_review_source": mode,
+             # 仅保存选择报告的摘要元数据；生成端不读取裁判文件或金标。
+             "selection_source_hashes": next(row for row in selection["source_runs"]
+                                               if row.get("manifest") == manifest_hash and row.get("results") == result_hash
+                                               and row.get("effort") == identity["effort"]),
              "execution_history_sha256": digest(history_path.read_bytes()),
              "source_wall_time_seconds": sum(row["wall_time_seconds"] for row in history),
              "reused_count": 39, "new_count": 111,

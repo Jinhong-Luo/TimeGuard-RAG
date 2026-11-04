@@ -1,0 +1,97 @@
+{
+  "scope": "最终统一预算单题验证；复用CPU已完成烟测索引，不计正式GPU成绩",
+  "official_matrix": false,
+  "started_at_utc": "2026-11-04T13:45:48.915845+00:00",
+  "dataset_id": "e89f5b36d84c11f1b11effc6441485b6",
+  "query_id": "smoke-document-reporting-period",
+  "question": "What company and reporting period does this document cover?",
+  "queries_sha256": "ae0b48be8d469654bd64d9cc38629daec0e312197ab42e6a4d18056ae7e29b7b",
+  "diagnostic_retrieval_count": 6,
+  "document_snapshot": [
+    {
+      "id": "e8a8b960d84c11f1b11effc6441485b6",
+      "name": "AMCOR_2022_8K_dated-2022-07-01.pdf",
+      "run": "DONE",
+      "chunk_count": 18,
+      "update_time": 1793796275487
+    }
+  ],
+  "retrieval_config": {
+    "page": 1,
+    "page_size": 6,
+    "similarity_threshold": 0.2,
+    "vector_similarity_weight": 0.3,
+    "top_k": 1024,
+    "rerank_id": "",
+    "keyword": false,
+    "use_kg": false,
+    "toc_enhance": false
+  },
+  "requested_concurrency": 1,
+  "gateway_concurrency": 2,
+  "timeouts_seconds": {
+    "ragflow_llm": 330,
+    "bridge": 300,
+    "outer_request": 1200,
+    "ragflow_max_retries": 0,
+    "sdk_max_retries": 2
+  },
+  "probe_source_sha256": "c421a3b0c998ba22424f7c4782f74659a7ac2150df1cc2b38f18224b4cc1fc51",
+  "upstream_lock_sha256": "65b449a09725bdf85e38249bcbd4e61bae339329e3d6638f7233fd6526aa74c1",
+  "results": [
+    {
+      "effort": "low",
+      "expected_model_alias": "gpt-6.1-sol@low@codex_local@OpenAI-API-Compatible",
+      "started_at_utc": "2026-11-04T13:45:48.916462+00:00",
+      "status": "ok",
+      "model_inference_verified": true,
+      "completion_attempted": true,
+      "chat_id": "0b0d01bad85611f199056d29a87deaaa",
+      "saved_effort_matches": true,
+      "session_id": "0b10310ad85611f199056d29a87deaaa",
+      "reference_chunk_count": 6,
+      "elapsed_seconds": 7.333024778869003,
+      "audit_window": {
+        "byte_start": 4855,
+        "byte_end": 5543,
+        "line_start": 7,
+        "line_end": 8,
+        "records": [
+          {
+            "request_id": "chatcmpl-ba19379fdd4147cfb8bd256784d07e62",
+            "timestamp_utc": "2026-11-04T13:45:49.948293+00:00",
+            "requested_model": "gpt-6.1-sol@low",
+            "requested_effort": "low",
+            "actual_model": "gpt-6.1-sol",
+            "reasoning_effort": "low",
+            "elapsed_seconds": 6.273491920903325,
+            "success": true,
+            "error_type": null,
+            "http_status": 200,
+            "usage": {
+              "inputTokens": 8577,
+              "outputTokens": 77,
+              "totalTokens": 8654,
+              "cachedInputTokens": 3456,
+              "reasoningOutputTokens": 0
+            },
+            "bridge_source_sha256": "605814164f242a586ca24dc3f004ca1b8cef366313c0046f272db15ed4e6e310",
+            "instruction_source_sha256": {
+              "/home/luojinghong/.codex/AGENTS.md": "3228241685b99d674d9ea00185aad93da47b64627edc58e1953e7da8f373b849"
+            }
+          }
+        ]
+      },
+      "finished_at_utc": "2026-11-04T13:45:56.249883+00:00",
+      "answer_sha256": "0687c0c56481737ad1ae5adec2aa4c6b5a22927621af82a1bb859e7d8d893350",
+      "reference_sha256": "5a26df75827f99d8c0c17c5c48ad25d828ba4fc173bdcd00aca7ed2da3f7ddc8"
+    }
+  ],
+  "finished_at_utc": "2026-11-04T13:45:56.251046+00:00",
+  "all_efforts_verified": true,
+  "raw_private_report_sha256": "ee4f077b93321de680449d537a9689e0dfafcd20021b439d8631973f59a48a33",
+  "runtime_environment_verified": {
+    "LLM_TIMEOUT_SECONDS_equals_330": true,
+    "LLM_MAX_RETRIES_equals_0": true
+  }
+}

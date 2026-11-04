@@ -1,0 +1,40 @@
+{
+  "variant": "R0",
+  "base_url": "http://127.0.0.1:19380",
+  "model": "gpt-6.1-sol@low@codex_local@OpenAI-API-Compatible",
+  "dataset_ids": [],
+  "retrieval": {
+    "page": 1,
+    "page_size": 6,
+    "similarity_threshold": 0.2,
+    "vector_similarity_weight": 0.3,
+    "top_k": 1024,
+    "rerank_id": "",
+    "keyword": false,
+    "use_kg": false,
+    "toc_enhance": false
+  },
+  "llm_setting": {},
+  "efforts_to_probe": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max",
+    "ultra"
+  ],
+  "request_timeout_seconds": 1200,
+  "runtime_conditions": {
+    "version": "timeguard-r0-runtime-v1",
+    "bridge_timeout_seconds": 300,
+    "ragflow_llm_timeout_seconds": 330,
+    "ragflow_llm_max_retries": 0,
+    "openai_sdk_version": "2.41.0",
+    "openai_sdk_max_retries": 2,
+    "outer_request_timeout_seconds": 1200,
+    "judge_request_timeout_seconds": 360,
+    "generation_concurrency": 2,
+    "judge_concurrency": 2,
+    "latency_conditions": "完整GPU索引先做150题纯检索预热；正式延迟不是冷启动延迟。不得混用CPU烟测质量结果。"
+  }
+}
