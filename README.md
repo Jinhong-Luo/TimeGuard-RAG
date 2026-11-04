@@ -18,7 +18,7 @@
 | RAGFlow | `v0.27.3` / `8090ffd8ba6098813d7f7ec2c4b8774f36c8423a` |
 | FinanceBench | `cc39aeb4afdf33909ee1412188bf89035950c2eb` |
 | 本地英文 Embedding | `BAAI/bge-small-en-v1.5` / `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a` |
-| TEI CPU 镜像 | 上游指定的 `infiniflow/text-embeddings-inference:cpu-1.8` |
+| TEI CPU 镜像 | 同版本官方轻量镜像 `ghcr.io/huggingface/text-embeddings-inference:cpu-1.8`，摘要见 `deploy/image-lock.json` |
 | 基础生成模型 | `gpt-6.1-sol`，以实际可调用入口返回的标识为准 |
 
 镜像 tag 下载后还应记录 `RepoDigests`；源码固定不能替代镜像内容校验。使用 Codex 登录桥接时应在运行配置和报告中注明 `model_transport`，与原生商用 API 的结果分开，不声称两者完全等价。
@@ -91,7 +91,7 @@ python3 -m timeguard.run --split dev --effort low --transport-proof runs/transpo
 python3 -m timeguard.score runs/r0-low-dev
 ```
 
-使用别名时保存每档真实别名和共同基础模型，报告其传输方式；当前 `select` 严格要求配置除 effort 外相同，因此别名比较应先做一致性审计，不能强行跳过检查。
+使用别名时保存每档真实别名和共同基础模型，报告其传输方式。`select` 只允许严格匹配的 `gpt-6.1-sol@档位` 或 RAGFlow 完整标识 `gpt-6.1-sol@档位@实例@提供商`；只消去已核实的档位差异，其他配置与索引快照必须完全一致。
 
 ## 评分与选优
 
@@ -117,7 +117,7 @@ python3 -m unittest discover -s tests -v
 python3 -m compileall -q timeguard
 ```
 
-目前 9 项离线测试通过，覆盖公司隔离、问题与金标分离、零召回/失败/未完成样本留分母、页码基准、重复样本拒绝及人工复核完整性。实际模型调用与服务运行状态以主机报告为准。问题与处理记录见 [实现记录](docs/实现记录.md)。
+目前 18 项离线测试通过，覆盖公司隔离、问题与金标分离、零召回/失败/未完成样本留分母、页码基准、重复样本拒绝、人工复核完整性，以及选优必须覆盖完整开发集和所有候选档位。实际模型调用与服务运行状态以主机报告为准。问题与处理记录见 [实现记录](docs/实现记录.md)。
 
 ## 核查依据
 
@@ -127,3 +127,16 @@ python3 -m compileall -q timeguard
 - [FinanceBench 数据与许可证](https://github.com/patronus-ai/financebench/tree/cc39aeb4afdf33909ee1412188bf89035950c2eb)、[BGE 模型卡](https://huggingface.co/BAAI/bge-small-en-v1.5)、[TEI 官方说明](https://github.com/huggingface/text-embeddings-inference)。
 
 上游源码与原始数据使用各自许可证。本仓库保留其固定版本和来源，不把复用能力包装成个人从零实现。
+
+## 仓库内 Codex 登录桥接
+
+桥接代码已随仓库提供，使用服务器已有 Codex ChatGPT 登录，不提取登录令牌。先预检，再做普通回答、虚拟业务工具与 JSON 裁判三个烟测：
+
+```bash
+python3 model_bridge/codex_bridge.py --check
+python3 model_bridge/codex_bridge.py --port 18861 --runtime-dir /home/luojinghong/LLM_Proj/.bridge-runtime
+# 在另一个终端运行；默认只测 low。
+python3 model_bridge/probe.py --base-url http://127.0.0.1:18861/v1 --effort low --output reports/bridge-smoke-low.json
+```
+
+完整六档链路验证加 `--all-efforts`。输出包含实际思考强度、模型名、耗时、token 与失败分类；它只是接入烟测，不能替代业务基线或据此选出最佳档位。固定标记 `codex-app-server-structured-output-v1`，不称为原生模型 API 等价实验。详细限制、Docker 网关接入和登录问题记录见 [桥接说明](model_bridge/README.md)。

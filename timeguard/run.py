@@ -58,6 +58,8 @@ def main():
     if len({q["id"] for q in queries}) != len(queries):
         raise ValueError("查询题号重复")
     queries = [q for q in queries if args.split == "all" or q["split"] == args.split]
+    full_split_count = len(queries)
+    full_split_query_ids_sha256 = digest([q["id"] for q in queries])
     if args.limit is not None:
         if args.limit <= 0:
             raise ValueError("--limit 必须大于 0")
@@ -68,6 +70,9 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     identity = {"config": config, "queries_sha256": digest(Path(args.queries).read_bytes()),
                 "query_ids": [q["id"] for q in queries], "split": args.split,
+                "scope": "小样本连通测试" if args.limit is not None else "完整分组评测",
+                "full_split_count": full_split_count,
+                "full_split_query_ids_sha256": full_split_query_ids_sha256,
                 "effort": args.effort, "retrieval_only": args.retrieval_only,
                 "corpus_sha256": ingestion["corpus_sha256"], "embedding_model": ingestion["embedding_model"],
                 "upstream": read_json("upstream.lock.json"), "transport_proof": proof}

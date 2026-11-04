@@ -1,4 +1,6 @@
 .env
+.env.*
+!.env.example
 .venv/
 __pycache__/
 *.pyc
@@ -9,3 +11,4 @@ runs/
 .cache/
 deploy/runtime.env
 deploy/compose.generated.json
+deploy/*.runtime.json
