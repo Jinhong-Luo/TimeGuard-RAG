@@ -1,0 +1,1500 @@
+{
+  "version": "timeguard-native-core-baseline-v1",
+  "status": "completed",
+  "generated_at_beijing": "2026-11-09T19:46:25.442395+08:00",
+  "upstream": "RAGFlow v0.27.3 / 8090ffd8ba6098813d7f7ec2c4b8774f36c8423a",
+  "model_transport": "codex-app-server-structured-output-v1",
+  "generation_effort": "low",
+  "judge_effort": "medium",
+  "scope": {
+    "core_arms": [
+      "plain",
+      "keyword",
+      "rerank",
+      "metadata_auto",
+      "metadata_all",
+      "agent_low",
+      "combined"
+    ],
+    "run_paths": {
+      "plain": "plain-dev",
+      "keyword": "keyword-core-dev",
+      "rerank": "rerank-recovered-core-dev",
+      "metadata_auto": "metadata_auto-core-dev",
+      "metadata_all": "metadata_all-core-dev",
+      "agent_low": "agent_low-core-dev",
+      "combined": "combined-core-dev"
+    },
+    "full150_requested": false,
+    "status": "dev_complete",
+    "decision_origin": "用户要求除Agentic medium/high/ultra三组外，其余配置都完整运行",
+    "full150_policy": "用户明确选择先汇总七组39题，150题暂缓；本轮未发新增111题。",
+    "combination_note": "组合组本身采用medium工具循环，单独保留完整39题结果"
+  },
+  "core_runs": [
+    {
+      "run": "plain-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "true": 10,
+        "false": 29
+      },
+      "judge_missing": 0,
+      "judged_coverage": 1.0,
+      "known_subset_accuracy": 0.2564102564102564,
+      "full_accuracy": 0.2564102564102564,
+      "correct_fraction_lower_bound": 0.2564102564102564,
+      "mean_seconds": 8.980698982301432,
+      "native_retrieval_calls": 39,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "7ac539729533f41d27604f9f8a43f0767e5153bbd8ffbe52c477f5e2fe02c310",
+      "reviews_sha256": "8263122fd6e00d21cb5999a1a95b0816e183ce2a563e31723a5f3bd49ce1608b",
+      "correct": 10,
+      "incorrect": 29,
+      "unknown": 0,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.2564102564102564,
+      "arithmetic_upper_bound": 0.2564102564102564,
+      "label": "普通原生问答",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 419400,
+        "wall_seconds": 235.48744372697547,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 355134,
+        "wall_seconds": 183.02486607409082,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "true": 9,
+          "false": 25,
+          "unknown": 5
+        },
+        "citation_support": {
+          "false": 28,
+          "unknown": 10,
+          "true": 1
+        }
+      }
+    },
+    {
+      "run": "keyword-core-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "false": 25,
+        "true": 14
+      },
+      "judge_missing": 0,
+      "judged_coverage": 1.0,
+      "known_subset_accuracy": 0.358974358974359,
+      "full_accuracy": 0.358974358974359,
+      "correct_fraction_lower_bound": 0.358974358974359,
+      "mean_seconds": 14.721356220029962,
+      "native_retrieval_calls": 39,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "5d630c5a2c6a2643aef7e3b1b0aaf9035d63ec278b034e67acb3e1af0a7f300b",
+      "reviews_sha256": "1359df89da94edd4606139d1b1deac441fcf2b6e83c6bb572319d9b7bea0be3e",
+      "correct": 14,
+      "incorrect": 25,
+      "unknown": 0,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.358974358974359,
+      "arithmetic_upper_bound": 0.358974358974359,
+      "label": "原生关键词增强",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 78,
+        "failed_calls": 0,
+        "tokens": 614599,
+        "wall_seconds": 348.3651790441945,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 78
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 350857,
+        "wall_seconds": 183.83419863483869,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "false": 20,
+          "true": 12,
+          "unknown": 7
+        },
+        "citation_support": {
+          "unknown": 15,
+          "false": 24
+        }
+      }
+    },
+    {
+      "run": "rerank-recovered-core-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "false": 35,
+        "true": 4
+      },
+      "judge_missing": 0,
+      "judged_coverage": 1.0,
+      "known_subset_accuracy": 0.10256410256410256,
+      "full_accuracy": 0.10256410256410256,
+      "correct_fraction_lower_bound": 0.10256410256410256,
+      "mean_seconds": 47.39152721243982,
+      "native_retrieval_calls": 39,
+      "native_agent_events": {},
+      "native_rerank_calls": 39,
+      "metadata_filter_calls": 0,
+      "results_sha256": "c35a08d892b50f34b653797f8393b62deab7e640b14bff837ca4730961be7ecb",
+      "reviews_sha256": "199aff2219afc8492c0e4d69fc31172da62a863482a07282849c4b5b2df36120",
+      "recovery": {
+        "source_run": "rerank-core-dev",
+        "manifest_sha256": "79d05bbf2d15fc89f77acd661a0dbaf6e87d471ca403e3c40f37d04ad97fd180",
+        "results_sha256": "d61044d7cbd2c2a9674f86b52901c82c2b3081ca3839bcbfb4bfe97c12b1bff1",
+        "original_planned": 39,
+        "original_completed": 32,
+        "original_status_counts": {
+          "ok": 30,
+          "request_error": 2
+        },
+        "original_missing": 7,
+        "reused_success_count": 30,
+        "new_count": 9,
+        "reason": "专用SSH代理失效，已记录恢复证据；原失败和未发题仍留在原实验的39题分母。"
+      },
+      "correct": 4,
+      "incorrect": 35,
+      "unknown": 0,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.10256410256410256,
+      "arithmetic_upper_bound": 0.10256410256410256,
+      "label": "原生重排（分词截断兼容）",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 8,
+        "failed_calls": 0,
+        "tokens": 62307,
+        "wall_seconds": 298.5317954621278,
+        "model_identity_verified": true,
+        "new_count": 9,
+        "reused_count": 30,
+        "reused_source_calls": 18,
+        "reused_source_tokens": 101568,
+        "reused_source_wall_seconds": 1623.390306974994,
+        "attributable_calls_with_reuse": 26
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 314616,
+        "wall_seconds": 222.0955830849707,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "unknown": 24,
+          "true": 3,
+          "false": 12
+        },
+        "citation_support": {
+          "unknown": 30,
+          "true": 1,
+          "false": 8
+        }
+      }
+    },
+    {
+      "run": "metadata_auto-core-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "false": 25,
+        "true": 13,
+        "unknown": 1
+      },
+      "judge_missing": 0,
+      "judged_coverage": 0.9743589743589743,
+      "known_subset_accuracy": 0.34210526315789475,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.3333333333333333,
+      "mean_seconds": 15.399095709877423,
+      "native_retrieval_calls": 39,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 39,
+      "results_sha256": "7201d1704bc5a913e351f783b2c0e13c75ae7780f3d144ae0fb7b040ca7879c6",
+      "reviews_sha256": "c32cea42c8240801e2df6c58982655dd8552072b15a9771532738a5d874a0cea",
+      "correct": 13,
+      "incorrect": 25,
+      "unknown": 1,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.3333333333333333,
+      "arithmetic_upper_bound": 0.358974358974359,
+      "label": "公司字段半自动过滤",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 78,
+        "failed_calls": 0,
+        "tokens": 685141,
+        "wall_seconds": 371.60971286403947,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 78
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 359792,
+        "wall_seconds": 182.5067327739671,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "false": 19,
+          "true": 13,
+          "unknown": 7
+        },
+        "citation_support": {
+          "unknown": 13,
+          "false": 26
+        }
+      }
+    },
+    {
+      "run": "metadata_all-core-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "false": 22,
+        "true": 15,
+        "unknown": 2
+      },
+      "judge_missing": 0,
+      "judged_coverage": 0.9487179487179487,
+      "known_subset_accuracy": 0.40540540540540543,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.38461538461538464,
+      "mean_seconds": 15.604616344082528,
+      "native_retrieval_calls": 39,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 39,
+      "results_sha256": "a5920a1c9af8c168ab8e214676368c894d7da449bee0bf2d0e2bd9a379cf37f2",
+      "reviews_sha256": "88f8c93ee59eaa10092dc3a2b04219ce246056d9bcc46aaf67b81e191e5d4417",
+      "correct": 15,
+      "incorrect": 22,
+      "unknown": 2,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.38461538461538464,
+      "arithmetic_upper_bound": 0.4358974358974359,
+      "label": "原生全自动元数据过滤",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 78,
+        "failed_calls": 0,
+        "tokens": 665990,
+        "wall_seconds": 373.6434436419513,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 78
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 353082,
+        "wall_seconds": 184.68260512291454,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "false": 14,
+          "true": 15,
+          "unknown": 10
+        },
+        "citation_support": {
+          "unknown": 16,
+          "false": 21,
+          "true": 2
+        }
+      }
+    },
+    {
+      "run": "agent_low-core-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "false": 29,
+        "true": 10
+      },
+      "judge_missing": 0,
+      "judged_coverage": 1.0,
+      "known_subset_accuracy": 0.2564102564102564,
+      "full_accuracy": 0.2564102564102564,
+      "correct_fraction_lower_bound": 0.2564102564102564,
+      "mean_seconds": 33.27103757472016,
+      "native_retrieval_calls": 39,
+      "native_agent_events": {
+        "rag": 39,
+        "formalize": 39
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "1f5b1da21f7c81aa19424372bfbd6666276d567702129bd763f1cc099eeebdda",
+      "reviews_sha256": "858bd362632fa7792f19f34fd0ab33bce08bb2baaf123373027e0722cdfd0cf7",
+      "correct": 10,
+      "incorrect": 29,
+      "unknown": 0,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.2564102564102564,
+      "arithmetic_upper_bound": 0.2564102564102564,
+      "label": "原生low模式",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 156,
+        "failed_calls": 0,
+        "tokens": 1070802,
+        "wall_seconds": 749.3503343858756,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 156
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 339423,
+        "wall_seconds": 183.3704279139638,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "unknown": 9,
+          "false": 21,
+          "true": 9
+        },
+        "citation_support": {
+          "unknown": 18,
+          "false": 19,
+          "true": 2
+        }
+      }
+    },
+    {
+      "run": "combined-core-dev",
+      "planned": 39,
+      "completed": 39,
+      "missing": 0,
+      "statuses": {
+        "ok": 39
+      },
+      "model_judgements": {
+        "true": 20,
+        "false": 19
+      },
+      "judge_missing": 0,
+      "judged_coverage": 1.0,
+      "known_subset_accuracy": 0.5128205128205128,
+      "full_accuracy": 0.5128205128205128,
+      "correct_fraction_lower_bound": 0.5128205128205128,
+      "mean_seconds": 126.78029747161035,
+      "native_retrieval_calls": 318,
+      "native_agent_events": {
+        "rag": 39,
+        "formalize": 39
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 39,
+      "results_sha256": "27213b2db29ce0fe3edfdeb88fccb223015a38d139f54be63857fe5dfd3ab8c1",
+      "reviews_sha256": "c4e51577989c17125d52f739abf26a2e75ce5bb65c6cf2804b93e5c0d6bcbd10",
+      "correct": 20,
+      "incorrect": 19,
+      "unknown": 0,
+      "missing_reviews": 0,
+      "arithmetic_lower_bound": 0.5128205128205128,
+      "arithmetic_upper_bound": 0.5128205128205128,
+      "label": "原生过滤与Agentic组合配置",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 600,
+        "failed_calls": 2,
+        "tokens": 10600326,
+        "wall_seconds": 2841.2945672411006,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 600
+      },
+      "judge": {
+        "returncode": 0,
+        "actual_calls": 39,
+        "failed_calls": 0,
+        "tokens": 341629,
+        "wall_seconds": 187.30423784907907,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 39
+      },
+      "complete": true,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {
+          "true": 15,
+          "false": 14,
+          "unknown": 10
+        },
+        "citation_support": {
+          "false": 32,
+          "true": 2,
+          "unknown": 5
+        }
+      }
+    }
+  ],
+  "interrupted_runs": [
+    {
+      "run": "rerank-core-dev",
+      "planned": 39,
+      "completed": 32,
+      "missing": 7,
+      "statuses": {
+        "ok": 30,
+        "request_error": 2
+      },
+      "model_judgements": {},
+      "judge_missing": 39,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 92.2552422521112,
+      "native_retrieval_calls": 32,
+      "native_agent_events": {},
+      "native_rerank_calls": 32,
+      "metadata_filter_calls": 0,
+      "results_sha256": "d61044d7cbd2c2a9674f86b52901c82c2b3081ca3839bcbfb4bfe97c12b1bff1",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 39,
+      "missing_reviews": 39,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生重排（分词截断兼容）",
+      "generation": {
+        "returncode": 1,
+        "actual_calls": 18,
+        "failed_calls": 6,
+        "tokens": 101568,
+        "wall_seconds": 1623.390306974994,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 18
+      },
+      "complete": false,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {},
+        "citation_support": {}
+      }
+    }
+  ],
+  "capability_smokes": [
+    {
+      "run": "agent_high-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 153.13754070107825,
+      "native_retrieval_calls": 18,
+      "native_agent_events": {
+        "rag": 1,
+        "formalize": 1
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "2c81a60bc36006f18902571741d8440fc2ec3a506725f4644e1d811c77b29444",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生high模式",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 21,
+        "failed_calls": 0,
+        "tokens": 560213,
+        "wall_seconds": 188.56647363002412,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 21
+      },
+      "complete": false
+    },
+    {
+      "run": "agent_low-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 30.488460079068318,
+      "native_retrieval_calls": 1,
+      "native_agent_events": {
+        "rag": 1,
+        "formalize": 1
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "f32e1ff8dd1fccf103d546c804dc405e2df87916b0c9e28a2f591db92418340c",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生low模式",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 4,
+        "failed_calls": 0,
+        "tokens": 27448,
+        "wall_seconds": 66.6699347330723,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 4
+      },
+      "complete": false
+    },
+    {
+      "run": "agent_medium-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 159.2562225421425,
+      "native_retrieval_calls": 27,
+      "native_agent_events": {
+        "rag": 1,
+        "formalize": 1
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "d7cf2357495e96f23571fed03c0be848f0a43ed8d29c112e1f51f9b55a24ce87",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生medium模式",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 25,
+        "failed_calls": 0,
+        "tokens": 558811,
+        "wall_seconds": 195.83097940217704,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 25
+      },
+      "complete": false
+    },
+    {
+      "run": "agent_ultra-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 178.3909042060841,
+      "native_retrieval_calls": 20,
+      "native_agent_events": {
+        "rag": 1,
+        "formalize": 1
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "44e1ed184cc44901d2181ffd0076237d6e67711b046b2be8eff3d3ff0d2555fa",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生ultra模式",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 38,
+        "failed_calls": 0,
+        "tokens": 1181564,
+        "wall_seconds": 215.3295107621234,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 38
+      },
+      "complete": false
+    },
+    {
+      "run": "combined-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 132.0929427978117,
+      "native_retrieval_calls": 17,
+      "native_agent_events": {
+        "rag": 1,
+        "formalize": 1
+      },
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 1,
+      "results_sha256": "476337d89fe45d7cdb2d6f6d3013ea59f3e3147d39c14ca9fbc8a05d78c93970",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生过滤与Agentic组合配置",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 24,
+        "failed_calls": 0,
+        "tokens": 595071,
+        "wall_seconds": 167.4730438569095,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 24
+      },
+      "complete": false
+    },
+    {
+      "run": "keyword-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 14.065552711952478,
+      "native_retrieval_calls": 1,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "fcf593c896d379c2514ada5399f25da684b594919ee7c310744a143f77c27546",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生关键词增强",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 2,
+        "failed_calls": 0,
+        "tokens": 13976,
+        "wall_seconds": 50.33538997499272,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 2
+      },
+      "complete": false
+    },
+    {
+      "run": "metadata_all-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 14.905903389910236,
+      "native_retrieval_calls": 1,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 1,
+      "results_sha256": "401f66ce6f636a5ba11680040e9e86319e454b05557063d09a92c800f7973fc3",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生全自动元数据过滤",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 2,
+        "failed_calls": 0,
+        "tokens": 17113,
+        "wall_seconds": 50.65291611198336,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 2
+      },
+      "complete": false
+    },
+    {
+      "run": "metadata_auto-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 14.996784292859957,
+      "native_retrieval_calls": 1,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 1,
+      "results_sha256": "fef297520ad139f95f8a04193f3a421d79ce68edd2d91f89351b952c6ef45337",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "公司字段半自动过滤",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 2,
+        "failed_calls": 0,
+        "tokens": 16902,
+        "wall_seconds": 51.06144473212771,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 2
+      },
+      "complete": false
+    },
+    {
+      "run": "plain-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 9.116517355898395,
+      "native_retrieval_calls": 1,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "95b7a051f32c68cd9c30fc7ffb4acdf8b5d3d06dd1fdf4dd5a33290658a6dc62",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "普通原生问答",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 1,
+        "failed_calls": 0,
+        "tokens": 8883,
+        "wall_seconds": 44.87505608005449,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 1
+      },
+      "complete": false
+    },
+    {
+      "run": "rerank-validation-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "ok": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 24.874795992160216,
+      "native_retrieval_calls": 1,
+      "native_agent_events": {},
+      "native_rerank_calls": 1,
+      "metadata_filter_calls": 0,
+      "results_sha256": "a9dbc6d8655f8fa303cbfb7a6ca58f88aae49a4390c889438615828b12face7b",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生重排（分词截断兼容）",
+      "generation": {
+        "returncode": 0,
+        "actual_calls": 0,
+        "failed_calls": 0,
+        "tokens": 0,
+        "wall_seconds": 60.95926042390056,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 0
+      },
+      "complete": false
+    }
+  ],
+  "compatibility_checks": [
+    {
+      "run": "rerank-rawtei-smoke",
+      "planned": 1,
+      "completed": 1,
+      "missing": 0,
+      "statuses": {
+        "request_error": 1
+      },
+      "model_judgements": {},
+      "judge_missing": 1,
+      "judged_coverage": 0.0,
+      "known_subset_accuracy": null,
+      "full_accuracy": null,
+      "correct_fraction_lower_bound": 0.0,
+      "mean_seconds": 20.08956388081424,
+      "native_retrieval_calls": 0,
+      "native_agent_events": {},
+      "native_rerank_calls": 0,
+      "metadata_filter_calls": 0,
+      "results_sha256": "fe0ccdf5836bfeed5b48f0c17bc4d9cdd06a4d4c9f4a3b45f598942e639f9607",
+      "reviews_sha256": null,
+      "correct": 0,
+      "incorrect": 0,
+      "unknown": 1,
+      "missing_reviews": 1,
+      "arithmetic_lower_bound": 0.0,
+      "arithmetic_upper_bound": 1.0,
+      "label": "原生重排（分词截断兼容）",
+      "generation": {
+        "returncode": 1,
+        "actual_calls": 0,
+        "failed_calls": 0,
+        "tokens": 0,
+        "wall_seconds": 54.6551211848855,
+        "model_identity_verified": true,
+        "new_count": null,
+        "reused_count": null,
+        "reused_source_calls": null,
+        "reused_source_tokens": null,
+        "reused_source_wall_seconds": null,
+        "attributable_calls_with_reuse": 0
+      },
+      "complete": false,
+      "citation_field_counts": {
+        "numeric_and_scope_correct": {},
+        "citation_support": {}
+      }
+    }
+  ],
+  "http_session_stream": {
+    "turn_count": 2,
+    "turn_statuses": [
+      "ok",
+      "ok"
+    ],
+    "same_session": true,
+    "stream": {
+      "status": "ok",
+      "event_count": 3,
+      "first_answer_seconds": 6.258368568029255,
+      "real_token_stream_verified": false,
+      "content_type": "text/event-stream; charset=utf-8",
+      "elapsed_seconds": 6.271340731997043
+    },
+    "audit_byte_start": 99567,
+    "audit_byte_end": 102320,
+    "audit_sha256": "d56525a579524634ef9b370adfec1d8a9187f4f4a1cfc7ba33fb35825065afae",
+    "actual_calls": 4,
+    "failed_calls": 0,
+    "tokens": 32740,
+    "cost_usd": null,
+    "说明": "SSE只验证原生HTTP协议和事件时间；当前Codex桥完整返回后才包装增量，未验证模型逐token实时流。会话ID一致也不单独证明续问答案正确。"
+  },
+  "metadata_filter_checks": {
+    "file": "metadata-extended/metadata-checks.json",
+    "sha256": "c56c70044e91fb40a2ccdaf6af9934a50a3b2291c58ddd64b3adb198a53ba3d9",
+    "planned": 38,
+    "passed": 38,
+    "all_passed": true
+  },
+  "selection": {
+    "candidates": [
+      {
+        "arm": "plain",
+        "run": "plain-dev",
+        "correct": 10,
+        "unknown": 0,
+        "mean_seconds": 8.980698982301432,
+        "manifest_sha256": "7bd4d3103e6aea992c87e5ebe452e86c613d13dfeb4c9660d948d7792d2db3d1",
+        "results_sha256": "7ac539729533f41d27604f9f8a43f0767e5153bbd8ffbe52c477f5e2fe02c310",
+        "reviews_sha256": "8263122fd6e00d21cb5999a1a95b0816e183ce2a563e31723a5f3bd49ce1608b",
+        "reviews_manifest_sha256": "5058af1ed7592257525fd519421dc9c7e1bb4f3909b3ef6f2a06b1d7492be962"
+      },
+      {
+        "arm": "keyword",
+        "run": "keyword-core-dev",
+        "correct": 14,
+        "unknown": 0,
+        "mean_seconds": 14.721356220029962,
+        "manifest_sha256": "e527fa2bb204a81a926b9b6f86f9076bf3672ebeddd492aecf192c25e2b9f073",
+        "results_sha256": "5d630c5a2c6a2643aef7e3b1b0aaf9035d63ec278b034e67acb3e1af0a7f300b",
+        "reviews_sha256": "1359df89da94edd4606139d1b1deac441fcf2b6e83c6bb572319d9b7bea0be3e",
+        "reviews_manifest_sha256": "235cec7769e86c28460ad1ba304dcaaf8eaa744afdbbb56f9f5e10b01df3a86a"
+      },
+      {
+        "arm": "rerank",
+        "run": "rerank-recovered-core-dev",
+        "correct": 4,
+        "unknown": 0,
+        "mean_seconds": 47.39152721243982,
+        "manifest_sha256": "14c8ed47ef5584da3b50d0a065f808ffc8d1780832be495dd8315935c8fa0116",
+        "results_sha256": "c35a08d892b50f34b653797f8393b62deab7e640b14bff837ca4730961be7ecb",
+        "reviews_sha256": "199aff2219afc8492c0e4d69fc31172da62a863482a07282849c4b5b2df36120",
+        "reviews_manifest_sha256": "eb3cb0c6ef6ff8ea671d99200200472abeadf1919cb71dd29827ab7665968e1c"
+      },
+      {
+        "arm": "metadata_auto",
+        "run": "metadata_auto-core-dev",
+        "correct": 13,
+        "unknown": 1,
+        "mean_seconds": 15.399095709877423,
+        "manifest_sha256": "e487b647b59aa4dafe3465969dac1d631885fb58a5679959432678a6614ac6ff",
+        "results_sha256": "7201d1704bc5a913e351f783b2c0e13c75ae7780f3d144ae0fb7b040ca7879c6",
+        "reviews_sha256": "c32cea42c8240801e2df6c58982655dd8552072b15a9771532738a5d874a0cea",
+        "reviews_manifest_sha256": "ea78f4d69175f88cce1860eca5e89e4b70894c60238c44447cc9b0bcc197e7b9"
+      },
+      {
+        "arm": "metadata_all",
+        "run": "metadata_all-core-dev",
+        "correct": 15,
+        "unknown": 2,
+        "mean_seconds": 15.604616344082528,
+        "manifest_sha256": "91daf66d3dae22534a3f1694c4eb4da16ac85b73e47b8a003fd70caae314f7e3",
+        "results_sha256": "a5920a1c9af8c168ab8e214676368c894d7da449bee0bf2d0e2bd9a379cf37f2",
+        "reviews_sha256": "88f8c93ee59eaa10092dc3a2b04219ce246056d9bcc46aaf67b81e191e5d4417",
+        "reviews_manifest_sha256": "637f289d41d6702d27bd9bb18e8480d99208339dc3772397cf8ba3d37f82e325"
+      },
+      {
+        "arm": "agent_low",
+        "run": "agent_low-core-dev",
+        "correct": 10,
+        "unknown": 0,
+        "mean_seconds": 33.27103757472016,
+        "manifest_sha256": "0a5c5ef517f0369e632aa87946a9fae8c350dca05b53d400f1a542d1098b99d1",
+        "results_sha256": "1f5b1da21f7c81aa19424372bfbd6666276d567702129bd763f1cc099eeebdda",
+        "reviews_sha256": "858bd362632fa7792f19f34fd0ab33bce08bb2baaf123373027e0722cdfd0cf7",
+        "reviews_manifest_sha256": "a5dc917ec78f727c91f275f48b38964c9fb6bfeb020644513ae9c10d5f49d13a"
+      },
+      {
+        "arm": "combined",
+        "run": "combined-core-dev",
+        "correct": 20,
+        "unknown": 0,
+        "mean_seconds": 126.78029747161035,
+        "manifest_sha256": "2574e7488cd0d07d312d5e55bdd38b6d42c50b55c561875442401383d6fb3fbc",
+        "results_sha256": "27213b2db29ce0fe3edfdeb88fccb223015a38d139f54be63857fe5dfd3ab8c1",
+        "reviews_sha256": "c4e51577989c17125d52f739abf26a2e75ce5bb65c6cf2804b93e5c0d6bcbd10",
+        "reviews_manifest_sha256": "84ac558b51e0fe99e13ab13c557b469073a0032b2c5125a3adfaa869eabcc07e"
+      }
+    ],
+    "chosen": {
+      "arm": "combined",
+      "run": "combined-core-dev",
+      "correct": 20,
+      "unknown": 0,
+      "mean_seconds": 126.78029747161035,
+      "manifest_sha256": "2574e7488cd0d07d312d5e55bdd38b6d42c50b55c561875442401383d6fb3fbc",
+      "results_sha256": "27213b2db29ce0fe3edfdeb88fccb223015a38d139f54be63857fe5dfd3ab8c1",
+      "reviews_sha256": "c4e51577989c17125d52f739abf26a2e75ce5bb65c6cf2804b93e5c0d6bcbd10",
+      "reviews_manifest_sha256": "84ac558b51e0fe99e13ab13c557b469073a0032b2c5125a3adfaa869eabcc07e"
+    },
+    "rule": "仅七个完整开发集组，按判对数、未知数、平均耗时依次排序；模型暂定选择，未人工复核。",
+    "full150_policy": "尚未启动；继续时严格复用39题，只补111题。"
+  },
+  "full150": null,
+  "full150_by_split": {},
+  "audit": {
+    "available": true,
+    "actual_calls": 1477,
+    "successful_calls": 1464,
+    "failed_calls": 13,
+    "known_tokens": 20023136,
+    "usage_unknown_calls": 13,
+    "accounted_window_calls": 1474,
+    "outside_window_calls": 3,
+    "window_count": 31,
+    "windows": [
+      {
+        "file": "agent_high-validation-smoke/execution.json",
+        "calls": 21,
+        "failed": 0,
+        "audit_sha256": "7b4714ef30deb728492f3c4c21341ccd31d9c039ac3034309f3178d10e99890d"
+      },
+      {
+        "file": "agent_low-core-dev/execution.json",
+        "calls": 156,
+        "failed": 0,
+        "audit_sha256": "1fb973270beab8e1c23e6879102d00254bd2eddea8cd2885f2f792a6d3db47ff"
+      },
+      {
+        "file": "agent_low-core-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "1bb2e119193c415556b9f1b09ce70f73476ba14a771f49adeb72d4561785d7bc"
+      },
+      {
+        "file": "agent_low-validation-smoke/execution.json",
+        "calls": 4,
+        "failed": 0,
+        "audit_sha256": "9903ac0047d35c6b144a756dc0fce0f0619dc2159e8a9b696910ffe1dd557282"
+      },
+      {
+        "file": "agent_medium-recovered-smoke/execution.json",
+        "calls": 18,
+        "failed": 0,
+        "audit_sha256": "7560cd99ecd787c258cd6e644c14166579768a7da9944e93914c9a91dd886a12"
+      },
+      {
+        "file": "agent_medium-smoke/execution.json",
+        "calls": 0,
+        "failed": 0,
+        "audit_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "agent_medium-toolbind-smoke/execution.json",
+        "calls": 4,
+        "failed": 3,
+        "audit_sha256": "671b1f459b3624950680822f328663df2cedd8520541642939ae8366c58cf495"
+      },
+      {
+        "file": "agent_medium-validation-smoke/execution.json",
+        "calls": 25,
+        "failed": 0,
+        "audit_sha256": "0be6d91fbb6cf8c29c59c460e4454f1261efb7f248737a87eda449c74d9655e4"
+      },
+      {
+        "file": "agent_ultra-validation-smoke/execution.json",
+        "calls": 38,
+        "failed": 0,
+        "audit_sha256": "044ef879a1a95bbfe023b951e53d2cd1ee16ca1a42969b35baa90c4dd1460d99"
+      },
+      {
+        "file": "combined-core-dev/execution.json",
+        "calls": 600,
+        "failed": 2,
+        "audit_sha256": "27e77f4f9b53c85a3297b5293925ce52734e7d323d82a91eb26166057cd2045f"
+      },
+      {
+        "file": "combined-core-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "ad0067ff40ef91e6a85290db2afe94f90f6617286317be2507d1532e21d6b5cc"
+      },
+      {
+        "file": "combined-validation-smoke/execution.json",
+        "calls": 24,
+        "failed": 0,
+        "audit_sha256": "cd3a739bd28233a62470187cb8e74cf1bb2b8d84973fd8a1657df95d5bc3a11a"
+      },
+      {
+        "file": "http-session-stream/summary.json",
+        "calls": 4,
+        "failed": 0,
+        "audit_sha256": "d56525a579524634ef9b370adfec1d8a9187f4f4a1cfc7ba33fb35825065afae"
+      },
+      {
+        "file": "keyword-core-dev/execution.json",
+        "calls": 78,
+        "failed": 0,
+        "audit_sha256": "76d9876725ef1558c3274bf5502f345d52e5702558e1509ad5588c680a155273"
+      },
+      {
+        "file": "keyword-core-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "68c6f5f95a897ecc25c660db8ea63c69c6c2e6967bba098b24014ba6d7c834e7"
+      },
+      {
+        "file": "keyword-validation-smoke/execution.json",
+        "calls": 2,
+        "failed": 0,
+        "audit_sha256": "032e025dbb665efbaa7f807681d18e05638e383a91d0e6f7f40ab1ee78580fd6"
+      },
+      {
+        "file": "metadata_all-core-dev/execution.json",
+        "calls": 78,
+        "failed": 0,
+        "audit_sha256": "b36910380233fb6ce05a9486bafb95e217b60cfa6bae9e1f67a17c18384eeb7f"
+      },
+      {
+        "file": "metadata_all-core-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "d7b81f10dd6b39340073b007046142e383f7b51625428bfee83fdff595f8f05a"
+      },
+      {
+        "file": "metadata_all-validation-smoke/execution.json",
+        "calls": 2,
+        "failed": 0,
+        "audit_sha256": "9bde17bf704ed4765504805b29111ea3181a9f5665dc430402a02eaffb1c24f9"
+      },
+      {
+        "file": "metadata_auto-core-dev/execution.json",
+        "calls": 78,
+        "failed": 0,
+        "audit_sha256": "c11a454f686ff8f070a832ccb2c0d0cb41128ca7edf7f02affe702bf893413e2"
+      },
+      {
+        "file": "metadata_auto-core-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "c33743686ee9687d2daddfc67056af1c99c91d62c3820fd2b00576eb87415049"
+      },
+      {
+        "file": "metadata_auto-validation-smoke/execution.json",
+        "calls": 2,
+        "failed": 0,
+        "audit_sha256": "b593778d6779ccb98755fab619323efb9d97ab5ae54f3e09dae70aa37e601dce"
+      },
+      {
+        "file": "plain-dev/execution.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "461a8229b3773b708268bdd452014842432cd4c60c64cc8c917f4af1c9c2151e"
+      },
+      {
+        "file": "plain-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "de1d5ed52ffcad3f663e6691af208aef018a7e861c5c4c202f47f2feff3721e6"
+      },
+      {
+        "file": "plain-smoke/execution.json",
+        "calls": 1,
+        "failed": 0,
+        "audit_sha256": "d56aeb53e459f4fe6e65ce0e163bddc5bb951a09669a47876ad47b71de076b09"
+      },
+      {
+        "file": "plain-validation-smoke/execution.json",
+        "calls": 1,
+        "failed": 0,
+        "audit_sha256": "1bb9e301ced052c689ea8280d3320332257519037b1ecdb1a3d12695987243e3"
+      },
+      {
+        "file": "rerank-core-dev/execution.json",
+        "calls": 18,
+        "failed": 6,
+        "audit_sha256": "e57ada6ba06f5880cbde0c29f6620b8792458fc4a1eaf8bd627cb86caf6b7db1"
+      },
+      {
+        "file": "rerank-rawtei-smoke/execution.json",
+        "calls": 0,
+        "failed": 0,
+        "audit_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "rerank-recovered-core-dev/execution.json",
+        "calls": 8,
+        "failed": 0,
+        "audit_sha256": "3c6c2519a1d66e1a5ecd2326c50dc6f135ad9834b509c45c85b2aaab6a1b227f"
+      },
+      {
+        "file": "rerank-recovered-core-dev/judge-audit.json",
+        "calls": 39,
+        "failed": 0,
+        "audit_sha256": "20a89377cdeb2aec94fee3505a4c7ced22931772541d9776c7e70417486e5eb7"
+      },
+      {
+        "file": "rerank-validation-smoke/execution.json",
+        "calls": 0,
+        "failed": 0,
+        "audit_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "bridge_fingerprint_count": 1,
+    "source_fingerprint_stable": true,
+    "actual_models": {
+      "gpt-6.1-sol": 1464
+    },
+    "cost_usd": null,
+    "audit_sha256": "57ab7a0410d6c795dc8becb017f2da4f7c6fe8c9ec6b1723f2660ab0939a373f",
+    "说明": "已返回token合计；缺少用量的失败调用不当作零成本。窗口外包含启动校验和网络中断未完整落盘的阶段；不伪造逐题请求对应关系。"
+  },
+  "core_comparability": {
+    "source_sha256": true,
+    "queries_sha256": true,
+    "upstream": true,
+    "freeze": true
+  },
+  "metadata_restore": {
+    "action": "restore",
+    "documents": 84,
+    "verified": true,
+    "index_health": "green"
+  },
+  "supervisor": {
+    "scope": "七组各39题，medium/high/ultra仅功能验证，150题未启动",
+    "started_unix": 1794220057.9294546,
+    "seven-metadata-populate": 0,
+    "seven-metadata-checks": 0,
+    "seven-metadata_all": 0,
+    "seven-metadata_all-judge": 0,
+    "seven-agent_low": 0,
+    "seven-agent_low-judge": 0,
+    "seven-combined": 0,
+    "seven-combined-judge": 0,
+    "metadata_restore": 0,
+    "finished_unix": 1794224721.0110557,
+    "awaiting_full150_decision": false,
+    "full150_deferred_by_user": true,
+    "completion_checkpoint": "seven-supervisor-completion-raw.json"
+  },
+  "human_reviewed": 0,
+  "cost_usd": null,
+  "limits": [
+    "模型评分未人工复核，不是人工准确率。",
+    "全量150题含开发题，不是新的独立泛化评测。",
+    "普通原生引用编号仍有一基/零基差异，引用支持统计不作为主要选优依据。",
+    "单题耗时与旧R0双检索总耗时口径不同，进程启动另计。",
+    "SSE只验证原生协议，当前模型桥不提供真实逐token流式。",
+    "成功行耗时可能包含网络重连及原生重试等待，不等于纯模型推理耗时；失败调用及未知用量保留。",
+    "原生重排使用明确记录的分词截断传输适配；未适配路径的HTTP413另行保留。"
+  ]
+}

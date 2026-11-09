@@ -56,3 +56,20 @@ class NativeReportTests(unittest.TestCase):
             root=Path(temp)
             write_json(root/"scope-current.json",{"core_arms":["plain"],"run_paths":{"plain":"../other"}})
             with self.assertRaises(ValueError):build(root,root/"unused-audit")
+
+    def test_seven_groups_allow_combination_and_only_full150_is_pending(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temp:
+            root=Path(temp)
+            arms=['plain','keyword','rerank','metadata_auto','metadata_all','agent_low','combined']
+            paths={arm:arm+'-core-dev' for arm in arms}
+            write_json(root/'scope-current.json',{'core_arms':arms,'run_paths':paths,
+                'full150_requested':None,'status':'dev_complete_full150_pending'})
+            for name in paths.values():
+                write_json(root/name/'manifest.json',{'identity':{'source_sha256':'同源码','queries_sha256':'同题源','upstream':'同底座','freeze':'同索引'}})
+            write_json(root/'metadata-restore.json',{'verified':True,'documents':84})
+            write_json(root/'supervisor-finish.json',{'awaiting_full150_decision':True})
+            with patch('timeguard.native_report.run_details',side_effect=lambda path:{'run':path.name,'complete':True}),patch('timeguard.native_report.audit_summary',return_value={'available':True,'source_fingerprint_stable':True}):
+                report=build(root,root/'unused-audit')
+            self.assertEqual(len(report['core_runs']),7)
+            self.assertEqual(report['status'],'awaiting_full150_decision')
+            self.assertIsNone(report['full150'])

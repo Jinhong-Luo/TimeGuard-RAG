@@ -7,7 +7,7 @@ from pathlib import Path
 from .common import digest,read_json,read_jsonl,write_json
 from .native_matrix import summarize_run
 
-CORE=("plain","keyword","rerank","metadata_auto","metadata_all","agent_low")
+CORE=("plain","keyword","rerank","metadata_auto","metadata_all","agent_low","combined")
 LABELS={"plain":"普通原生问答","keyword":"原生关键词增强","rerank":"原生重排（分词截断兼容）",
         "metadata_auto":"公司字段半自动过滤","metadata_all":"原生全自动元数据过滤",
         "agent_low":"原生low模式","agent_medium":"原生medium模式","agent_high":"原生high模式",
@@ -128,6 +128,19 @@ def build(root,audit):
         if not (path/"execution.json").exists():continue
         value=run_details(path);value.pop("citation_field_counts",None)
         smokes.append(value)
+    compatibility=[]
+    for name in ("rerank-rawtei-smoke",):
+        path=root/name
+        if (path/"manifest.json").exists():compatibility.append(run_details(path))
+    http=read_json(root/"http-session-stream/summary.json") if (root/"http-session-stream/summary.json").exists() else None
+    metadata_checks=None
+    for path in (root/"metadata-extended/metadata-checks.json",root/"metadata-checks.json"):
+        if path.exists():
+            record=read_json(path);cases=record["checks"]
+            metadata_checks={"file":str(path.relative_to(root)),"sha256":digest(path.read_bytes()),
+                "planned":len(cases),"passed":sum(c.get("passed") is True for c in cases),
+                "all_passed":record.get("passed") is True and all(c.get("passed") is True for c in cases)}
+            break
     selection=read_json(root/"selection-core.json") if (root/"selection-core.json").exists() else None
     if selection:validate_selection(root,selection,expected_arms)
     full=None;by_split={}
@@ -150,17 +163,22 @@ def build(root,audit):
            and all(comparable.values()))
     pending=scope.get("status")=="awaiting_scope_decision" or scope.get("full150_requested",True) is None
     ready=common_ready and not pending and (bool(full and full["complete"]) if scope.get("full150_requested",True) else True)
-    status="completed" if ready else "awaiting_scope_decision" if common_ready and pending else "incomplete"
+    status=("completed" if ready else
+            "awaiting_scope_decision" if common_ready and scope.get("status")=="awaiting_scope_decision" else
+            "awaiting_full150_decision" if common_ready and pending else "incomplete")
     return {"version":"timeguard-native-core-baseline-v1","status":status,
         "generated_at_beijing":datetime.now(timezone(timedelta(hours=8))).isoformat(),
         "upstream":"RAGFlow v0.27.3 / 8090ffd8ba6098813d7f7ec2c4b8774f36c8423a",
         "model_transport":"codex-app-server-structured-output-v1","generation_effort":"low","judge_effort":"medium",
         "scope":scope,
-        "core_runs":core,"interrupted_runs":interrupted,"capability_smokes":smokes,"selection":selection,"full150":full,"full150_by_split":by_split,
+        "core_runs":core,"interrupted_runs":interrupted,"capability_smokes":smokes,"compatibility_checks":compatibility,
+        "http_session_stream":http,"metadata_filter_checks":metadata_checks,
+        "selection":selection,"full150":full,"full150_by_split":by_split,
         "audit":audits,"core_comparability":comparable,"metadata_restore":restore,"supervisor":finish,"human_reviewed":0,"cost_usd":None,
         "limits":["模型评分未人工复核，不是人工准确率。","全量150题含开发题，不是新的独立泛化评测。",
           "普通原生引用编号仍有一基/零基差异，引用支持统计不作为主要选优依据。",
           "单题耗时与旧R0双检索总耗时口径不同，进程启动另计。","SSE只验证原生协议，当前模型桥不提供真实逐token流式。",
+          "成功行耗时可能包含网络重连及原生重试等待，不等于纯模型推理耗时；失败调用及未知用量保留。",
           "原生重排使用明确记录的分词截断传输适配；未适配路径的HTTP413另行保留。"]}
 
 
