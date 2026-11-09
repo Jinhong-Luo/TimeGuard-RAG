@@ -65,10 +65,15 @@ def main():
     import argparse
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output",required=True,type=Path)
-    p.add_argument("--stage",choices=("smoke","dev","all","report"),required=True)
+    p.add_argument("--stage",choices=("smoke","dev","all","report","judge"),required=True)
+    p.add_argument("--run",type=Path)
     p.add_argument("--arms",nargs="+",choices=ARMS,default=list(ARMS))
     p.add_argument("--label",default="")
     args=p.parse_args();root=args.output
+    if args.stage=="judge":
+        if args.run is None:p.error("单独裁判必须提供--run")
+        if not args.run.resolve().is_relative_to(root.resolve()):raise ValueError("裁判目录超出本次实验")
+        raise SystemExit(judge(args.run))
     if args.stage=="report":
         paths=[path for path in sorted(root.iterdir()) if path.is_dir() and (path/"manifest.json").exists()
                and read_json(path/"manifest.json").get("identity",{}).get("query_ids")]
