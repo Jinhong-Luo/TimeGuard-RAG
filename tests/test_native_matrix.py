@@ -8,7 +8,8 @@ from timeguard.native_matrix import summarize_run
 
 class NativeMatrixTests(unittest.TestCase):
     def test_missing_generation_and_judgement_stay_in_plan(self):
-        with tempfile.TemporaryDirectory() as temp:
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temp:
+            self.assertTrue(Path(temp).resolve().is_relative_to(Path.cwd().resolve()))
             root=Path(temp)
             write_json(root/"manifest.json",{"identity":{"query_ids":["q1","q2"]}})
             write_jsonl(root/"results.jsonl",[{"id":"q1","status":"request_error","elapsed_seconds":1}])
@@ -20,7 +21,8 @@ class NativeMatrixTests(unittest.TestCase):
             self.assertEqual(result["correct_fraction_lower_bound"],0)
 
     def test_duplicate_results_rejected(self):
-        with tempfile.TemporaryDirectory() as temp:
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temp:
+            self.assertTrue(Path(temp).resolve().is_relative_to(Path.cwd().resolve()))
             root=Path(temp)
             write_json(root/"manifest.json",{"identity":{"query_ids":["q1"]}})
             write_jsonl(root/"results.jsonl",[{"id":"q1"},{"id":"q1"}])

@@ -68,7 +68,10 @@ def audit_summary(root,audit):
 
 def run_details(path):
     value=summarize_run(path)
-    rows=read_jsonl(path/"results.jsonl");manifest=read_json(path/"manifest.json")
+    rows=read_jsonl(path/"results.jsonl") if (path/"results.jsonl").exists() else []
+    manifest=read_json(path/"manifest.json")
+    if manifest["identity"].get("recovery"):
+        value["recovery"]=manifest["identity"]["recovery"]
     ids=manifest["identity"]["query_ids"]
     reviews=read_jsonl(path/"model_reviews.jsonl") if (path/"model_reviews.jsonl").exists() else []
     value.update(judgement_counts(ids,reviews))
@@ -76,15 +79,17 @@ def run_details(path):
     for filename,key in (("execution.json","generation"),("judge-audit.json","judge")):
         if (path/filename).exists():
             record=read_json(path/filename)
-            value[key]={k:record.get(k) for k in ("returncode","actual_calls","failed_calls","tokens","wall_seconds","model_identity_verified")}
+            value[key]={k:record.get(k) for k in ("returncode","actual_calls","failed_calls","tokens","wall_seconds","model_identity_verified",
+                "new_count","reused_count","reused_source_calls","reused_source_tokens","reused_source_wall_seconds")}
+            value[key]["attributable_calls_with_reuse"]=record.get("actual_calls",0)+record.get("reused_source_calls",0)
     value["complete"]=len(rows)==len(ids) and len(reviews)==len(ids) and all(r["status"]=="ok" for r in rows) and all(r.get("judge_status")=="ok" for r in reviews)
     value["citation_field_counts"]={field:dict(Counter("true" if r.get(field) is True else "false" if r.get(field) is False else "unknown" for r in reviews)) for field in ("numeric_and_scope_correct","citation_support")}
     return value
 
 
-def validate_selection(root,selection):
+def validate_selection(root,selection,expected_arms=CORE):
     candidates=selection["candidates"]
-    if len(candidates)!=6 or {c["arm"] for c in candidates}!=set(CORE):raise ValueError("核心选择缺少完整六组")
+    if len(candidates)!=len(expected_arms) or {c["arm"] for c in candidates}!=set(expected_arms):raise ValueError("核心选择缺少当前计划中的完整组")
     for candidate in candidates:
         path=root/candidate["run"]
         if not path.resolve().is_relative_to(root.resolve()):raise ValueError("选择来源超出实验目录")
@@ -100,17 +105,31 @@ def validate_selection(root,selection):
 
 
 def build(root,audit):
+    scope=read_json(root/"scope-current.json") if (root/"scope-current.json").exists() else {"core_arms":list(CORE),"full150_requested":True}
+    expected_arms=scope["core_arms"]
+    if not expected_arms or len(set(expected_arms))!=len(expected_arms) or set(expected_arms)-set(CORE):
+        raise ValueError("核心范围为空、重复或包含未允许的完整评测组")
     core=[]
-    for arm in CORE:
-        path=root/("plain-dev" if arm=="plain" else arm+"-core-dev")
+    for arm in expected_arms:
+        name=scope.get("run_paths",{}).get(arm,"plain-dev" if arm=="plain" else arm+"-core-dev")
+        path=root/name
+        if not path.resolve().is_relative_to(root.resolve()):raise ValueError("核心来源超出实验目录")
         if (path/"manifest.json").exists():core.append(run_details(path))
+    interrupted=[]
+    for row in core:
+        if row.get("recovery"):
+            path=root/row["recovery"]["source_run"]
+            if not path.resolve().is_relative_to(root.resolve()):raise ValueError("中断来源超出实验目录")
+            if digest((path/"results.jsonl").read_bytes())!=row["recovery"]["results_sha256"]:
+                raise ValueError("恢复来源的原始结果已改变")
+            interrupted.append(run_details(path))
     smokes=[]
     for path in sorted(root.glob("*-validation-smoke")):
         if not (path/"execution.json").exists():continue
         value=run_details(path);value.pop("citation_field_counts",None)
         smokes.append(value)
     selection=read_json(root/"selection-core.json") if (root/"selection-core.json").exists() else None
-    if selection:validate_selection(root,selection)
+    if selection:validate_selection(root,selection,expected_arms)
     full=None;by_split={}
     if selection:
         path=root/(selection["chosen"]["arm"]+"-core-all")
@@ -125,16 +144,19 @@ def build(root,audit):
     audits=audit_summary(root,audit)
     manifests=[read_json(root/r["run"]/"manifest.json")["identity"] for r in core]
     comparable={key:len({digest(m.get(key)) for m in manifests})==1 for key in ("source_sha256","queries_sha256","upstream","freeze")}
-    ready=(len(core)==6 and all(r["complete"] for r in core) and bool(full and full["complete"])
+    common_ready=(len(core)==len(expected_arms) and all(r["complete"] for r in core)
            and bool(restore and restore.get("verified") and restore.get("documents")==84)
            and bool(finish and not finish.get("error")) and audits.get("available") and audits.get("source_fingerprint_stable")
            and all(comparable.values()))
-    return {"version":"timeguard-native-core-baseline-v1","status":"completed" if ready else "incomplete",
+    pending=scope.get("status")=="awaiting_scope_decision" or scope.get("full150_requested",True) is None
+    ready=common_ready and not pending and (bool(full and full["complete"]) if scope.get("full150_requested",True) else True)
+    status="completed" if ready else "awaiting_scope_decision" if common_ready and pending else "incomplete"
+    return {"version":"timeguard-native-core-baseline-v1","status":status,
         "generated_at_beijing":datetime.now(timezone(timedelta(hours=8))).isoformat(),
         "upstream":"RAGFlow v0.27.3 / 8090ffd8ba6098813d7f7ec2c4b8774f36c8423a",
         "model_transport":"codex-app-server-structured-output-v1","generation_effort":"low","judge_effort":"medium",
-        "scope":"用户选择核心六组完整39题；四个深档/组合配置仅功能烟测；核心所选配置完整150题。",
-        "core_runs":core,"capability_smokes":smokes,"selection":selection,"full150":full,"full150_by_split":by_split,
+        "scope":scope,
+        "core_runs":core,"interrupted_runs":interrupted,"capability_smokes":smokes,"selection":selection,"full150":full,"full150_by_split":by_split,
         "audit":audits,"core_comparability":comparable,"metadata_restore":restore,"supervisor":finish,"human_reviewed":0,"cost_usd":None,
         "limits":["模型评分未人工复核，不是人工准确率。","全量150题含开发题，不是新的独立泛化评测。",
           "普通原生引用编号仍有一基/零基差异，引用支持统计不作为主要选优依据。",
