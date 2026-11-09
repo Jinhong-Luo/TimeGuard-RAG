@@ -28,12 +28,13 @@ def install_hooks(service, generator, retriever):
         result = await retrieve(*args, **kwargs)
         if s["arm"] in ("C", "D"):
             years = s["plan"]["years"]
-            if s["arm"] == "D" and needs_expansion(result["chunks"], years):
+            quarters = s["plan"]["quarters"]
+            if s["arm"] == "D" and needs_expansion(result["chunks"], years, quarters):
                 expanded = list(args)
                 expanded[5] = max(24, args[5] * 2)
                 result = await retrieve(*expanded, **kwargs)
                 s["fallback"] = True
-            result["chunks"] = rank(result["chunks"], years, s["documents"])[:args[5]]
+            result["chunks"] = rank(result["chunks"], years, s["documents"], quarters)[:args[5]]
         allowed = kwargs.get("doc_ids")
         if allowed and any(c["doc_id"] not in allowed for c in result["chunks"]):
             raise ValueError("原生问答检索跨越限定范围")
@@ -91,7 +92,7 @@ async def run_batch(spec):
     docs = {d["doc_name"].casefold(): d for d in spec["documents"]}
     async def one(q):
         started = time.monotonic()
-        plan = scope(q["question"], spec["documents"])
+        plan = scope(q["question"], spec["documents"], q.get("as_of"))
         s = {"blocks": [], "visible": {}, "origin": "model", "arm": spec["arm"], "plan": plan,
              "documents": docs, "fallback": False, "retrieved": []}
         token = STATE.set(s)

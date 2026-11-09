@@ -10,6 +10,30 @@ MODEL = "cross-encoder/ms-marco-MiniLM-L6-v2"
 REVISION = "233902d25c440f23af6f7d6e94d2946bac0bee0a"
 IMAGE = "sha256:5368d285d6044ce93aa157c6d24877ff2896540ca1fea42cfd7c7c0e619ed823"
 CONTAINER = "timeguard_ljh-r1-rerank"
+NATIVE_CONTAINER = "timeguard_ljh-ragflow-cpu-1"
+
+
+def compatible_endpoint():
+    adapter = Path(__file__).with_name("tei_adapter.py")
+    fingerprint = digest(adapter.read_bytes())
+    endpoint = "http://127.0.0.1:18565"
+    def health():
+        response = subprocess.run(["docker", "exec", NATIVE_CONTAINER, "curl", "-fsS", "--max-time", "2",
+                                   endpoint + "/health"], capture_output=True)
+        return json.loads(response.stdout) if not response.returncode else None
+    status = health()
+    if not status:
+        path = f"/tmp/timeguard-tei-{fingerprint[:12]}.py"
+        subprocess.run(["docker", "cp", str(adapter), NATIVE_CONTAINER + ":" + path], check=True)
+        subprocess.run(["docker", "exec", "-d", NATIVE_CONTAINER, "python", path], check=True)
+        for _ in range(10):
+            time.sleep(.3)
+            status = health()
+            if status:
+                break
+    if status != {"source_sha256": fingerprint, "truncate": True}:
+        raise ValueError("原生重排适配器版本或状态不一致")
+    return endpoint, fingerprint
 
 
 def main():
@@ -40,6 +64,13 @@ def main():
                         "--cpus", "3", "--memory", "3g", "-e", "OMP_NUM_THREADS=3",
                         "-v", f"{root}:/model:ro", IMAGE, "--model-id", "/model", "--dtype", "float32",
                         "--auto-truncate"], check=True)
+    info = json.loads(subprocess.check_output(["docker", "inspect", CONTAINER]))[0]
+    mounts = [m for m in info["Mounts"] if m["Destination"] == "/model"]
+    if (info["Image"] != IMAGE or "timeguard_ljh_ragflow" not in info["NetworkSettings"]["Networks"]
+            or len(mounts) != 1 or Path(mounts[0]["Source"]) != root or mounts[0]["RW"]):
+        raise ValueError("同名容器与本项目固定镜像、模型或网络不一致")
+    if not info["State"]["Running"]:
+        subprocess.run(["docker", "start", CONTAINER], check=True)
     for _ in range(45):
         check = subprocess.run(["docker", "exec", CONTAINER, "curl", "-fsS", "http://127.0.0.1/health"],
                                capture_output=True)
@@ -50,13 +81,15 @@ def main():
         raise RuntimeError("重排容器尚未就绪")
     config = read_json("configs/r0-low.json")
     client = Client(config["base_url"])
+    endpoint, adapter_hash = compatible_endpoint()
+    instance = "timeguard_r1_ce_tokenizer"
     instances = client.request("GET", "/providers/HuggingFace/instances")
-    if not any(i["instance_name"] == "timeguard_r1_ce" for i in instances):
-        client.request("POST", "/providers/HuggingFace/instances", {"instance_name": "timeguard_r1_ce",
-            "api_key": "local-tei", "base_url": "http://" + CONTAINER, "region": "",
+    if not any(i["instance_name"] == instance for i in instances):
+        client.request("POST", "/providers/HuggingFace/instances", {"instance_name": instance,
+            "api_key": "local-tei", "base_url": endpoint, "region": "",
             "model_info": [{"model_name": MODEL, "model_type": ["rerank"], "max_tokens": 512}]})
-    write_json("reports/r1-reranker.json", {"model": MODEL, "revision": REVISION, "files": hashes,
-               "image": IMAGE, "alias": MODEL + "@timeguard_r1_ce@HuggingFace"})
+    write_json("reports/r1-reranker-compatible.json", {"model": MODEL, "revision": REVISION, "files": hashes,
+               "image": IMAGE, "adapter_sha256": adapter_hash, "alias": MODEL + "@" + instance + "@HuggingFace"})
 
 
 if __name__ == "__main__":

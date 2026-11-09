@@ -98,13 +98,22 @@ def citation_context(generated):
                     or slot.get("content_sha256") != digest(content)):
                 context["unmapped_indexes"].append(index)
                 continue
-        context["citations"].append({
+        citation = {
             "marker_index": index, "content": content,
             "chunk_id": chunk.get("id", chunk.get("chunk_id")),
             "document_id": chunk.get("document_id", chunk.get("doc_id")),
             "document_name": chunk.get("document_name", chunk.get("docnm_kwd")),
             "positions": chunk.get("positions", chunk.get("position_int")),
-        })
+        }
+        if traced:
+            # 原生补引用分支还可能修复模型留下的非标准标记；重合时保留来源不确定性。
+            raw = visible_answer(trace.get("raw_answer"))
+            origin = trace.get("origin")
+            if origin == "native_auto" and re.search(
+                    rf"(?:ID\s*[: ]*|ref\s*)0*{index}(?!\d)", raw, re.I):
+                origin = "model_or_native_auto"
+            citation["origin"] = origin
+        context["citations"].append(citation)
     if indexes or malformed:
         context["mapping_status"] = "incomplete" if (
             context["unmapped_indexes"] or context["missing_text_indexes"] or malformed

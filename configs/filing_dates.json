@@ -1,0 +1,64 @@
+{
+  "3M_2018_10K": {
+    "accession": "0001558370-19-000470",
+    "published_at": "2019-02-07",
+    "source": "https://www.sec.gov/Archives/edgar/data/66740/000155837019000470/0001558370-19-000470-index.htm"
+  },
+  "3M_2022_10K": {
+    "accession": "0000066740-23-000014",
+    "published_at": "2023-02-08",
+    "source": "https://www.sec.gov/Archives/edgar/data/66740/000006674023000014/0000066740-23-000014-index.htm"
+  },
+  "3M_2023Q2_10Q": {
+    "accession": "0000066740-23-000058",
+    "published_at": "2023-07-25",
+    "source": "https://www.sec.gov/Archives/edgar/data/66740/000006674023000058/0000066740-23-000058-index.htm"
+  },
+  "JOHNSON_JOHNSON_2022Q4_EARNINGS": {
+    "published_at": "2023-01-24",
+    "pdf_sha256": "7ae6bf6f9a998d19e23fd796b58b0f2015085c74712253b78fb90174c12436a7",
+    "source": "https://johnsonandjohnson.gcs-web.com/static-files/ca8c3ac2-15ab-4f8d-9693-f604d50be358"
+  },
+  "JOHNSON_JOHNSON_2022_10K": {
+    "published_at": "2023-02-16",
+    "pdf_sha256": "dba7d6cc97734abd6dcbc1a6a34f82b5d228e60d0a1a32425a90404fd4d3e290",
+    "source": "https://www.sec.gov/Archives/edgar/data/200406/000020040623000016/0000200406-23-000016-index.html"
+  },
+  "JOHNSON_JOHNSON_2023Q2_EARNINGS": {
+    "published_at": "2023-07-20",
+    "pdf_sha256": "db1f3419d309440e644dc3cdfbb74758e67734dd181e5dbabc7479d0ab92d026",
+    "source": "https://johnsonandjohnson.gcs-web.com/static-files/6626623f-0619-46dc-b7b6-57568124c517"
+  },
+  "JOHNSON_JOHNSON_2023_8K_dated-2023-08-30": {
+    "published_at": "2023-08-30",
+    "pdf_sha256": "0601a4b9f15e4400ced1b2ccb81c309cb66844fbac6b975a76dc490501bea95a",
+    "source": "https://www.sec.gov/Archives/edgar/data/200406/000020040623000091/0000200406-23-000091-index.htm"
+  },
+  "PEPSICO_2021_10K": {
+    "published_at": "2022-02-10",
+    "pdf_sha256": "f2c7cf1969c7f6dfc8c0596824e1d6b3cc70f662ee2dd06be84bb27af5635364",
+    "source": "https://www.sec.gov/Archives/edgar/data/77476/000007747622000010/0000077476-22-000010-index.html"
+  },
+  "PEPSICO_2022_10K": {
+    "published_at": "2023-02-09",
+    "pdf_sha256": "7d8a9f3374e429c58f101319e2da8a0e601a89859e1e4f6854163dd5f8ce6b47",
+    "source": "https://www.sec.gov/Archives/edgar/data/77476/0000077476-23-000007-index.htm"
+  },
+  "PEPSICO_2023Q1_EARNINGS": {
+    "published_at": "2023-04-25",
+    "pdf_sha256": "a705483ea6c548a2f67c421bc24ced391a6beb8487600b44b54e9ae2aca1f31c",
+    "source": "https://investors.pepsico.com/docs/default-source/investors/q1-2023/q1-2023-earnings-release_wfvmt94lzqbm92aw.pdf?sfvrsn=5db72450_4"
+  },
+  "PEPSICO_2023_8K_dated-2023-05-05": {
+    "event_date": "2023-05-03",
+    "published_at": "2023-05-05",
+    "pdf_sha256": "e8591d6f83d810a0f9edfc540a1a21aa6269a6de4c756b5eb808d5dbbea330ed",
+    "source": "https://www.sec.gov/Archives/edgar/data/77476/000007747623000028"
+  },
+  "PEPSICO_2023_8K_dated-2023-05-30": {
+    "event_date": "2023-05-26",
+    "published_at": "2023-05-30",
+    "pdf_sha256": "8e8f99f270b065e105636f54b2684f4c4170b3fc80845ae2f393bf66f3291d2c",
+    "source": "https://www.sec.gov/Archives/edgar/data/77476/000110465923066134/0001104659-23-066134-index.htm"
+  }
+}
