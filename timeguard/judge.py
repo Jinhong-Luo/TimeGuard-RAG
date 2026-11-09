@@ -61,7 +61,7 @@ def visible_answer(answer):
 
 
 def citation_context(generated):
-    """只按官方零基编号取原文；不通过相似度、金标或诊断检索猜测引用。"""
+    """旧结果保留原裁判规则；新结果还须核对模型实收提示块、原文和稳定标识。"""
     answer = visible_answer(generated.get("answer"))
     matches = list(CITATION_MARKER.finditer(answer))
     indexes = list(dict.fromkeys(int(match.group(1)) for match in matches))
@@ -75,6 +75,11 @@ def citation_context(generated):
                "unmapped_indexes": [], "missing_text_indexes": [], "malformed_markers": malformed,
                "reference_candidate_count": len(chunks) if isinstance(chunks, list) else None,
                "citations": []}
+    traced = "citation_trace" in generated
+    trace = generated.get("citation_trace") or {}
+    if traced:
+        context["citation_origin"] = trace.get("origin", "unknown")
+        context["trace_version"] = trace.get("version")
     for index in indexes:
         if not isinstance(chunks, list) or index >= len(chunks) or not isinstance(chunks[index], dict):
             context["unmapped_indexes"].append(index)
@@ -85,6 +90,14 @@ def citation_context(generated):
         if content is None:
             context["missing_text_indexes"].append(index)
             continue
+        if traced:
+            slot = (trace.get("visible") or {}).get(str(index)) or {}
+            if (trace.get("version") != 1 or context["citation_origin"] not in ("model", "native_auto")
+                    or not slot.get("chunk_id") or not slot.get("document_id")
+                    or slot["chunk_id"] != chunk.get("id") or slot["document_id"] != chunk.get("document_id")
+                    or slot.get("content_sha256") != digest(content)):
+                context["unmapped_indexes"].append(index)
+                continue
         context["citations"].append({
             "marker_index": index, "content": content,
             "chunk_id": chunk.get("id", chunk.get("chunk_id")),
