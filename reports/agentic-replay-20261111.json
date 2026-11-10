@@ -1,0 +1,416 @@
+{
+  "source_sha256": "27213b2db29ce0fe3edfdeb88fccb223015a38d139f54be63857fe5dfd3ab8c1",
+  "planned": 39,
+  "说明": "以返回引用候选的前十二块为固定池，只改变排序，取前六块计算金标页召回；补查单列。",
+  "records": [
+    {
+      "id": "financebench_id_01935",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.9487217,
+      "min_score": 1.37524785e-05,
+      "seconds": 4.041558691998944,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_03882",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.07299521,
+      "min_score": 1.238324e-05,
+      "seconds": 6.058100102003664,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00799",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.0017660301,
+      "min_score": 1.3723001e-05,
+      "seconds": 3.4527042650152,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01079",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.028957514,
+      "min_score": 1.2486504e-05,
+      "seconds": 6.120075220940635,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01148",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 11,
+      "max_score": 0.99119943,
+      "min_score": 2.2729353e-05,
+      "seconds": 3.945999786024913,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00684",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.04768421,
+      "min_score": 1.2554444e-05,
+      "seconds": 5.336226152954623,
+      "original": 1.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_01928",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.9630222,
+      "min_score": 0.0002259961,
+      "seconds": 5.009111565072089,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01936",
+      "fallback_calls": 0,
+      "rerank_calls": 0,
+      "pool": 0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01930",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.99260193,
+      "min_score": 0.0013726145,
+      "seconds": 6.928126015001908,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_02608",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 8,
+      "max_score": 0.0016382453,
+      "min_score": 2.3373392e-05,
+      "seconds": 4.121614144882187,
+      "original": 1.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_04417",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.04914889,
+      "min_score": 0.00016525693,
+      "seconds": 5.841389719163999,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00685",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.0546846,
+      "min_score": 0.00019092766,
+      "seconds": 7.377085183979943,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01275",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.55523324,
+      "min_score": 0.00015076768,
+      "seconds": 5.097771886968985,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01077",
+      "fallback_calls": 0,
+      "rerank_calls": 0,
+      "pool": 0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00460",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.14832623,
+      "min_score": 0.0009283619,
+      "seconds": 4.869556890800595,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00288",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.10069176,
+      "min_score": 2.0287376e-05,
+      "seconds": 5.901503472123295,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01902",
+      "fallback_calls": 0,
+      "rerank_calls": 0,
+      "pool": 0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_04660",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.0027057389,
+      "min_score": 3.854235e-05,
+      "seconds": 5.481254291022196,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_03838",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 8,
+      "max_score": 0.008458019,
+      "min_score": 0.00017441623,
+      "seconds": 4.2588010141626,
+      "original": 1.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_07661",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 8,
+      "max_score": 0.017222758,
+      "min_score": 0.00042449532,
+      "seconds": 4.165314214071259,
+      "original": 1.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_10285",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.00011135728,
+      "min_score": 2.6103942e-05,
+      "seconds": 6.266086207935587,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00517",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.009701186,
+      "min_score": 1.9239567e-05,
+      "seconds": 6.148352609016001,
+      "original": 0.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_01091",
+      "fallback_calls": 0,
+      "rerank_calls": 0,
+      "pool": 0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00678",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.001385187,
+      "min_score": 1.254591e-05,
+      "seconds": 6.155752395046875,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00464",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 10,
+      "max_score": 0.01958293,
+      "min_score": 1.4393563e-05,
+      "seconds": 3.6265320980455726,
+      "original": 1.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_01290",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.10695297,
+      "min_score": 1.0909162e-05,
+      "seconds": 5.804082985967398,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00494",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 10,
+      "max_score": 0.32812768,
+      "min_score": 1.2918418e-05,
+      "seconds": 4.7260580288711935,
+      "original": 1.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00585",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.07436552,
+      "min_score": 1.31901525e-05,
+      "seconds": 6.43735800194554,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_05915",
+      "fallback_calls": 1,
+      "rerank_calls": 0,
+      "pool": 0,
+      "fallback_chunks": 6,
+      "fallback_recall": 0.0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00790",
+      "fallback_calls": 1,
+      "rerank_calls": 0,
+      "pool": 0,
+      "fallback_chunks": 6,
+      "fallback_recall": 0.0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01244",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.9956025,
+      "min_score": 1.8473942e-05,
+      "seconds": 5.0190659610088915,
+      "original": 1.0,
+      "reranked": 1.0
+    },
+    {
+      "id": "financebench_id_01107",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.021833265,
+      "min_score": 1.2275736e-05,
+      "seconds": 2.5533712501637638,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_03849",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.021935763,
+      "min_score": 5.476818e-05,
+      "seconds": 5.043079542927444,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_04171",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.12084008,
+      "min_score": 1.3494783e-05,
+      "seconds": 5.146905558882281,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00382",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.63658327,
+      "min_score": 1.1797237e-05,
+      "seconds": 5.794772316934541,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01254",
+      "fallback_calls": 0,
+      "rerank_calls": 0,
+      "pool": 0,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01912",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 6.954392e-05,
+      "min_score": 1.1330549e-05,
+      "seconds": 4.541517433011904,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_01911",
+      "fallback_calls": 0,
+      "rerank_calls": 1,
+      "pool": 12,
+      "max_score": 0.38009188,
+      "min_score": 1.2505762e-05,
+      "seconds": 3.3414830409456044,
+      "original": 0.0,
+      "reranked": 0.0
+    },
+    {
+      "id": "financebench_id_00407",
+      "fallback_calls": 0,
+      "rerank_calls": 0,
+      "pool": 0,
+      "original": 0.0,
+      "reranked": 0.0
+    }
+  ]
+}

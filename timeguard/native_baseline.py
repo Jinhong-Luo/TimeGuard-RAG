@@ -136,9 +136,13 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
+    if spec.get("candidate"):
+        from .agentic_candidate import install
+        install(service, generator, settings, spec, CURRENT, trace_event)
     async def one(q):
         started = time.monotonic()
         state = {"events": [], "retrieved": [], "prompt_blocks": [], "visible_ids": [], "citation_origin": "model"}
+        state["question"] = q["question"]
         token = CURRENT.set(state)
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
         try:
@@ -157,11 +161,23 @@ async def native_worker(spec):
                 if not support:
                     raise ValueError("模型未声明工具能力，禁止把普通问答回退当作Agentic成功")
             messages = [{"role": "user", "content": q["question"]}]
+            if spec.get("candidate") == "temporal":
+                from .scope import scope
+                state["plan"] = scope(q["question"], spec["documents"], q.get("as_of"))
+                if not state["plan"]["companies"]:
+                    row.update(answer="请明确要查询的公司。", reference={"chunks": []})
+                elif state["plan"]["document_ids"] == []:
+                    row.update(answer="截止日内没有可核验的已披露文档。", reference={"chunks": []})
+                else:
+                    messages[0]["doc_ids"] = state["plan"]["document_ids"]
             async with asyncio.timeout(spec.get("timeout_seconds",1200)):
                 async with app.app_context():
-                    async for result in service.rag_agent(dialog, messages, stream=False, reasoning=cfg["reasoning"]):
-                        row.update(answer=result.get("answer"), reference={"chunks": generator.chunks_format(result.get("reference"))},
-                                   usage=result.get("usage"))
+                    if row["answer"] is None:
+                        async for result in service.rag_agent(dialog, messages, stream=False, reasoning=cfg["reasoning"]):
+                            row.update(answer=result.get("answer"), reference={"chunks": generator.chunks_format(result.get("reference"))},
+                                       usage=result.get("usage"))
+            if spec.get("candidate") == "evidence":
+                row["citation_trace"] = {"version": 1, "visible": state.get("visible", {}), "origin": "model"}
             if not row["answer"] or "**ERROR**" in row["answer"]:
                 raise ValueError("原生回答为空或带错误标记")
         except Exception as exc:
@@ -183,7 +199,10 @@ def container_worker(spec, out):
     target = "/tmp/timeguard-native-baseline-"+digest(Path(__file__).read_bytes())[:12]
     with tempfile.TemporaryDirectory() as temp:
         package=Path(temp,"timeguard");package.mkdir()
-        for name in ("__init__.py","common.py","native_baseline.py"):
+        files = ["__init__.py","common.py","native_baseline.py"]
+        if spec.get("candidate"):
+            files.extend(["agentic_candidate.py", "scope.py", "score.py"])
+        for name in files:
             shutil.copyfile(Path(__file__).with_name(name),package/name)
         subprocess.run(["docker","exec",CONTAINER,"mkdir","-p",target],check=True)
         subprocess.run(["docker","cp",str(package),CONTAINER+":"+target+"/"],check=True,stdout=subprocess.DEVNULL)
@@ -254,9 +273,11 @@ def prepare(out):
     print("已创建独立模型实例和原生对话；工具能力仍须从实际模型对象和调用核验",flush=True)
 
 
-def run_arm(root, arm, split, limit, reranker, label=""):
+def run_arm(root, arm, split, limit, reranker, label="", candidate=None):
     if label and not re.fullmatch(r"[a-z0-9_-]+",label):raise ValueError("运行标签格式错误")
-    out=root/(arm+("-"+label if label else "")+("-smoke" if limit else "-"+split))
+    if candidate and arm != "combined":
+        raise ValueError("优化候选只适用于公司过滤与 Agentic medium 组合")
+    out=root/(arm+("-"+candidate if candidate else "")+("-"+label if label else "")+("-smoke" if limit else "-"+split))
     out.mkdir(parents=True,exist_ok=False)
     setup=read_json(root/"setup.json")
     queries=select_queries(read_jsonl("data/financebench/queries.jsonl"),split,limit)
@@ -267,6 +288,14 @@ def run_arm(root, arm, split, limit, reranker, label=""):
                      "common/metadata_utils.py","rag/advanced_rag/harness/config.py")}
     spec={**{k:setup[k] for k in ("chat_id","dataset_id","model")},"queries":queries,
           "arm_config":arm_config(arm,reranker),"concurrency":2,"upstream_files":upstream_files,"timeout_seconds":1200}
+    if candidate:
+        spec["candidate"] = candidate
+        spec["candidate_source_sha256"] = digest(Path(__file__).with_name("agentic_candidate.py").read_bytes())
+        for name in ("rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py"):
+            upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
+        if candidate == "temporal":
+            from .retrieval_experiment import catalog
+            spec["documents"] = catalog(read_jsonl("data/financebench/documents.jsonl"), read_json("data/ingestion.json"))
     manifest={"identity":{"query_ids":[q["id"] for q in queries],"split":split,"config":setup["config"],
         "arm":spec["arm_config"],"scope":"连通验证" if limit else "完整分组评测",
         "source_sha256":digest(Path(__file__).read_bytes()),"queries_sha256":digest(Path("data/financebench/queries.jsonl").read_bytes()),
@@ -289,7 +318,8 @@ def run_arm(root, arm, split, limit, reranker, label=""):
         "unique_audit_request_ids":len({r.get("request_id") for r in records})==len(records),
         "tokens":sum((r.get("usage") or {}).get("totalTokens",0) for r in records),
         "results_sha256":digest((out/"results.jsonl").read_bytes()),"cost_usd":None,
-        "raw_upstream":True,"notes":"保留上游原始编号、提示、检索和Agentic预算；观察钩子不修改返回内容。"})
+        "raw_upstream":not bool(candidate),"candidate":candidate,
+        "notes":"独立候选实验" if candidate else "原生基线"})
     if code or len(rows)!=len(queries):
         raise SystemExit(1)
 
@@ -304,6 +334,9 @@ def main():
     p.add_argument("--split",choices=("tune","dev","test","all"),default="dev")
     p.add_argument("--limit",type=int)
     p.add_argument("--label",default="")
+    if "--worker" not in sys.argv:
+        from .agentic_candidate import VARIANTS
+        p.add_argument("--candidate", choices=VARIANTS)
     p.add_argument("--reranker",default="cross-encoder/ms-marco-MiniLM-L6-v2@timeguard_r1_ce_tokenizer@HuggingFace")
     args=p.parse_args()
     if args.worker:
@@ -315,7 +348,7 @@ def main():
     elif args.prepare:
         prepare(args.output)
     else:
-        run_arm(args.output,args.arm,args.split,args.limit,args.reranker,args.label)
+        run_arm(args.output,args.arm,args.split,args.limit,args.reranker,args.label,args.candidate)
 
 
 if __name__=="__main__":
