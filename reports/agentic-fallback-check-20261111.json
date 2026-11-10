@@ -1,0 +1,17 @@
+{
+  "method": "真实原生检索，注入历史空证据，最终生成节点使用测试替身。",
+  "rows": [
+    {
+      "id": "financebench_id_05915",
+      "allowed": 2,
+      "retrieval_calls": 1,
+      "chunks": 6
+    },
+    {
+      "id": "financebench_id_00790",
+      "allowed": 2,
+      "retrieval_calls": 1,
+      "chunks": 6
+    }
+  ]
+}

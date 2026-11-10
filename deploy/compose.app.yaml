@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.app
+    image: timeguard-app:local
+    network_mode: host
+    read_only: true
+    tmpfs:
+      - /tmp
+    environment:
+      RAGFLOW_API_KEY: ${RAGFLOW_API_KEY:?请配置项目账户的检索密钥}
+      CODEX_BRIDGE_TOKEN: ${CODEX_BRIDGE_TOKEN:?请配置项目模型桥令牌}
+      CODEX_BRIDGE_BASE_URL: ${CODEX_BRIDGE_BASE_URL:-http://172.18.0.1:18864/v1}
+      TIMEGUARD_DB: /var/lib/timeguard/sessions.sqlite3
+    volumes:
+      - ../data/ingestion.json:/opt/timeguard/data/ingestion.json:ro
+      - ../data/financebench/documents.jsonl:/opt/timeguard/data/financebench/documents.jsonl:ro
+      - sessions:/var/lib/timeguard
+volumes:
+  sessions:

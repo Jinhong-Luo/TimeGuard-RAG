@@ -116,7 +116,7 @@ class RetrievalTests(unittest.TestCase):
 try:
     from fastapi.testclient import TestClient
     from timeguard.app import create_app
-    from timeguard.financial_agent import Operand, build_graph, calculate_financial_metric, verify_operand, tool_selection
+    from timeguard.financial_agent import Operand, build_graph, calculate_financial_metric, verify_operand, tool_selection, present_evidence
 except ModuleNotFoundError as dependency:
     if dependency.name not in {"fastapi", "httpx", "langgraph", "pydantic"}:
         raise
@@ -143,6 +143,17 @@ class AppTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             calculate_financial_metric("margin", a.model_copy(update={"currency": "XXX"}),
                                        b.model_copy(update={"currency": "XXX", "chunk_id": "其他表"}))
+
+    def test_table_line_is_bound_to_shown_text(self):
+        table = "<table><caption>USD millions</caption><tr><th>2022</th><th>2021</th></tr><tr><td>120</td><td>(100)</td></tr></table>"
+        evidence = present_evidence([{"id": "c", "content": table}])[0]
+        op = self.operand("120").model_copy(update={"quote": "", "line_number": 3})
+        self.assertIn("120", verify_operand(op, evidence, evidence["visible_lines"]))
+        for changed in ({"line_number": 2}, {"number": "100"}, {"line_number": 99}):
+            with self.subTest(changed=changed), self.assertRaises(ValueError):
+                verify_operand(op.model_copy(update=changed), evidence, evidence["visible_lines"])
+        with self.assertRaises(ValueError):
+            verify_operand(op, evidence, evidence["visible_lines"][:2])
 
     def test_real_graph_http_replay_restart(self):
         a, b = self.operand("120"), self.operand("800")

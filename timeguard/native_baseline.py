@@ -161,7 +161,7 @@ async def native_worker(spec):
                 if not support:
                     raise ValueError("模型未声明工具能力，禁止把普通问答回退当作Agentic成功")
             messages = [{"role": "user", "content": q["question"]}]
-            if spec.get("candidate") == "temporal":
+            if spec.get("candidate") in ("temporal", "adaptive", "finance"):
                 from .scope import scope
                 state["plan"] = scope(q["question"], spec["documents"], q.get("as_of"))
                 if not state["plan"]["companies"]:
@@ -177,7 +177,8 @@ async def native_worker(spec):
                             row.update(answer=result.get("answer"), reference={"chunks": generator.chunks_format(result.get("reference"))},
                                        usage=result.get("usage"))
             if spec.get("candidate") == "evidence":
-                row["citation_trace"] = {"version": 1, "visible": state.get("visible", {}), "origin": "model"}
+                row["citation_trace"] = {"version": 1, "visible": state.get("visible", {}),
+                                         "origin": "model", "raw_answer": state.get("evidence_raw_answer")}
             if not row["answer"] or "**ERROR**" in row["answer"]:
                 raise ValueError("原生回答为空或带错误标记")
         except Exception as exc:
@@ -196,14 +197,19 @@ async def native_worker(spec):
 
 
 def container_worker(spec, out):
-    target = "/tmp/timeguard-native-baseline-"+digest(Path(__file__).read_bytes())[:12]
     with tempfile.TemporaryDirectory() as temp:
         package=Path(temp,"timeguard");package.mkdir()
         files = ["__init__.py","common.py","native_baseline.py"]
         if spec.get("candidate"):
             files.extend(["agentic_candidate.py", "scope.py", "score.py"])
+        if spec.get("candidate") in ("adaptive", "finance"):
+            files.extend(["agentic_finance.py", "financial_agent.py"])
         for name in files:
             shutil.copyfile(Path(__file__).with_name(name),package/name)
+        hashes = {name:digest((package/name).read_bytes()) for name in files}
+        if spec.get("candidate_files") and spec["candidate_files"] != hashes:
+            raise ValueError("候选源码与冻结清单不匹配")
+        target = "/tmp/timeguard-native-baseline-"+digest(hashes)[:16]
         subprocess.run(["docker","exec",CONTAINER,"mkdir","-p",target],check=True)
         subprocess.run(["docker","cp",str(package),CONTAINER+":"+target+"/"],check=True,stdout=subprocess.DEVNULL)
     argv=["docker","exec","-i","-w","/ragflow","-e","PYTHONPATH="+target+":/ragflow",CONTAINER,"python","-m","timeguard.native_baseline","--worker"]
@@ -273,7 +279,7 @@ def prepare(out):
     print("已创建独立模型实例和原生对话；工具能力仍须从实际模型对象和调用核验",flush=True)
 
 
-def run_arm(root, arm, split, limit, reranker, label="", candidate=None):
+def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_ids=None):
     if label and not re.fullmatch(r"[a-z0-9_-]+",label):raise ValueError("运行标签格式错误")
     if candidate and arm != "combined":
         raise ValueError("优化候选只适用于公司过滤与 Agentic medium 组合")
@@ -281,6 +287,11 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None):
     out.mkdir(parents=True,exist_ok=False)
     setup=read_json(root/"setup.json")
     queries=select_queries(read_jsonl("data/financebench/queries.jsonl"),split,limit)
+    if query_ids:
+        if limit or len(query_ids) != len(set(query_ids)):
+            raise ValueError("固定题号不能重复或与数量截断同时使用")
+        options = {q["id"]: q for q in queries}
+        queries = [options[key] for key in query_ids]
     from .matrix import frozen_index
     freeze=frozen_index(Path("data/ingestion.json"),Path("runs/r0-gpu-retrieval-all"),Path("data/financebench/queries.jsonl"))
     upstream_files={name:digest(Path("vendor/ragflow",name).read_bytes()) for name in
@@ -290,14 +301,18 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None):
           "arm_config":arm_config(arm,reranker),"concurrency":2,"upstream_files":upstream_files,"timeout_seconds":1200}
     if candidate:
         spec["candidate"] = candidate
+        names = ["__init__.py", "common.py", "native_baseline.py", "agentic_candidate.py", "scope.py", "score.py"]
+        if candidate in ("adaptive", "finance"):
+            names.extend(["agentic_finance.py", "financial_agent.py"])
+        spec["candidate_files"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in names}
         spec["candidate_source_sha256"] = digest(Path(__file__).with_name("agentic_candidate.py").read_bytes())
         for name in ("rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py"):
             upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
-        if candidate == "temporal":
+        if candidate in ("temporal", "adaptive", "finance"):
             from .retrieval_experiment import catalog
             spec["documents"] = catalog(read_jsonl("data/financebench/documents.jsonl"), read_json("data/ingestion.json"))
     manifest={"identity":{"query_ids":[q["id"] for q in queries],"split":split,"config":setup["config"],
-        "arm":spec["arm_config"],"scope":"连通验证" if limit else "完整分组评测",
+        "arm":spec["arm_config"],"scope":"指定题号回归" if query_ids else ("连通验证" if limit else "完整分组评测"),
         "source_sha256":digest(Path(__file__).read_bytes()),"queries_sha256":digest(Path("data/financebench/queries.jsonl").read_bytes()),
         "upstream":read_json("upstream.lock.json"),"upstream_files":upstream_files,"freeze":freeze,"spec_sha256":digest(spec)},
         "created_at_utc":datetime.now(timezone.utc).isoformat()}
@@ -333,6 +348,7 @@ def main():
     p.add_argument("--arm",choices=ARMS,default="plain")
     p.add_argument("--split",choices=("tune","dev","test","all"),default="dev")
     p.add_argument("--limit",type=int)
+    p.add_argument("--query-ids", nargs="+")
     p.add_argument("--label",default="")
     if "--worker" not in sys.argv:
         from .agentic_candidate import VARIANTS
@@ -348,7 +364,7 @@ def main():
     elif args.prepare:
         prepare(args.output)
     else:
-        run_arm(args.output,args.arm,args.split,args.limit,args.reranker,args.label,args.candidate)
+        run_arm(args.output,args.arm,args.split,args.limit,args.reranker,args.label,args.candidate,args.query_ids)
 
 
 if __name__=="__main__":

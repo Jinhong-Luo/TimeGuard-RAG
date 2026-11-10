@@ -1,0 +1,22 @@
+{
+  "source_document": "PEPSICO_2023Q1_EARNINGS",
+  "source_pdf_sha256": "a705483ea6c548a2f67c421bc24ced391a6beb8487600b44b54e9ae2aca1f31c",
+  "parent_count": 14,
+  "parents_sha256": "1c0e8ac32d8bf44f8531af9b1cba9f4090e328837816443703dc7aff96821c07",
+  "embedding": "BAAI/bge-small-en-v1.5@local_tei@HuggingFace",
+  "source_sha256": "38220eef2bde808f3110a54ba6ae11d3d0e1abf6881a2b578a56de32b3ad030d",
+  "arms": {
+    "whole": {
+      "unique_chunks": 14,
+      "questions": 4,
+      "results_sha256": "9d312d300c5ebffff1dcf489d0af225775c994f33fe29104a81621fe0a876225",
+      "parent_page_recall": 0.5
+    },
+    "rows": {
+      "unique_chunks": 38,
+      "questions": 4,
+      "results_sha256": "f10888c5ade16806352df49c54cd16e32c817691ad77e8d537fd702b97aaa3ab",
+      "parent_page_recall": 0.5
+    }
+  }
+}

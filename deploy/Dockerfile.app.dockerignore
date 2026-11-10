@@ -1,0 +1,8 @@
+**
+!requirements-app.txt
+!timeguard/
+!timeguard/*.py
+!configs/
+!configs/r0-low.json
+!configs/filing_dates.json
+
