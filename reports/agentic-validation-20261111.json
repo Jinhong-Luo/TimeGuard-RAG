@@ -1,0 +1,396 @@
+{
+  "baseline": {
+    "run": "combined-core-dev",
+    "planned": 39,
+    "answers": 39,
+    "reviews": 39,
+    "ok": 39,
+    "correct": 20,
+    "incorrect": 19,
+    "unknown": 0,
+    "model_requests": 600,
+    "failed_requests": 2,
+    "returned_tokens": 10600326,
+    "judge_requests": 39,
+    "judge_tokens": 341629,
+    "visible_chunks": 0,
+    "citation_mapping": {
+      "mapped": 31,
+      "incomplete": 3,
+      "no_citations": 5
+    },
+    "results_sha256": "27213b2db29ce0fe3edfdeb88fccb223015a38d139f54be63857fe5dfd3ab8c1",
+    "reviews_sha256": "c4e51577989c17125d52f739abf26a2e75ce5bb65c6cf2804b93e5c0d6bcbd10"
+  },
+  "dev": {
+    "run": "combined-sca1-paired-dev-dev",
+    "planned": 39,
+    "answers": 39,
+    "reviews": 39,
+    "ok": 39,
+    "correct": 14,
+    "incorrect": 25,
+    "unknown": 0,
+    "model_requests": 522,
+    "failed_requests": 1,
+    "returned_tokens": 8118430,
+    "judge_requests": 39,
+    "judge_tokens": 357162,
+    "visible_chunks": 0,
+    "citation_mapping": {
+      "mapped": 37,
+      "incomplete": 2
+    },
+    "results_sha256": "395e24aea9cd295884f34b95e9f611e4eacbdced2be27c0a7493b3693ad53321",
+    "reviews_sha256": "5df0c2a9435eb37f3fe60ea7201833ce2d7675a7ac021db3ab7e0e8e4c35e925",
+    "health_probe": {
+      "request_id": "chatcmpl-8429c70ea5d6446f846ab2128bccad6c",
+      "tokens": 4864
+    },
+    "answer_requests_excluding_probe": 521,
+    "answer_tokens_excluding_probe": 8113566
+  },
+  "independent": {
+    "run": "combined-sca1-paired-test-smoke",
+    "planned": 2,
+    "answers": 2,
+    "reviews": 2,
+    "ok": 2,
+    "correct": 0,
+    "incorrect": 2,
+    "unknown": 0,
+    "model_requests": 36,
+    "failed_requests": 0,
+    "returned_tokens": 830696,
+    "judge_requests": 2,
+    "judge_tokens": 20311,
+    "visible_chunks": 0,
+    "citation_mapping": {
+      "mapped": 2
+    },
+    "results_sha256": "694bdb84899ec13505f6df7cdd74e6754b572ae2ce7010e37c7095b7146a4d69",
+    "reviews_sha256": "d59ac6d78cd198a5bab94a69c0958e1b23a3fbe14fb8c867f976176567791591"
+  },
+  "interrupted_tune": {
+    "run": "combined-turn2-paired-tune-smoke",
+    "planned": 2,
+    "answers": 2,
+    "reviews": 0,
+    "ok": 0,
+    "correct": 0,
+    "incorrect": 0,
+    "unknown": 0,
+    "model_requests": 12,
+    "failed_requests": 12,
+    "returned_tokens": 0,
+    "judge_requests": null,
+    "judge_tokens": null,
+    "visible_chunks": 0,
+    "citation_mapping": {},
+    "results_sha256": "5ff93062a82e83d25a166b070b7c39fe19c4f4a947b3ed2ec2f66b54f00876fe",
+    "reviews_sha256": null
+  },
+  "tune": [
+    {
+      "run": "combined-paired-tune-smoke",
+      "planned": 2,
+      "answers": 2,
+      "reviews": 2,
+      "ok": 2,
+      "correct": 0,
+      "incorrect": 1,
+      "unknown": 1,
+      "model_requests": 23,
+      "failed_requests": 0,
+      "returned_tokens": 250942,
+      "judge_requests": 2,
+      "judge_tokens": 17657,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "mapped": 2
+      },
+      "results_sha256": "962dd3474ff9a6880d12dab2b33fea728e968349fb2591a67ae5ca2a0850c774",
+      "reviews_sha256": "b92dbb61838255458fc62c46913d14ee32f100c8b39bf937773c41ccf3777c40"
+    },
+    {
+      "run": "combined-evidence-paired-tune-smoke",
+      "planned": 2,
+      "answers": 2,
+      "reviews": 2,
+      "ok": 2,
+      "correct": 1,
+      "incorrect": 0,
+      "unknown": 1,
+      "model_requests": 21,
+      "failed_requests": 0,
+      "returned_tokens": 191413,
+      "judge_requests": 2,
+      "judge_tokens": 16654,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "no_citations": 1,
+        "incomplete": 1
+      },
+      "results_sha256": "70d767fbb349d2f30c412335b6c6d90b61cbeceae1d07ff0d8eb12b699e716c7",
+      "reviews_sha256": "56199f43ab76de3f0765fd82ddbbc3ccf7527cb59e4a97f6c8bed084e356b99a"
+    },
+    {
+      "run": "combined-sca1-paired-tune-smoke",
+      "planned": 2,
+      "answers": 2,
+      "reviews": 2,
+      "ok": 2,
+      "correct": 1,
+      "incorrect": 0,
+      "unknown": 1,
+      "model_requests": 20,
+      "failed_requests": 0,
+      "returned_tokens": 186299,
+      "judge_requests": 2,
+      "judge_tokens": 17119,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "mapped": 1,
+        "incomplete": 1
+      },
+      "results_sha256": "38aac6e14a5969a7d97ec4ae0a8e9371aed1c21dbb9df9a9f9dc6c7b91651d37",
+      "reviews_sha256": "c2309c07ba2c4e6327bb8d4bc5afd1675580e6fbaf2b911f2fac304cff25c79f"
+    },
+    {
+      "run": "combined-turn2-paired-tune-smoke",
+      "planned": 2,
+      "answers": 2,
+      "reviews": 2,
+      "ok": 2,
+      "correct": 1,
+      "incorrect": 0,
+      "unknown": 1,
+      "model_requests": 20,
+      "failed_requests": 0,
+      "returned_tokens": 213862,
+      "judge_requests": 2,
+      "judge_tokens": 17481,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "mapped": 2
+      },
+      "results_sha256": "0bb232ea13d338d344477af1697a601bfa220f0b693434ae87398af3275e315d",
+      "reviews_sha256": "699812cd06936ca0f57c11a434ef682c62f628272bfbdb451e72fd9ac9fb223f"
+    }
+  ],
+  "regressions": [
+    {
+      "run": "combined-adaptive-regression-tune",
+      "planned": 1,
+      "answers": 1,
+      "reviews": 1,
+      "ok": 1,
+      "correct": 0,
+      "incorrect": 1,
+      "unknown": 0,
+      "model_requests": 10,
+      "failed_requests": 0,
+      "returned_tokens": 96429,
+      "judge_requests": 1,
+      "judge_tokens": 10308,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "mapped": 1
+      },
+      "results_sha256": "204fc5711163acacbace7c7de8da7f37b081aeb2427dbd989ccacf88b6264c84",
+      "reviews_sha256": "090bbcf5d50e50c7ab16395a1ebda9ff3e9a8e7057041f753cb255671396a1e7",
+      "variant": "adaptive",
+      "calls": 10,
+      "paths": [
+        [
+          "financial_route"
+        ]
+      ],
+      "requests_with_id": 10,
+      "requests_with_usage": 10,
+      "evidence_packets": []
+    },
+    {
+      "run": "combined-concise-regression-dev",
+      "planned": 1,
+      "answers": 1,
+      "reviews": 1,
+      "ok": 1,
+      "correct": 1,
+      "incorrect": 0,
+      "unknown": 0,
+      "model_requests": 11,
+      "failed_requests": 0,
+      "returned_tokens": 171545,
+      "judge_requests": 1,
+      "judge_tokens": 8165,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "mapped": 1
+      },
+      "results_sha256": "09d915d74392b5540dedb1c5b1c56cef19e81237d4a0bc02f8002922b452e2f3",
+      "reviews_sha256": "61b50baa2c84cf4c7698d94a2c93b594f1c8f23a64664f1938df8d19580dda59",
+      "variant": "concise",
+      "calls": 11,
+      "paths": [
+        []
+      ],
+      "requests_with_id": 11,
+      "requests_with_usage": 11,
+      "evidence_packets": []
+    },
+    {
+      "run": "combined-evidence-regression-tune",
+      "planned": 2,
+      "answers": 2,
+      "reviews": 2,
+      "ok": 2,
+      "correct": 1,
+      "incorrect": 0,
+      "unknown": 1,
+      "model_requests": 23,
+      "failed_requests": 0,
+      "returned_tokens": 213724,
+      "judge_requests": 2,
+      "judge_tokens": 20467,
+      "visible_chunks": 17,
+      "citation_mapping": {
+        "mapped": 2
+      },
+      "results_sha256": "161cf865bdf9e18268ebdce21abca5257084e20a06db21ce60cb56005f45c6b5",
+      "reviews_sha256": "bbad9ee1a4b56adf78c801ce7d871925deba84ad0811ede46ab67625a196bdae",
+      "variant": "evidence",
+      "calls": 23,
+      "paths": [
+        [
+          "evidence_packet"
+        ],
+        [
+          "evidence_packet"
+        ]
+      ],
+      "requests_with_id": 23,
+      "requests_with_usage": 23,
+      "evidence_packets": [
+        {
+          "kind": "evidence_packet",
+          "candidates": 16,
+          "readback": 12,
+          "visible": 7
+        },
+        {
+          "kind": "evidence_packet",
+          "candidates": 10,
+          "readback": 12,
+          "visible": 10
+        }
+      ]
+    },
+    {
+      "run": "combined-fallback-regression-dev",
+      "planned": 2,
+      "answers": 2,
+      "reviews": 2,
+      "ok": 2,
+      "correct": 1,
+      "incorrect": 1,
+      "unknown": 0,
+      "model_requests": 26,
+      "failed_requests": 0,
+      "returned_tokens": 430032,
+      "judge_requests": 2,
+      "judge_tokens": 20008,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "mapped": 2
+      },
+      "results_sha256": "84d921fa8bc9202def9f6beeb70e64e1420d4424ec2231bdcb120a308fd4ad04",
+      "reviews_sha256": "b43814df3294c0dd24c07948b9b3239f5999161986d1495b3b99eac8a840bd18",
+      "variant": "fallback",
+      "calls": 26,
+      "paths": [
+        [],
+        []
+      ],
+      "requests_with_id": 26,
+      "requests_with_usage": 26,
+      "evidence_packets": []
+    },
+    {
+      "run": "combined-finance-regression-dev",
+      "planned": 1,
+      "answers": 1,
+      "reviews": 1,
+      "ok": 1,
+      "correct": 0,
+      "incorrect": 1,
+      "unknown": 0,
+      "model_requests": 3,
+      "failed_requests": 0,
+      "returned_tokens": 21223,
+      "judge_requests": 1,
+      "judge_tokens": 7778,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "no_citations": 1
+      },
+      "results_sha256": "92c5a406c09fbb1afb3914c919f2f253557eb656e283b6d7e888ff467e0bb24c",
+      "reviews_sha256": "b815a48366a35e78d2fb046038d151d574d676ee20d69043ca4e0fa93c784388",
+      "variant": "finance",
+      "calls": 3,
+      "paths": [
+        [
+          "financial_clarify"
+        ]
+      ],
+      "requests_with_id": 3,
+      "requests_with_usage": 3,
+      "evidence_packets": []
+    },
+    {
+      "run": "combined-temporal-regression-dev",
+      "planned": 1,
+      "answers": 1,
+      "reviews": 1,
+      "ok": 1,
+      "correct": 0,
+      "incorrect": 1,
+      "unknown": 0,
+      "model_requests": 0,
+      "failed_requests": 0,
+      "returned_tokens": 0,
+      "judge_requests": 1,
+      "judge_tokens": 8899,
+      "visible_chunks": 0,
+      "citation_mapping": {
+        "no_citations": 1
+      },
+      "results_sha256": "3030261f0ca0a55d9dde6850f42cf26876ff208af19d082a3166e9645d733c4e",
+      "reviews_sha256": "491b9b3e545c237da2df6085a7e4bf1630901a8bfc6a1bacfccf9e4f115ae96b",
+      "variant": "temporal",
+      "calls": 0,
+      "paths": [
+        []
+      ],
+      "requests_with_id": 0,
+      "requests_with_usage": 0,
+      "evidence_packets": []
+    }
+  ],
+  "paired": {
+    "True → True": 11,
+    "False → False": 16,
+    "True → False": 9,
+    "False → True": 3
+  },
+  "time_checks": {
+    "catalog": 84,
+    "verified_dates": 12,
+    "checks": 26,
+    "empty": 3
+  },
+  "timing": {
+    "median_seconds": 85.77322608209215,
+    "说明": "生成时延包含网络异常等待；完整组模型审计窗口内有一次恢复健康探测。"
+  }
+}

@@ -68,6 +68,19 @@ class FinancialTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             calculate_financial_metric("period_sum",a,b,[b])
 
+    def test_currency_spacer_and_year_footnote(self):
+        html = "<table><caption>USD millions</caption><tr><td></td><td>2022*</td><td>2021</td><td></td></tr><tr><td>Total assets</td><td>20</td><td>$</td><td>18</td></tr></table>"
+        for content, ok in ((html,True),(html.replace("<td>$</td>","<td>19</td>"),False)):
+            chunk = {"id":"c","content":content}
+            shown = present_evidence([chunk])[0]["visible_lines"]
+            op=self.a.model_copy(update={"year":2021,"number":"18"})
+            if ok:
+                verify_operand(op,chunk,shown)
+                verify_operand(self.a,chunk,shown)
+            else:
+                with self.assertRaises(ValueError):
+                    verify_operand(op,chunk,shown)
+
     def test_light_route_checks_source(self):
         async def read(c):
             return c
@@ -103,7 +116,7 @@ class FinancialTests(unittest.TestCase):
         async def run():
             docs = [{"company":"AMD","id":"d","doc_name":"AMD_2022_10K"}]
             config = {"base_url":"http://test","retrieval":{}}
-            for response in (httpx.Response(502), httpx.Response(200, content=b"{"),
+            for response in (httpx.Response(502), httpx.Response(200, content=b"{"),httpx.Response(200,content=b"null"),
                              httpx.Response(200, json={"code":0,"data":{"chunks":[{"document_id":"other"}]}})):
                 async with httpx.AsyncClient(transport=httpx.MockTransport(lambda _:response)) as http:
                     with patch("timeguard.app.read_json",return_value=config), patch("timeguard.app.read_jsonl",return_value=[]), patch("timeguard.app.catalog",return_value=docs), patch.dict("os.environ",RAGFLOW_API_KEY="test",CODEX_BRIDGE_TOKEN="test"):
@@ -111,4 +124,3 @@ class FinancialTests(unittest.TestCase):
                         with self.assertRaises((ValueError,httpx.HTTPStatusError)):
                             await graph.ainvoke({"question":"AMD FY2022 margin"})
         asyncio.run(run())
-

@@ -4,6 +4,7 @@ from contextvars import ContextVar
 from contextlib import asynccontextmanager, closing
 from datetime import date
 import json
+import logging
 import os
 from pathlib import Path
 import sqlite3
@@ -51,7 +52,7 @@ def native_graph(http, state):
                 r = await http.request(method, base + path, json=body, headers={"Authorization": "Bearer " + key})
                 r.raise_for_status()
                 payload = r.json()
-                if payload["code"] != 0:
+                if not isinstance(payload, dict) or payload.get("code") != 0 or not isinstance(payload.get("data"), dict):
                     raise ValueError("原生证据服务返回业务错误")
                 return payload["data"]
             except (httpx.ConnectError, httpx.ReadTimeout):
@@ -67,6 +68,8 @@ def native_graph(http, state):
                    "document_ids": plan["document_ids"], "question": question}
         result = await native("POST", "/retrieval", payload)
         chunks = result["chunks"]
+        if not isinstance(chunks, list) or any(not isinstance(c, dict) for c in chunks):
+            raise ValueError("原生检索返回无效片段")
         record("检索", chunks=len(chunks))
         if any(c["document_id"] not in plan["document_ids"] for c in chunks):
             raise ValueError("检索返回了指定范围之外的证据")
@@ -90,6 +93,9 @@ def native_graph(http, state):
                   "tool_choice": "required", "parallel_tool_calls": False})
         response.raise_for_status()
         payload = response.json()
+        if (not isinstance(payload, dict) or not isinstance(payload.get("choices"), list) or
+                not payload["choices"] or not isinstance(payload["choices"][0], dict)):
+            raise ValueError("模型服务返回无效的选择结构")
         selection, call = tool_selection(payload["choices"][0]["message"])
         record("工具选择", tool=call["name"], usage=payload.get("usage"))
         return selection, payload.get("usage"), call
@@ -178,11 +184,14 @@ def create_app(db_path=None, graph=None, capacity=2, timeout=120, cooldown=15):
         except sqlite3.IntegrityError:
             raise HTTPException(409, "其他请求已更新同一会话") from None
         except (TimeoutError, httpx.TimeoutException):
+            logging.getLogger(__name__).warning("请求 %s 超时，已执行阶段 %s", request, [e["stage"] for e in TRACE.get()])
             counters["errors"] += 1
             failures += 1
             retry_after = time.monotonic() + cooldown
             raise HTTPException(504, "证据或模型服务超时") from None
         except (httpx.HTTPError, ValueError, KeyError, IndexError) as exc:
+            logging.getLogger(__name__).warning("请求 %s 上游异常 %s，已执行阶段 %s",
+                request, type(exc).__name__, [e["stage"] for e in TRACE.get()])
             counters["errors"] += 1
             failures += 1
             retry_after = time.monotonic() + cooldown

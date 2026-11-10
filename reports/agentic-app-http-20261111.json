@@ -1,0 +1,89 @@
+{
+  "rows": [
+    {
+      "status": "answered",
+      "answer": "(32,765 − 31,657) ÷ 31,657 = 3.5%",
+      "facts": 2,
+      "trace": [
+        "范围",
+        "检索",
+        "工具选择",
+        "原文回读",
+        "原文回读",
+        "计算结果"
+      ],
+      "usage": {
+        "prompt_tokens": 9643,
+        "completion_tokens": 302,
+        "total_tokens": 9945,
+        "prompt_tokens_details": {
+          "cached_tokens": 9472
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "seconds": 9.837594548007473
+    },
+    {
+      "status": "answered",
+      "answer": "(32,765 − 31,657) ÷ 31,657 = 3.5%",
+      "facts": 2,
+      "trace": [
+        "范围",
+        "检索",
+        "工具选择",
+        "原文回读",
+        "原文回读",
+        "计算结果"
+      ],
+      "usage": {
+        "prompt_tokens": 9643,
+        "completion_tokens": 302,
+        "total_tokens": 9945,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "seconds": 9.413297455990687
+    },
+    {
+      "status": "answered",
+      "answer": "(32,765 − 31,657) ÷ 31,657 = 3.5%",
+      "facts": 2,
+      "trace": [
+        "范围",
+        "检索",
+        "工具选择",
+        "原文回读",
+        "原文回读",
+        "计算结果"
+      ],
+      "usage": {
+        "prompt_tokens": 9643,
+        "completion_tokens": 302,
+        "total_tokens": 9945,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "seconds": 9.310257034143433
+    }
+  ],
+  "metrics": {
+    "requests": 3,
+    "errors": 0,
+    "rejected": 0,
+    "total_seconds": 28.545692851999775,
+    "total_tokens": 29835,
+    "in_flight": 0,
+    "consecutive_errors": 0,
+    "error_rate": 0.0
+  }
+}

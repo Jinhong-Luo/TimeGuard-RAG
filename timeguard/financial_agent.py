@@ -206,14 +206,22 @@ def verify_operand(operand, evidence, visible_lines=None):
         if (not operand.line_number or content.lower().count("<table") != 1
                 or re.search(r"(?:rowspan|colspan)\s*=\s*['\"]?(?:[2-9]|\d{2,})", content, re.I)):
             raise ValueError("表格列对应关系无法核验")
-        cells = [c.strip() for c in quote.rstrip(" |").split("|")]
-        if operand.row_label and cells[0].casefold() != operand.row_label.casefold():
+        cells = [c.strip() for c in quote.removesuffix("|").split("|")]
+        if operand.row_label and "".join(cells[0].casefold().split()) != "".join(operand.row_label.casefold().split()):
             raise ValueError("指标与所选表格行不一致")
         headers = [line["text"] for line in visible_lines or () if line["number"] < operand.line_number
                    and "|" in line["text"] and re.search(r"\b(?:19|20)\d{2}\b", line["text"])]
-        header = [c.strip() for c in headers[-1].rstrip(" |").split("|")] if headers else []
-        columns = [i for i, cell in enumerate(header) if re.fullmatch(r"(?:FY\s*)?" + str(operand.year), cell, re.I)]
-        if len(columns) != 1 or len(header) != len(cells) or not match.search(cells[columns[0]]):
+        header = [c.strip() for c in headers[-1].removesuffix("|").split("|")] if headers else []
+        year_columns = [(i, m[1]) for i, cell in enumerate(header)
+                        if (m := re.fullmatch(r"(?:FY\s*)?((?:19|20)\d{2})\s*\**", cell, re.I))]
+        spans = [(i, next((j for j,_ in year_columns if j > i), len(header)))
+                 for i,y in year_columns if y == str(operand.year)]
+        if len(spans) != 1 or len(header) != len(cells) or not quote.endswith("|"):
+            raise ValueError("所选数值与可见表头的年份列不一致")
+        start, end = spans[0]
+        # 财报解析可能把货币符号单独排成一列。仅合并无标题的相邻列且要求唯一数值。
+        values = [v for v in cells[start:end] if v not in ("", "$", "€", "£")]
+        if any(header[start+1:end]) or len(values) != 1 or not match.search(values[0]):
             raise ValueError("所选数值与可见表头的年份列不一致")
     elif str(operand.year) not in quote or (operand.row_label and operand.row_label.casefold() not in quote.casefold()):
         raise ValueError("原句缺少对应年份或指标")
