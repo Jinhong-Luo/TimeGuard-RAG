@@ -136,13 +136,18 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
-    if spec.get("candidate"):
+    if spec.get("candidate") == "layers":
+        from .evidence_layers import install
+        install(generator, settings, CURRENT, service.RAGTools)
+    elif spec.get("candidate"):
         from .agentic_candidate import install
         install(service, generator, settings, spec, CURRENT, trace_event)
     async def one(q):
         started = time.monotonic()
         state = {"events": [], "retrieved": [], "prompt_blocks": [], "visible_ids": [], "citation_origin": "model"}
         state["question"] = q["question"]
+        if spec.get("candidate") == "layers":
+            state["evidence_layers"] = {"version": 2, "retrievals": [], "answers": []}
         token = CURRENT.set(state)
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
         try:
@@ -202,6 +207,8 @@ def container_worker(spec, out):
         files = ["__init__.py","common.py","native_baseline.py"]
         if spec.get("candidate"):
             files.extend(["agentic_candidate.py", "scope.py", "score.py"])
+        if spec.get("candidate") == "layers":
+            files.append("evidence_layers.py")
         if spec.get("candidate") in ("adaptive", "finance"):
             files.extend(["agentic_finance.py", "financial_agent.py"])
         for name in files:
@@ -302,6 +309,8 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
     if candidate:
         spec["candidate"] = candidate
         names = ["__init__.py", "common.py", "native_baseline.py", "agentic_candidate.py", "scope.py", "score.py"]
+        if candidate == "layers":
+            names.append("evidence_layers.py")
         if candidate in ("adaptive", "finance"):
             names.extend(["agentic_finance.py", "financial_agent.py"])
         spec["candidate_files"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in names}
