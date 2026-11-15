@@ -136,9 +136,9 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
-    if spec.get("candidate") == "layers":
+    if spec.get("candidate") in ("layers", "snapshot"):
         from .evidence_layers import install
-        install(generator, settings, CURRENT, service.RAGTools)
+        install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] == "snapshot" else None)
     elif spec.get("candidate"):
         from .agentic_candidate import install
         install(service, generator, settings, spec, CURRENT, trace_event)
@@ -146,7 +146,7 @@ async def native_worker(spec):
         started = time.monotonic()
         state = {"events": [], "retrieved": [], "prompt_blocks": [], "visible_ids": [], "citation_origin": "model"}
         state["question"] = q["question"]
-        if spec.get("candidate") == "layers":
+        if spec.get("candidate") in ("layers", "snapshot"):
             state["evidence_layers"] = {"version": 2, "retrievals": [], "answers": []}
         token = CURRENT.set(state)
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
@@ -207,8 +207,10 @@ def container_worker(spec, out):
         files = ["__init__.py","common.py","native_baseline.py"]
         if spec.get("candidate"):
             files.extend(["agentic_candidate.py", "scope.py", "score.py"])
-        if spec.get("candidate") == "layers":
+        if spec.get("candidate") in ("layers", "snapshot"):
             files.append("evidence_layers.py")
+        if spec.get("candidate") == "snapshot":
+            files.append("final_snapshot.py")
         if spec.get("candidate") in ("adaptive", "finance"):
             files.extend(["agentic_finance.py", "financial_agent.py"])
         for name in files:
@@ -309,8 +311,12 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
     if candidate:
         spec["candidate"] = candidate
         names = ["__init__.py", "common.py", "native_baseline.py", "agentic_candidate.py", "scope.py", "score.py"]
-        if candidate == "layers":
+        if candidate in ("layers", "snapshot"):
             names.append("evidence_layers.py")
+        if candidate == "snapshot":
+            names.append("final_snapshot.py")
+            for name in ("rag/advanced_rag/harness/tools/search.py", "rag/advanced_rag/harness/prompts/report_prompt.py"):
+                upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
         if candidate in ("adaptive", "finance"):
             names.extend(["agentic_finance.py", "financial_agent.py"])
         spec["candidate_files"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in names}

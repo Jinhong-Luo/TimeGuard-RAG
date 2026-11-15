@@ -40,7 +40,7 @@ def visible_blocks(mapped, messages):
              "block_sha256": digest(block)} for chunk, block in mapped if sep and block in evidence]
 
 
-def install(generator, settings, current, tools_class):
+def install(generator, settings, current, tools_class, snapshot_spec=None):
     import httpx
     from rag.advanced_rag import agentic_rag_graph as graph
     from rag.advanced_rag.harness.tools import search
@@ -86,6 +86,12 @@ def install(generator, settings, current, tools_class):
         record = {"selected": None, "packet": None, "requests": []}
         current.get()["evidence_layers"]["answers"].append(record)
         slot = {"record": record, "mapped": None}
+        if snapshot_spec is not None:
+            from .final_snapshot import freeze
+            config = kwargs["answer_conf"] if "answer_conf" in kwargs else args[1]
+            identity = {k: snapshot_spec[k] for k in ("dataset_id", "model", "arm_config", "upstream_files")}
+            record["snapshot"] = freeze(state, tools, config, identity)
+            record["pool_locations"] = [location(c) for c in generator.chunks_format(state.get("kbinfos") or {"chunks": []})]
         token = composing.set(slot)
         try:
             result = await original_compose(state, tools, *args, **kwargs)
@@ -103,6 +109,22 @@ def install(generator, settings, current, tools_class):
                             c["source_check"] = "intact" if source == c["content"] else "edited"
                     except Exception as exc:
                         c["readback_error"] = type(exc).__name__
+            if snapshot_spec is not None:
+                from .final_snapshot import replay, RequestCaptured
+                check = {"selected": None, "packet": None, "requests": []}
+                slot.update(record=check, mapped=None, replay=True)
+                try:
+                    await replay(record["snapshot"], original_compose, tools.chat_mdl)
+                except RequestCaptured:
+                    pass
+                if record.get("empty_response"):
+                    check.update(selected=[], packet=[])
+                record["replay"] = {
+                    "selected_equal": record["selected"] == check["selected"],
+                    "packet_equal": record.get("block_hashes") == check.get("block_hashes"),
+                    "request_equal": bool(record.get("empty_response") and not check["requests"]) or
+                        any(r.get("status") == 200 and r.get("body") == check.get("body") for r in record["requests"]),
+                }
             return result
         finally:
             composing.reset(token)
@@ -114,6 +136,8 @@ def install(generator, settings, current, tools_class):
         blocks = original_prompt(info, *args, **kwargs)
         slot = composing.get()
         if slot is not None:
+            if snapshot_spec is not None:
+                slot["record"]["block_hashes"] = [digest(b) for b in blocks]
             chunks = generator.chunks_format(info)
             slot["record"]["selected"] = [location(c) for c in chunks]
             mapped = match_blocks(info["chunks"], blocks, generator._kb_block)
@@ -132,6 +156,13 @@ def install(generator, settings, current, tools_class):
             return await original_send(client, request, *args, **kwargs)
         entry = {"status": None, "complete_chunks": None}
         slot["record"]["requests"].append(entry)
+        if snapshot_spec is not None:
+            payload = json.loads(request.content)
+            if slot.get("replay"):
+                from .final_snapshot import RequestCaptured
+                slot["record"]["body"] = payload
+                raise RequestCaptured()
+            entry["body"] = payload
         response = await original_send(client, request, *args, **kwargs)
         entry["status"] = response.status_code
         if response.status_code == 200:
