@@ -1,13 +1,14 @@
 """比对当前源码重建的请求与已成功发送的请求，不调用模型。"""
 import argparse
 from pathlib import Path
-from .common import read_jsonl
+from .common import read_json,read_jsonl
 from .paired_trial import render
 
 
 def verify(source,root,arms):
     rows=read_jsonl(source/"results.jsonl")
-    rebuilt=render(rows,arms)
+    reviews=read_json(root/"review-private.json") if "review" in arms else None
+    rebuilt=render(rows,arms,reviews)
     for arm in arms:
         actual=read_jsonl(root/arm/"results.jsonl")
         for src,v,r in zip(rows,rebuilt,actual,strict=True):

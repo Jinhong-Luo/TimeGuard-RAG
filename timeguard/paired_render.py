@@ -33,6 +33,11 @@ async def render(item):
             chunks = info["chunks"]
             if arm in ("page_select", "budget"):
                 chunks = select(item["question"],value["state"]["kbinfos"]["chunks"],value["tools"]["doc_scope"])
+            elif arm == "review":
+                if not item["review"]["fallback"]:
+                    from .evidence_review import catalog
+                    entries = catalog(snapshot)
+                    chunks = [entries[key][0] for key in item["review"]["ids"]]
             elif arm != "original":
                 raise ValueError("未知方案")
             info = {**info,"chunks": chunks}

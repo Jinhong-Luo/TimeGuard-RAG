@@ -13,8 +13,8 @@ from .native_baseline import CONTAINER, private_runtime
 from .native_matrix import judge
 
 
-def render(rows, arms):
-    names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "paired_render")
+def render(rows, arms, reviews=None):
+    names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "evidence_review", "paired_render")
     with tempfile.TemporaryDirectory() as d:
         pkg = Path(d,"timeguard")
         pkg.mkdir()
@@ -29,6 +29,9 @@ def render(rows, arms):
         req, = [r for r in a["requests"] if r.get("status")==200]
         inputs.append({k:a[k] for k in ("snapshot","selected","block_hashes")} |
                       {"body":req["body"],"question":row["question"],"arms":arms})
+    for item,row in zip(inputs,rows,strict=True):
+        if reviews is not None:
+            item["review"] = {k: reviews[row["id"]][k] for k in ("ids","fallback") if k in reviews[row["id"]]}
     cmd = ["docker","exec","-i","-w","/ragflow","-e","PYTHONPATH="+dest+":/ragflow",CONTAINER,
            "python","-m","timeguard.paired_render"]
     proc = subprocess.run(cmd,input=json.dumps(inputs),capture_output=True,text=True)
@@ -60,8 +63,16 @@ def main():
     args = p.parse_args()
     args.output.mkdir(exist_ok=False,parents=True)
     rows = read_jsonl(args.source/"results.jsonl")
-    packets = render(rows,args.arms)
     _,rt = private_runtime()
+    reviews = None
+    if "review" in args.arms:
+        from .evidence_review import inspect_once
+        reviews = {}
+        for row in rows:
+            a, = row["native_trace"]["evidence_layers"]["answers"]
+            reviews[row["id"]] = inspect_once(rt,row["question"],a["snapshot"])
+            write_json(args.output/"review-private.json",reviews)
+    packets = render(rows,args.arms,reviews)
     for arm in args.arms:
         dest = args.output/arm
         dest.mkdir()
