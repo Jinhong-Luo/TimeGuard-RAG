@@ -8,7 +8,7 @@ import time
 from .common import digest
 from .scope import rank
 
-VARIANTS = ("evidence", "concise", "fallback", "temporal", "sca1", "turn2", "finance", "adaptive", "layers", "snapshot", "page_select")
+VARIANTS = ("evidence", "concise", "fallback", "temporal", "sca1", "turn2", "finance", "adaptive", "layers", "snapshot", "page_select", "page", "supplement")
 RULES = "使用问题的语言。只给目标结论、必要数值和公式。逐项引用所用报表，区分期间、单位及合并口径。缺少操作数时指出缺项。"
 
 

@@ -54,6 +54,15 @@ def compare(root, gold, arms):
         audit = read_json(root/arm/"judge-audit.json")
         result[arm] = {"汇总":dict(summary),"裁判":{k:audit[k] for k in ("actual_calls","failed_calls","tokens","wall_seconds")},
                        "逐题":rows}
+    if set(arms) & {"page","supplement"}:
+        pages = read_json(root/"pages-private.json")
+        result["检索"] = {}
+        for qid, r in pages.items():
+            targets = {(e["doc_name"].casefold(),e["evidence_page_num"]+1) for e in labels[qid]["evidence"]}
+            result["检索"][qid] = {k:r[k] for k in ("index_reads","page_searches","extra_searches","page_seconds","extra_seconds")}
+            for variant in ("page","supplement"):
+                hits,valid = page_set(r[variant])
+                result["检索"][qid][variant+"命中题页数"] = len(hits & targets) if valid else None
     if "review" in arms:
         reviews = read_json(root/"review-private.json")
         result["审查"] = {

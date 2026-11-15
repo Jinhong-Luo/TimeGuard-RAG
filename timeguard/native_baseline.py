@@ -42,7 +42,7 @@ def arm_config(name, reranker):
 def select_queries(rows, split, limit=None):
     if len({r["id"] for r in rows}) != len(rows):
         raise ValueError("题目包含重复编号")
-    selected = [{k: r[k] for k in ("id", "question", "split")} for r in rows if split == "all" or r["split"] == split]
+    selected = [{k: r[k] for k in ("id", "question", "split", "as_of") if k in r} for r in rows if split == "all" or r["split"] == split]
     if limit is not None:
         if limit < 1:
             raise ValueError("样本数必须为正数")
@@ -136,9 +136,9 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
-    if spec.get("candidate") in ("layers", "snapshot", "page_select"):
+    if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement"):
         from .evidence_layers import install
-        install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] in ("snapshot", "page_select") else None)
+        install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] in ("snapshot", "page_select", "page", "supplement") else None)
     elif spec.get("candidate"):
         from .agentic_candidate import install
         install(service, generator, settings, spec, CURRENT, trace_event)
@@ -146,7 +146,9 @@ async def native_worker(spec):
         started = time.monotonic()
         state = {"events": [], "retrieved": [], "prompt_blocks": [], "visible_ids": [], "citation_origin": "model"}
         state["question"] = q["question"]
-        if spec.get("candidate") in ("layers", "snapshot", "page_select"):
+        if spec.get("candidate") in ("page", "supplement"):
+            state["page_search"] = spec["page_searches"][q["id"]]
+        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement"):
             state["evidence_layers"] = {"version": 2, "retrievals": [], "answers": []}
         token = CURRENT.set(state)
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
@@ -166,7 +168,7 @@ async def native_worker(spec):
                 if not support:
                     raise ValueError("模型未声明工具能力，禁止把普通问答回退当作Agentic成功")
             messages = [{"role": "user", "content": q["question"]}]
-            if spec.get("candidate") in ("temporal", "adaptive", "finance"):
+            if spec.get("candidate") in ("temporal", "adaptive", "finance", "page", "supplement"):
                 from .scope import scope
                 state["plan"] = scope(q["question"], spec["documents"], q.get("as_of"))
                 if not state["plan"]["companies"]:
@@ -207,9 +209,9 @@ def container_worker(spec, out):
         files = ["__init__.py","common.py","native_baseline.py"]
         if spec.get("candidate"):
             files.extend(["agentic_candidate.py", "scope.py", "score.py"])
-        if spec.get("candidate") in ("layers", "snapshot", "page_select"):
+        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement"):
             files.append("evidence_layers.py")
-        if spec.get("candidate") in ("snapshot", "page_select"):
+        if spec.get("candidate") in ("snapshot", "page_select", "page", "supplement"):
             files.append("final_snapshot.py")
         if spec.get("candidate") == "page_select":
             files.append("page_select.py")
@@ -313,9 +315,9 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
     if candidate:
         spec["candidate"] = candidate
         names = ["__init__.py", "common.py", "native_baseline.py", "agentic_candidate.py", "scope.py", "score.py"]
-        if candidate in ("layers", "snapshot", "page_select"):
+        if candidate in ("layers", "snapshot", "page_select", "page", "supplement"):
             names.append("evidence_layers.py")
-        if candidate in ("snapshot", "page_select"):
+        if candidate in ("snapshot", "page_select", "page", "supplement"):
             names.append("final_snapshot.py")
             for name in ("rag/advanced_rag/harness/tools/search.py", "rag/advanced_rag/harness/prompts/report_prompt.py"):
                 upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
@@ -327,9 +329,20 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
         spec["candidate_source_sha256"] = digest(Path(__file__).with_name("agentic_candidate.py").read_bytes())
         for name in ("rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py"):
             upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
-        if candidate in ("temporal", "adaptive", "finance"):
+        if candidate in ("temporal", "adaptive", "finance", "page", "supplement"):
             from .retrieval_experiment import catalog
             spec["documents"] = catalog(read_jsonl("data/financebench/documents.jsonl"), read_json("data/ingestion.json"))
+    if candidate in ("page", "supplement"):
+        from .filing_pages import FilingPages
+        from .scope import scope
+        worker = FilingPages(Client(setup["config"]["base_url"]),setup["dataset_id"],spec["documents"])
+        spec["page_searches"] = {}
+        for q in queries:
+            plan = scope(q["question"], spec["documents"], q.get("as_of"))
+            limits = {"input":{"tools":{"doc_scope":plan["document_ids"]}}}
+            spec["page_searches"][q["id"]] = worker.retrieve(q["question"],limits,q.get("as_of"),candidate=="supplement")
+        spec["page_search_code"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in
+                                    ("filing_pages.py","page_select.py","retrieval_experiment.py","scope.py")}
     manifest={"identity":{"query_ids":[q["id"] for q in queries],"split":split,"config":setup["config"],
         "arm":spec["arm_config"],"scope":"指定题号回归" if query_ids else ("连通验证" if limit else "完整分组评测"),
         "source_sha256":digest(Path(__file__).read_bytes()),"queries_sha256":digest(Path("data/financebench/queries.jsonl").read_bytes()),

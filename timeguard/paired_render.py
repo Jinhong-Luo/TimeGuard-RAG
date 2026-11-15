@@ -33,6 +33,13 @@ async def render(item):
             chunks = info["chunks"]
             if arm in ("page_select", "budget"):
                 chunks = select(item["question"],value["state"]["kbinfos"]["chunks"],value["tools"]["doc_scope"])
+            elif arm in ("page","supplement"):
+                chunks = item["page_result"][arm]
+                allowed = set(item["page_result"]["allowed"])
+                if set(value["tools"]["doc_scope"] or []) - allowed:
+                    raise ValueError("原生研究摘要范围大于本题允许范围")
+                if any(c["document_id"] not in allowed for c in chunks):
+                    raise ValueError("最终引用越界")
             elif arm == "review":
                 if not item["review"]["fallback"]:
                     from .evidence_review import catalog

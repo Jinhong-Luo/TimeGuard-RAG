@@ -1,0 +1,69 @@
+{
+  "financebench_id_03029": {
+    "状态": "ok",
+    "阶段": {
+      "unknown": {
+        "请求": 2,
+        "失败": 0,
+        "耗时秒": 11.980619102250785,
+        "prompt_tokens": 11898,
+        "completion_tokens": 111,
+        "total_tokens": 12009
+      },
+      "formalize": {
+        "请求": 1,
+        "失败": 0,
+        "耗时秒": 10.584548466838896,
+        "prompt_tokens": 5646,
+        "completion_tokens": 204,
+        "total_tokens": 5850
+      },
+      "dynamic": {
+        "请求": 5,
+        "失败": 0,
+        "耗时秒": 59.05754880886525,
+        "prompt_tokens": 51100,
+        "completion_tokens": 1024,
+        "total_tokens": 52124
+      },
+      "sca": {
+        "请求": 1,
+        "失败": 0,
+        "耗时秒": 15.503753166180104,
+        "prompt_tokens": 8433,
+        "completion_tokens": 434,
+        "total_tokens": 8867
+      },
+      "finalize": {
+        "请求": 1,
+        "失败": 0,
+        "耗时秒": 6.333306672051549,
+        "prompt_tokens": 12150,
+        "completion_tokens": 106,
+        "total_tokens": 12256
+      }
+    },
+    "回放": [
+      {
+        "selected_equal": true,
+        "packet_equal": true,
+        "request_equal": true
+      }
+    ],
+    "页级索引请求": 15,
+    "模型判对": true,
+    "引用支持": true
+  },
+  "生成": {
+    "actual_calls": 10,
+    "failed_calls": 0,
+    "tokens": 91106,
+    "wall_seconds": 127.02814502315596
+  },
+  "裁判": {
+    "actual_calls": 1,
+    "failed_calls": 0,
+    "tokens": 9135,
+    "wall_seconds": 23.840946421027184
+  }
+}

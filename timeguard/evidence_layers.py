@@ -2,6 +2,7 @@
 from contextvars import ContextVar
 from functools import wraps
 import json
+import time
 
 from .common import digest
 
@@ -85,6 +86,22 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
     async def compose(state, tools, *args, **kwargs):
         record = {"selected": None, "packet": None, "requests": []}
         current.get()["evidence_layers"]["answers"].append(record)
+        if snapshot_spec and snapshot_spec["candidate"] in ("page", "supplement"):
+            variant = snapshot_spec["candidate"]
+            found = current.get()["page_search"]
+            allowed = set(tools.doc_scope or ()) & set(found["allowed"])
+            if set(tools.doc_scope or ()) - set(found["allowed"]):
+                raise ValueError("研究范围超出公司或披露截止日")
+            chosen = [c for c in found[variant] if c["document_id"] in allowed]
+            native = [{**c, "chunk_id":c["id"], "doc_id":c["document_id"], "docnm_kwd":c["document_name"],
+                       "content_with_weight":c["content"]} for c in chosen]
+            state = {**state,"kbinfos":{**(state.get("kbinfos") or {}),"chunks":native}}
+            if chosen:
+                state.update(empty_result=False)
+            record["retrieval_policy"] = variant
+            events = current.get()["evidence_layers"]["retrievals"]
+            events.append({"call":len(events)+1,"channel":variant,"node":"最终页级找页","search_round":None,
+                           "chunks":[{**location(c),"content_sha256":digest(c["content"])} for c in chosen]})
         slot = {"record": record, "mapped": None}
         if snapshot_spec is not None:
             from .final_snapshot import freeze
@@ -141,6 +158,10 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             selected = select(current.get()["question"], source["state"]["kbinfos"]["chunks"], source["tools"]["doc_scope"])
             info = {**info, "chunks": selected}
             slot["tools"]._rag_cite_chunk_ids = [str(c.get("chunk_id") or c.get("id") or "") for c in selected]
+        if slot is not None and snapshot_spec and snapshot_spec["candidate"] in ("page", "supplement"):
+            chosen = current.get()["evidence_layers"]["answers"][-1]["snapshot"]["input"]["state"]["kbinfos"]["chunks"]
+            info = {**info,"chunks":chosen}
+            slot["tools"]._rag_cite_chunk_ids = [str(c.get("chunk_id") or c.get("id") or "") for c in chosen]
         blocks = original_prompt(info, *args, **kwargs)
         if slot is not None:
             if snapshot_spec is not None:
@@ -154,6 +175,36 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             slot["mapped"] = mapped
         return blocks
     graph.kb_prompt = prompt
+
+    if snapshot_spec is not None:
+        from rag.advanced_rag.harness.stats import _CURRENT_PHASE
+        from .agentic_candidate import bridge_event
+        transport = httpx.AsyncClient.send
+        @wraps(transport)
+        async def audited(client, request, *args, **kwargs):
+            state = current.get()
+            if state is None or request.url.port != 18866 or not request.url.path.endswith("/chat/completions"):
+                return await transport(client, request, *args, **kwargs)
+            started = time.monotonic()
+            node,number = node_context.get()
+            event = {"kind":"bridge_request","node":node,"search_round":number,
+                     "phase":_CURRENT_PHASE.get(),"usage":None}
+            state["events"].append(event)
+            try:
+                response = await transport(client,request,*args,**kwargs)
+                await response.aread()
+                event["http_status"] = response.status_code
+                try:
+                    event.update(bridge_event(response))
+                except (ValueError,KeyError,TypeError):
+                    event["usage_error"] = "模型桥响应缺少可解析的用量"
+                return response
+            except httpx.HTTPError as exc:
+                event["error"] = type(exc).__name__
+                raise
+            finally:
+                event["seconds"] = time.monotonic()-started
+        httpx.AsyncClient.send = audited
 
     original_send = httpx.AsyncClient.send
     @wraps(original_send)

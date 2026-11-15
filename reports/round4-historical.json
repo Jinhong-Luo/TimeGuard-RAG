@@ -1,0 +1,154 @@
+{
+  "分组": {
+    "历史错且标准证据对且漏页": {
+      "题数": 6,
+      "原链路任一轮检索命中题数": 4,
+      "原链路任一轮检索命中组合": 4,
+      "page命中题数": 1,
+      "page命中组合": 1,
+      "supplement命中题数": 1,
+      "supplement命中组合": 1,
+      "题页组合数": 7,
+      "original到page错转对": 0,
+      "original到page对转错": 0,
+      "page到supplement错转对": 0,
+      "page到supplement对转错": 0
+    },
+    "历史判对": {
+      "题数": 2,
+      "原链路任一轮检索命中题数": 2,
+      "原链路任一轮检索命中组合": 2,
+      "page命中题数": 0,
+      "page命中组合": 0,
+      "supplement命中题数": 0,
+      "supplement命中组合": 0,
+      "题页组合数": 2,
+      "original到page错转对": 0,
+      "original到page对转错": 0,
+      "page到supplement错转对": 0,
+      "page到supplement对转错": 0
+    }
+  },
+  "逐题": {
+    "financebench_id_00685": {
+      "分组": "历史错且标准证据对且漏页",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 0,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": false,
+        "page": false,
+        "supplement": false
+      },
+      "补查次数": 1
+    },
+    "financebench_id_03882": {
+      "分组": "历史错且标准证据对且漏页",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 0,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": false,
+        "page": false,
+        "supplement": false
+      },
+      "补查次数": 0
+    },
+    "financebench_id_01091": {
+      "分组": "历史错且标准证据对且漏页",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 1,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": true,
+        "page": true,
+        "supplement": true
+      },
+      "补查次数": 1
+    },
+    "financebench_id_01275": {
+      "分组": "历史错且标准证据对且漏页",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 1,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": false,
+        "page": false,
+        "supplement": false
+      },
+      "补查次数": 0
+    },
+    "financebench_id_00407": {
+      "分组": "历史错且标准证据对且漏页",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 1,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": true,
+        "page": true,
+        "supplement": true
+      },
+      "补查次数": 0
+    },
+    "financebench_id_01107": {
+      "分组": "历史错且标准证据对且漏页",
+      "题页数": 2,
+      "命中数": {
+        "原链路任一轮检索": 1,
+        "page": 1,
+        "supplement": 1
+      },
+      "模型判对": {
+        "original": false,
+        "page": false,
+        "supplement": false
+      },
+      "补查次数": 1
+    },
+    "financebench_id_01935": {
+      "分组": "历史判对",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 1,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": true,
+        "page": true,
+        "supplement": true
+      },
+      "补查次数": 0
+    },
+    "financebench_id_01079": {
+      "分组": "历史判对",
+      "题页数": 1,
+      "命中数": {
+        "原链路任一轮检索": 1,
+        "page": 0,
+        "supplement": 0
+      },
+      "模型判对": {
+        "original": false,
+        "page": false,
+        "supplement": false
+      },
+      "补查次数": 0
+    }
+  }
+}
