@@ -27,19 +27,21 @@ def main():
     from . import native_baseline
     from .matrix import frozen_index
     source=args.source;out=args.output;manifest=read_json(source/"manifest.json");spec=read_json(source/"spec.json")
-    if (digest(spec)!=manifest["identity"]["spec_sha256"] or len(spec["queries"])!=39
+    planned=len(spec["queries"])
+    ids=[q["id"] for q in spec["queries"]]
+    if (not planned or ids!=manifest["identity"]["query_ids"] or digest(spec)!=manifest["identity"]["spec_sha256"]
             or digest(Path(native_baseline.__file__).read_bytes())!=manifest["identity"]["source_sha256"]):
-        raise ValueError("恢复只接受未改变原生算法和参数的完整39题组")
+        raise ValueError("恢复只接受未改变原生算法和参数的冻结题组")
     freeze=frozen_index(Path("data/ingestion.json"),Path("runs/r0-gpu-retrieval-all"),Path("data/financebench/queries.jsonl"))
     if freeze!=manifest["identity"]["freeze"]:raise ValueError("索引来源改变，不能续接")
     raw=(source/"results.jsonl").read_bytes();lines=[l for l in raw.splitlines() if l.strip()];rows=[json.loads(l) for l in lines]
     good,pending=recovery_plan(spec["queries"],rows)
     if not pending:raise ValueError("原组已完成，不需要恢复")
     proof={"source_run":source.name,"manifest_sha256":digest((source/"manifest.json").read_bytes()),
-        "results_sha256":digest(raw),"original_planned":39,"original_completed":len(rows),
-        "original_status_counts":dict(Counter(r["status"] for r in rows)),"original_missing":39-len(rows),
+        "results_sha256":digest(raw),"original_planned":planned,"original_completed":len(rows),
+        "original_status_counts":dict(Counter(r["status"] for r in rows)),"original_missing":planned-len(rows),
         "reused_success_count":len(good),"new_count":len(pending),
-        "reason":"专用SSH代理失效，已记录恢复证据；原失败和未发题仍留在原实验的39题分母。"}
+        "reason":"保留原失败和未发题，仅在题目、模型、源码及索引核对后重试。"}
     out.mkdir(exist_ok=False);fresh=out/"new-after-network";fresh.mkdir()
     write_json(out/"manifest.json",{**manifest,"identity":{**manifest["identity"],"recovery":proof},
                                   "recovery_executor_sha256":digest(Path(__file__).read_bytes())})
@@ -52,7 +54,7 @@ def main():
     combined={**good,**{r["id"]:r for r in new}}
     write_jsonl(out/"results.jsonl",[combined[q["id"]] for q in spec["queries"] if q["id"] in combined])
     old=read_json(source/"execution.json")
-    write_json(out/"execution.json",{**audit(private,start,"low"),"returncode":code,"planned":39,"completed":len(combined),
+    write_json(out/"execution.json",{**audit(private,start,"low"),"returncode":code,"planned":planned,"completed":len(combined),
         "wall_seconds":time.monotonic()-began,"new_count":len(new),"reused_count":len(good),
         "reused_source_calls":old["actual_calls"],"reused_source_tokens":old["tokens"],"reused_source_wall_seconds":old["wall_seconds"],
         "source_failed_seconds":sum(r["elapsed_seconds"] for r in rows if r["status"]!="ok"),"recovery":proof})

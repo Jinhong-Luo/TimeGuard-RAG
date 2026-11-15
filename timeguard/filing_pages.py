@@ -124,12 +124,17 @@ class FilingPages:
         gap=missing_query(question,first) if allowed and allow_extra else None
         extra=[]
         extra_time=0
+        extra_error=None
         if gap:
             started=time.monotonic()
-            extra,_=pages_for(gap,chunks,count=2,exclude=pages)
+            try:
+                extra,_=pages_for(gap,chunks,count=2,exclude=pages)
+            except (TimeoutError,ConnectionError) as exc:
+                extra_error=type(exc).__name__
+                extra=[]
             extra_time=time.monotonic()-started
         keys={(c["document_id"],c["id"]) for c in first}
         extra=[c for c in extra if (c["document_id"],c["id"]) not in keys]
         return {"page":first,"supplement":first if not extra else (first[:max(0,12-len(extra))]+extra),
                 "allowed":sorted(allowed),"index_reads":requests,"page_searches":int(bool(allowed)),
-                "extra_searches":int(bool(gap)),"gap":gap,"page_seconds":first_time,"extra_seconds":extra_time}
+                "extra_searches":int(bool(gap)),"gap":gap,"extra_error":extra_error,"page_seconds":first_time,"extra_seconds":extra_time}

@@ -1,0 +1,157 @@
+{
+  "评测类型": "真实端到端，模型裁判",
+  "分组": "tune",
+  "计划题数": 1,
+  "汇总": {
+    "判对": 1,
+    "判对且引用支持": 1,
+    "引用支持": 1,
+    "引用不支持": 0,
+    "引用支持未知": 0,
+    "题页分母": 1,
+    "candidates命中组合": 1,
+    "selected命中组合": 0,
+    "packet命中组合": 0,
+    "received命中组合": 0,
+    "intact命中组合": 0,
+    "pool命中组合": 0,
+    "回放节点": 1,
+    "回放三项一致": 1
+  },
+  "公司": {
+    "3M": {
+      "判对": 1
+    }
+  },
+  "生成": {
+    "actual_calls": 10,
+    "failed_calls": 0,
+    "tokens": 96708,
+    "wall_seconds": 143.65595543710515,
+    "model_identity_verified": true
+  },
+  "裁判": {
+    "actual_calls": 1,
+    "failed_calls": 0,
+    "tokens": 9237,
+    "wall_seconds": 6.645362490322441,
+    "model_identity_verified": true
+  },
+  "生成阶段累计": {
+    "unknown": {
+      "请求": 2,
+      "失败": 0,
+      "累计秒": 10.448595593683422,
+      "prompt_tokens": 11898,
+      "completion_tokens": 103,
+      "total_tokens": 12001
+    },
+    "formalize": {
+      "请求": 1,
+      "失败": 0,
+      "累计秒": 13.561144827865064,
+      "prompt_tokens": 5637,
+      "completion_tokens": 224,
+      "total_tokens": 5861
+    },
+    "dynamic": {
+      "请求": 5,
+      "失败": 0,
+      "累计秒": 57.563611493911594,
+      "prompt_tokens": 55965,
+      "completion_tokens": 986,
+      "total_tokens": 56951
+    },
+    "sca": {
+      "请求": 1,
+      "失败": 0,
+      "累计秒": 12.37888659676537,
+      "prompt_tokens": 8532,
+      "completion_tokens": 257,
+      "total_tokens": 8789
+    },
+    "finalize": {
+      "请求": 1,
+      "失败": 0,
+      "累计秒": 25.1082385298796,
+      "prompt_tokens": 13030,
+      "completion_tokens": 76,
+      "total_tokens": 13106
+    }
+  },
+  "逐题": {
+    "financebench_id_03029": {
+      "判定": "判对",
+      "引用支持": true,
+      "引用映射": "mapped",
+      "题页分母": 1,
+      "命中": {
+        "candidates": 1,
+        "selected": 0,
+        "packet": 0,
+        "received": 0,
+        "intact": 0,
+        "pool": 0
+      },
+      "允许报告数": 3,
+      "生成秒": 107.45398956909776,
+      "生成阶段": {
+        "unknown": {
+          "请求": 2,
+          "失败": 0,
+          "累计秒": 10.448595593683422,
+          "prompt_tokens": 11898,
+          "completion_tokens": 103,
+          "total_tokens": 12001
+        },
+        "formalize": {
+          "请求": 1,
+          "失败": 0,
+          "累计秒": 13.561144827865064,
+          "prompt_tokens": 5637,
+          "completion_tokens": 224,
+          "total_tokens": 5861
+        },
+        "dynamic": {
+          "请求": 5,
+          "失败": 0,
+          "累计秒": 57.563611493911594,
+          "prompt_tokens": 55965,
+          "completion_tokens": 986,
+          "total_tokens": 56951
+        },
+        "sca": {
+          "请求": 1,
+          "失败": 0,
+          "累计秒": 12.37888659676537,
+          "prompt_tokens": 8532,
+          "completion_tokens": 257,
+          "total_tokens": 8789
+        },
+        "finalize": {
+          "请求": 1,
+          "失败": 0,
+          "累计秒": 25.1082385298796,
+          "prompt_tokens": 13030,
+          "completion_tokens": 76,
+          "total_tokens": 13106
+        }
+      },
+      "裁判秒": 6.509019,
+      "裁判用量": {
+        "prompt_tokens": 9103,
+        "completion_tokens": 134,
+        "total_tokens": 9237,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "公司": "3M",
+      "分流": null,
+      "轻量查数": null
+    }
+  }
+}

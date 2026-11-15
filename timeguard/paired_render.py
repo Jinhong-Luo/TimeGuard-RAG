@@ -19,6 +19,8 @@ async def render(item):
     for path, sha in value["identity"]["upstream_files"].items():
         if digest(Path("/ragflow", path).read_bytes()) != sha:
             raise ValueError("容器与快照上游版本不同")
+    from rag.advanced_rag import agentic_rag
+    original_budget = agentic_rag._EVIDENCE_BUDGET_TOKENS
     result = {}
     from .final_snapshot import fingerprint
     if fingerprint(value)!=snapshot["sha256"]:
@@ -48,7 +50,7 @@ async def render(item):
                     from .evidence_review import catalog
                     entries = catalog(snapshot)
                     chunks = [entries[key][0] for key in item["review"]["ids"]]
-            elif arm not in ("original","formula","brief"):
+            elif arm not in ("original","formula","brief","wide"):
                 raise ValueError("未知方案")
             info = {**info,"chunks": chunks}
             if arm == "budget":
@@ -70,6 +72,8 @@ async def render(item):
                 record["mapped"] = [(generator.chunks_format({"chunks":[c]})[0],b) for c,b in mapped]
                 record["block_hashes"] = [digest(b) for c,b in mapped]
             return fit(messages,limit)
+        if arm=="wide":
+            agentic_rag._EVIDENCE_BUDGET_TOKENS = 12000
         graph.message_fit_in = fit_message
         graph.kb_prompt = prompt
         try:
@@ -85,6 +89,7 @@ async def render(item):
         finally:
             graph.kb_prompt = original
             graph.message_fit_in = fit
+            agentic_rag._EVIDENCE_BUDGET_TOKENS = original_budget
         mapped = record.pop("mapped")
         record["packet"] = [location(c) for c,b in mapped]
         record["visible"] = visible_blocks(mapped,record["body"]["messages"])

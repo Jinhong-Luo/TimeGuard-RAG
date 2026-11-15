@@ -136,19 +136,30 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
-    if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief"):
+    if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
         from .evidence_layers import install
-        install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] in ("snapshot", "page_select", "page", "supplement", "brief") else None)
+        install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final") else None)
     elif spec.get("candidate"):
         from .agentic_candidate import install
         install(service, generator, settings, spec, CURRENT, trace_event)
+    if spec.get("candidate") in ("final","route","page","supplement"):
+        from .scope import intersect_scope
+        native_filter=service.apply_meta_data_filter
+        @functools.wraps(native_filter)
+        async def bounded_filter(*args,**kwargs):
+            selected=await native_filter(*args,**kwargs)
+            trace=CURRENT.get()
+            allowed=intersect_scope(trace["plan"]["document_ids"],selected)
+            trace["allowed"]=allowed
+            return allowed or ["-999"]
+        service.apply_meta_data_filter=bounded_filter
     async def one(q):
         started = time.monotonic()
         state = {"events": [], "retrieved": [], "prompt_blocks": [], "visible_ids": [], "citation_origin": "model"}
         state["question"] = q["question"]
         if spec.get("candidate") in ("page", "supplement"):
             state["page_search"] = spec["page_searches"][q["id"]]
-        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief"):
+        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
             state["evidence_layers"] = {"version": 2, "retrievals": [], "answers": []}
         token = CURRENT.set(state)
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
@@ -168,7 +179,7 @@ async def native_worker(spec):
                 if not support:
                     raise ValueError("模型未声明工具能力，禁止把普通问答回退当作Agentic成功")
             messages = [{"role": "user", "content": q["question"]}]
-            if spec.get("candidate") in ("temporal", "adaptive", "finance", "page", "supplement"):
+            if spec.get("candidate") in ("temporal", "adaptive", "finance", "page", "supplement", "route", "final"):
                 from .scope import scope
                 state["plan"] = scope(q["question"], spec["documents"], q.get("as_of"))
                 if not state["plan"]["companies"]:
@@ -177,6 +188,12 @@ async def native_worker(spec):
                     row.update(answer="截止日内没有可核验的已披露文档。", reference={"chunks": []})
                 else:
                     messages[0]["doc_ids"] = state["plan"]["document_ids"]
+            if spec.get("candidate")=="route":
+                light=spec["light_checks"].get(q["id"])
+                state["light_check"]={k:v for k,v in (light or {}).items() if k!="result"}
+                if light and light.get("result") and row["answer"] is None:
+                    row.update(light["result"])
+                    state["route_decision"]="轻量原文查数"
             async with asyncio.timeout(spec.get("timeout_seconds",1200)):
                 async with app.app_context():
                     if row["answer"] is None:
@@ -209,10 +226,12 @@ def container_worker(spec, out):
         files = ["__init__.py","common.py","native_baseline.py"]
         if spec.get("candidate"):
             files.extend(["agentic_candidate.py", "scope.py", "score.py"])
-        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief"):
+        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
             files.append("evidence_layers.py")
-        if spec.get("candidate") in ("snapshot", "page_select", "page", "supplement", "brief"):
+        if spec.get("candidate") in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
             files.append("final_snapshot.py")
+        if spec.get("candidate")=="route":
+            files.extend(["finance_route.py","page_select.py","evidence_review.py","judge.py"])
         if spec.get("candidate") == "page_select":
             files.append("page_select.py")
         if spec.get("candidate") in ("adaptive", "finance"):
@@ -226,8 +245,14 @@ def container_worker(spec, out):
         subprocess.run(["docker","exec",CONTAINER,"mkdir","-p",target],check=True)
         subprocess.run(["docker","cp",str(package),CONTAINER+":"+target+"/"],check=True,stdout=subprocess.DEVNULL)
     argv=["docker","exec","-i","-w","/ragflow","-e","PYTHONPATH="+target+":/ragflow",CONTAINER,"python","-m","timeguard.native_baseline","--worker"]
+    env=os.environ.copy()
+    if spec.get("candidate")=="route":
+        _,rt=private_runtime()
+        env.update(TIMEGUARD_REVIEW_TOKEN=rt["token"],TIMEGUARD_REVIEW_URL=rt["base_url"])
+        index=argv.index(CONTAINER)
+        argv[index:index]=["-e","TIMEGUARD_REVIEW_TOKEN","-e","TIMEGUARD_REVIEW_URL"]
     with (out/"worker.log").open("w") as log,(out/"results.jsonl").open("x") as rows:
-        with subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,text=True) as proc:
+        with subprocess.Popen(argv,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,text=True) as proc:
             proc.stdin.write(json.dumps(spec));proc.stdin.close()
             for line in proc.stdout:
                 if line.startswith("TIMEGUARD_RESULT "):
@@ -315,21 +340,23 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
     if candidate:
         spec["candidate"] = candidate
         names = ["__init__.py", "common.py", "native_baseline.py", "agentic_candidate.py", "scope.py", "score.py"]
-        if candidate in ("layers", "snapshot", "page_select", "page", "supplement", "brief"):
+        if candidate in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
             names.append("evidence_layers.py")
-        if candidate in ("snapshot", "page_select", "page", "supplement", "brief"):
+        if candidate in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
             names.append("final_snapshot.py")
             for name in ("rag/advanced_rag/harness/tools/search.py", "rag/advanced_rag/harness/prompts/report_prompt.py"):
                 upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
         if candidate in ("adaptive", "finance"):
             names.extend(["agentic_finance.py", "financial_agent.py"])
+        if candidate=="route":
+            names.extend(["finance_route.py","page_select.py","evidence_review.py","judge.py"])
         if candidate == "page_select":
             names.append("page_select.py")
         spec["candidate_files"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in names}
         spec["candidate_source_sha256"] = digest(Path(__file__).with_name("agentic_candidate.py").read_bytes())
         for name in ("rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py"):
             upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
-        if candidate in ("temporal", "adaptive", "finance", "page", "supplement"):
+        if candidate in ("temporal", "adaptive", "finance", "page", "supplement", "route", "final"):
             from .retrieval_experiment import catalog
             spec["documents"] = catalog(read_jsonl("data/financebench/documents.jsonl"), read_json("data/ingestion.json"))
     if candidate in ("page", "supplement"):
@@ -343,6 +370,28 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
             spec["page_searches"][q["id"]] = worker.retrieve(q["question"],limits,q.get("as_of"),candidate=="supplement")
         spec["page_search_code"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in
                                     ("filing_pages.py","page_select.py","retrieval_experiment.py","scope.py")}
+    if candidate=="route":
+        from .finance_route import simple_metric,simple_lookup
+        from .filing_pages import FilingPages
+        from .scope import scope
+        client=Client(setup["config"]["base_url"])
+        worker=FilingPages(client,setup["dataset_id"],spec["documents"])
+        spec["light_checks"]={}
+        for q in queries:
+            if not simple_metric(q["question"]):
+                continue
+            started=time.monotonic()
+            plan=scope(q["question"],spec["documents"],q.get("as_of"))
+            pool=worker.retrieve(q["question"],{"input":{"tools":{"doc_scope":plan["document_ids"]}}},q.get("as_of"),False)
+            reads=[]
+            def read(c):
+                data=client.request("GET",f"/datasets/{setup['dataset_id']}/documents/{c['document_id']}/chunks?id={c['id']}")
+                raw,=data["chunks"]
+                reads.append(raw["id"])
+                return raw
+            result=simple_lookup(q["question"],pool["page"],pool["allowed"],read)
+            spec["light_checks"][q["id"]]={"result":result,"index_reads":pool["index_reads"],"readbacks":len(reads),
+                                            "seconds":time.monotonic()-started}
     manifest={"identity":{"query_ids":[q["id"] for q in queries],"split":split,"config":setup["config"],
         "arm":spec["arm_config"],"scope":"指定题号回归" if query_ids else ("连通验证" if limit else "完整分组评测"),
         "source_sha256":digest(Path(__file__).read_bytes()),"queries_sha256":digest(Path("data/financebench/queries.jsonl").read_bytes()),

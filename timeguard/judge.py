@@ -108,7 +108,7 @@ def citation_context(generated):
             continue
         if traced:
             slot = (trace.get("visible") or {}).get(str(index)) or {}
-            if (trace.get("version") != 1 or context["citation_origin"] not in ("model", "native_auto")
+            if (trace.get("version") != 1 or context["citation_origin"] not in ("model", "native_auto", "rule")
                     or not slot.get("chunk_id") or not slot.get("document_id")
                     or slot["chunk_id"] != chunk.get("id") or slot["document_id"] != chunk.get("document_id")
                     or slot.get("content_sha256") != digest(content)):

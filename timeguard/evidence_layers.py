@@ -48,6 +48,13 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
     from rag.nlp.search import index_name
 
     composing = ContextVar("本次最终证据包", default=None)
+    wide=bool(snapshot_spec and snapshot_spec["candidate"]=="wide")
+    if wide:
+        original_fit=graph.message_fit_in
+        def fit(messages,limit):
+            slot=composing.get()
+            return original_fit(messages,min(12000,slot["tools"].chat_mdl.max_length) if slot else limit)
+        graph.message_fit_in=fit
     node_context = ContextVar("检索所在图节点", default=(None, None))
     class ObservedGraph(graph.StateGraph):
         def add_node(self, name, action, **kwargs):
@@ -74,6 +81,8 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             value = await original(*args, **kwargs)
             entry["chunks"] = [{**location(c), "content_sha256": digest(c["content"])}
                                for c in generator.chunks_format(value)]
+            if state.get("allowed") is not None and any(c["document_id"] not in state["allowed"] for c in entry["chunks"]):
+                raise ValueError("检索材料超出允许的报告范围")
             return value
         setattr(owner, channel, retrieve)
     observe(settings.retriever, "retrieval")
@@ -109,6 +118,25 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             identity = {k: snapshot_spec[k] for k in ("dataset_id", "model", "arm_config", "upstream_files")}
             slot["tools"] = tools
             record["snapshot"] = freeze(state, tools, config, identity)
+            if snapshot_spec["candidate"]=="route":
+                import asyncio
+                import os
+                from .finance_route import needs_review
+                from .evidence_review import catalog,inspect_once
+                trace=current.get()
+                chunks=record["snapshot"]["input"]["state"]["kbinfos"]["chunks"]
+                reason=needs_review(trace["question"],chunks)
+                if reason and "review_attempt" not in trace:
+                    trace["review_attempt"]={"reason":reason}
+                    result=await asyncio.to_thread(inspect_once,{"base_url":os.environ["TIMEGUARD_REVIEW_URL"],
+                        "token":os.environ["TIMEGUARD_REVIEW_TOKEN"]},trace["question"],record["snapshot"])
+                    trace["review_attempt"].update(result)
+                    trace["route_decision"]="审查回退" if result["fallback"] else "一次审查"
+                    if not result["fallback"]:
+                        entries=catalog(record["snapshot"])
+                        slot["review_chunks"]=[entries[key][0] for key in result["ids"]]
+                else:
+                    trace.setdefault("route_decision","原生回答")
             record["pool_locations"] = [location(c) for c in generator.chunks_format(state.get("kbinfos") or {"chunks": []})]
         token = composing.set(slot)
         try:
@@ -174,6 +202,12 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             chosen = current.get()["evidence_layers"]["answers"][-1]["snapshot"]["input"]["state"]["kbinfos"]["chunks"]
             info = {**info,"chunks":chosen}
             slot["tools"]._rag_cite_chunk_ids = [str(c.get("chunk_id") or c.get("id") or "") for c in chosen]
+        if slot is not None and slot.get("review_chunks") is not None:
+            chunks=slot["review_chunks"]
+            info={**info,"chunks":chunks}
+            slot["tools"]._rag_cite_chunk_ids=[str(c.get("chunk_id") or c.get("id") or "") for c in chunks]
+        if wide and slot is not None:
+            args=(min(12000,slot["tools"].chat_mdl.max_length),*args[1:])
         blocks = original_prompt(info, *args, **kwargs)
         if slot is not None:
             if snapshot_spec is not None:

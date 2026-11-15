@@ -110,3 +110,10 @@ def search(client, config, question, plan, arm, documents, k, weight, reranker="
             path = "扩大同范围候选"
     return chunks[:k], path
 
+
+
+def intersect_scope(allowed,selected):
+    """保留本题明确允许且通过原生过滤的报告，空集维持空集。"""
+    if allowed is None:
+        raise ValueError("缺少本题允许文档清单")
+    return [doc for doc in allowed if selected is None or doc in selected]
