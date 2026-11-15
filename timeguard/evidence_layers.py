@@ -90,6 +90,7 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             from .final_snapshot import freeze
             config = kwargs["answer_conf"] if "answer_conf" in kwargs else args[1]
             identity = {k: snapshot_spec[k] for k in ("dataset_id", "model", "arm_config", "upstream_files")}
+            slot["tools"] = tools
             record["snapshot"] = freeze(state, tools, config, identity)
             record["pool_locations"] = [location(c) for c in generator.chunks_format(state.get("kbinfos") or {"chunks": []})]
         token = composing.set(slot)
@@ -133,8 +134,14 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
     original_prompt = graph.kb_prompt
     @wraps(original_prompt)
     def prompt(info, *args, **kwargs):
-        blocks = original_prompt(info, *args, **kwargs)
         slot = composing.get()
+        if slot is not None and snapshot_spec and snapshot_spec["candidate"] == "page_select":
+            from .page_select import select
+            source = current.get()["evidence_layers"]["answers"][-1]["snapshot"]["input"]
+            selected = select(current.get()["question"], source["state"]["kbinfos"]["chunks"], source["tools"]["doc_scope"])
+            info = {**info, "chunks": selected}
+            slot["tools"]._rag_cite_chunk_ids = [str(c.get("chunk_id") or c.get("id") or "") for c in selected]
+        blocks = original_prompt(info, *args, **kwargs)
         if slot is not None:
             if snapshot_spec is not None:
                 slot["record"]["block_hashes"] = [digest(b) for b in blocks]
