@@ -3,7 +3,7 @@ import argparse
 from collections import Counter
 from pathlib import Path
 
-from .common import read_json,read_jsonl,write_json
+from .common import digest,read_json,read_jsonl,write_json
 from .layer_report import page_set
 
 
@@ -18,6 +18,8 @@ def measure(run, labels):
         out[r["id"]] = {"判对":rv["answer_correct"],"引用支持":rv["citation_support"],"耗时":r["elapsed_seconds"],
                           "生成请求":1,"生成失败":int(r["status"]!="ok"),"用量":r.get("usage"),
                           "裁判耗时":rv["elapsed_seconds"],"裁判用量":rv.get("usage"),"标准页数":len(targets),
+                          "选块顺序指纹":digest(a["selected"]),"选中块数":len(a["selected"]),"装入块数":len(a["packet"]),
+                          "实收整块数":len(req.get("complete_chunks") or []) if req.get("status")==200 else None,
                           "输入指纹":a["snapshot"]["sha256"]}
         for k, chunks in (("选中",a["selected"]),("装入",a["packet"]),("实收",req.get("complete_chunks"))):
             pages,valid = page_set(chunks)
@@ -39,7 +41,7 @@ def compare(root, gold, arms):
         for r in rows.values():
             summary[{True:"判对",False:"判错",None:"未知"}[r["判对"]]] += 1
             summary["判对且引用支持"] += int(r["判对"] is True and r["引用支持"] is True)
-            for field in ("选中","装入","实收","标准页数","生成请求","生成失败","耗时"):
+            for field in ("选中块数","装入块数","实收整块数","选中","装入","实收","标准页数","生成请求","生成失败","耗时"):
                 if r[field] is None:
                     summary[field+"未知题数"] += 1
                 else:

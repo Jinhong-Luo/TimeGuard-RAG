@@ -14,7 +14,7 @@ from .native_matrix import judge
 
 
 def render(rows, arms):
-    names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "paired_render")
+    names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "paired_render")
     with tempfile.TemporaryDirectory() as d:
         pkg = Path(d,"timeguard")
         pkg.mkdir()
