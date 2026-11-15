@@ -202,21 +202,33 @@ def verify_operand(operand, evidence, visible_lines=None):
     match = re.compile(r"(?<![\d.,(−\-])" + number + ending)
     if not match.search(quote):
         raise ValueError("数值及正负号无法与引用原句核对")
-    if "<table" in content.lower():
-        if (not operand.line_number or content.lower().count("<table") != 1
+    html_table = "<table" in content.lower()
+    pipe_table = bool(operand.line_number and quote.count("|") >= 2)
+    if html_table or pipe_table:
+        if (not operand.line_number or (html_table and content.lower().count("<table") != 1)
                 or re.search(r"(?:rowspan|colspan)\s*=\s*['\"]?(?:[2-9]|\d{2,})", content, re.I)):
             raise ValueError("表格列对应关系无法核验")
-        cells = [c.strip() for c in quote.removesuffix("|").split("|")]
+        def cells_of(line):
+            line = line.strip()
+            if not html_table:
+                line = line.removeprefix("|")
+            return [c.strip() for c in line.removesuffix("|").split("|")]
+        cells = cells_of(quote)
         if operand.row_label and "".join(cells[0].casefold().split()) != "".join(operand.row_label.casefold().split()):
             raise ValueError("指标与所选表格行不一致")
-        headers = [line["text"] for line in visible_lines or () if line["number"] < operand.line_number
-                   and "|" in line["text"] and re.search(r"\b(?:19|20)\d{2}\b", line["text"])]
-        header = [c.strip() for c in headers[-1].removesuffix("|").split("|")] if headers else []
+        preceding = [line for line in visible_lines or () if line["number"] < operand.line_number]
+        if not html_table:
+            # 管线表仅从当前连续表格区间取表头，防止继承前一张表的列年。
+            boundary = max((line["number"] for line in preceding if "|" not in line["text"]), default=0)
+            preceding = [line for line in preceding if line["number"] > boundary]
+        headers = [line["text"] for line in preceding
+                   if "|" in line["text"] and re.search(r"\b(?:19|20)\d{2}\b", line["text"])]
+        header = cells_of(headers[-1]) if headers else []
         year_columns = [(i, m[1]) for i, cell in enumerate(header)
                         if (m := re.fullmatch(r"(?:FY\s*)?((?:19|20)\d{2})\s*\**", cell, re.I))]
         spans = [(i, next((j for j,_ in year_columns if j > i), len(header)))
                  for i,y in year_columns if y == str(operand.year)]
-        if len(spans) != 1 or len(header) != len(cells) or not quote.endswith("|"):
+        if len(spans) != 1 or len(header) != len(cells) or (html_table and not quote.endswith("|")):
             raise ValueError("所选数值与可见表头的年份列不一致")
         start, end = spans[0]
         # 财报解析可能把货币符号单独排成一列。仅合并无标题的相邻列且要求唯一数值。
@@ -240,7 +252,7 @@ def verify_operand(operand, evidence, visible_lines=None):
         raise ValueError("证据缺少明确币种")
     if operand.scale != "ones" and not re.search(operand.scale.rstrip("s"), content, re.I):
         raise ValueError("证据缺少所选金额单位")
-    if operand.scale == "ones" and re.search(r"\b(?:million|thousand|billion)s?\b", content, re.I):
+    if operand.scale == "ones" and re.search(r"(?:\b|in)(?:million|thousand|billion)s?(?:\b|except)", content, re.I):
         raise ValueError("原文标有缩放单位，无法按基本单位计算")
     return quote
 

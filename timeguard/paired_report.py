@@ -63,6 +63,10 @@ def compare(root, gold, arms):
             for variant in ("page","supplement"):
                 hits,valid = page_set(r[variant])
                 result["检索"][qid][variant+"命中题页数"] = len(hits & targets) if valid else None
+    if "formula" in arms:
+        guards=read_json(root/"guards-private.json")
+        result["公式核验"]={qid:{key:r.get(key) for key in ("active","metric","reads","required","verified","calculated","seconds")}
+                          for qid,r in guards.items()}
     if "review" in arms:
         reviews = read_json(root/"review-private.json")
         result["审查"] = {

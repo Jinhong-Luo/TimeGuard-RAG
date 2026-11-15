@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .common import digest
 from .evidence_layers import location, match_blocks, visible_blocks
-from .final_snapshot import replay
+from .final_snapshot import BRIEF_RULE, replay
 from .page_select import select
 from .message_budget import MARKER, pack
 
@@ -20,6 +20,9 @@ async def render(item):
         if digest(Path("/ragflow", path).read_bytes()) != sha:
             raise ValueError("容器与快照上游版本不同")
     result = {}
+    from .final_snapshot import fingerprint
+    if fingerprint(value)!=snapshot["sha256"]:
+        raise ValueError("基础快照被修改")
     original = graph.kb_prompt
     fit = graph.message_fit_in
     for arm in item["arms"]:
@@ -45,7 +48,7 @@ async def render(item):
                     from .evidence_review import catalog
                     entries = catalog(snapshot)
                     chunks = [entries[key][0] for key in item["review"]["ids"]]
-            elif arm != "original":
+            elif arm not in ("original","formula","brief"):
                 raise ValueError("未知方案")
             info = {**info,"chunks": chunks}
             if arm == "budget":
@@ -70,7 +73,15 @@ async def render(item):
         graph.message_fit_in = fit_message
         graph.kb_prompt = prompt
         try:
-            await replay(snapshot, graph._compose_answer_from_evidence, Model())
+            active = snapshot
+            if arm in ("formula","brief"):
+                extension = (item["guard"]["instruction"] if arm=="formula" else
+                             BRIEF_RULE)
+                if extension:
+                    cfg = {**value["tools"],"system_prompt":(value["tools"].get("system_prompt") or "")+"\n"+extension}
+                    changed = {**value,"tools":cfg}
+                    active = {"input":changed,"sha256":fingerprint(changed)}
+            await replay(active, graph._compose_answer_from_evidence, Model())
         finally:
             graph.kb_prompt = original
             graph.message_fit_in = fit
@@ -80,6 +91,10 @@ async def render(item):
         if arm == "original" and (record["body"] != item["body"] or record["selected"] != item["selected"] or
                                   record["block_hashes"] != item["block_hashes"]):
             raise ValueError("配对驱动与真实原版不一致")
+        if arm=="formula":
+            ids = {c["id"] for c in record["visible"]}
+            if any(f["chunk_id"] not in ids for f in item["guard"].get("facts",[])):
+                raise ValueError("校验操作数所在块未完整送达")
         result[arm] = record
     return result
 

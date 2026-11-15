@@ -14,7 +14,7 @@ from .native_baseline import CONTAINER, private_runtime
 from .native_matrix import judge
 
 
-def render(rows, arms, reviews=None, pages=None):
+def render(rows, arms, reviews=None, pages=None, guards=None):
     names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "evidence_review", "paired_render")
     with tempfile.TemporaryDirectory() as d:
         pkg = Path(d,"timeguard")
@@ -31,6 +31,8 @@ def render(rows, arms, reviews=None, pages=None):
         inputs.append({k:a[k] for k in ("snapshot","selected","block_hashes")} |
                       {"body":req["body"],"question":row["question"],"arms":arms})
     for item,row in zip(inputs,rows,strict=True):
+        if guards is not None:
+            item["guard"] = guards[row["id"]]
         if pages is not None:
             item["page_result"] = pages[row["id"]]
         if reviews is not None:
@@ -98,7 +100,16 @@ def main():
             a, = row["native_trace"]["evidence_layers"]["answers"]
             pages[row["id"]] = index.retrieve(row["question"],a["snapshot"],row.get("as_of"))
             write_json(args.output/"pages-private.json",pages)
-    packets = render(rows,args.arms,reviews,pages)
+    guards = None
+    if "formula" in args.arms:
+        from .formula_guard import guard_row
+        from .common import Client
+        client=Client(read_json("configs/r0-low.json")["base_url"])
+        guards={}
+        for row in rows:
+            guards[row["id"]]=guard_row(row,client)
+            write_json(args.output/"guards-private.json",guards)
+    packets = render(rows,args.arms,reviews,pages,guards)
     for arm in args.arms:
         dest = args.output/arm
         dest.mkdir()

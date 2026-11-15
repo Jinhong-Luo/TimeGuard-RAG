@@ -5,6 +5,9 @@ import json
 from types import SimpleNamespace
 
 
+BRIEF_RULE = "按问题的语言简洁回答。只列出问题要求的结论、必要操作数及公式，每项关键事实紧跟其实际证据编号。区分期间、部门与合并口径、百分比与百分点，不加入无来源的数字。"
+
+
 def encode(value):
     # 优先引用按字典插入顺序遍历，不能对键排序。
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False)

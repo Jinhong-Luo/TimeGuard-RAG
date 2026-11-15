@@ -146,7 +146,19 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             return result
         finally:
             composing.reset(token)
-    graph._compose_answer_from_evidence = compose
+    if snapshot_spec and snapshot_spec["candidate"]=="brief":
+        from .final_snapshot import BRIEF_RULE
+        @wraps(original_compose)
+        async def brief(state,tools,*args,**kwargs):
+            previous = tools.system_prompt
+            tools.system_prompt = (previous or "") + "\n" + BRIEF_RULE
+            try:
+                return await compose(state,tools,*args,**kwargs)
+            finally:
+                tools.system_prompt = previous
+        graph._compose_answer_from_evidence = brief
+    else:
+        graph._compose_answer_from_evidence = compose
 
     original_prompt = graph.kb_prompt
     @wraps(original_prompt)
