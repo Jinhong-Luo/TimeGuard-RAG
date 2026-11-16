@@ -81,7 +81,20 @@ def formula(metric,operands):
     return f"收入÷期初期末固定资产净额均值 = {rev} / (({begin}+{end})/2) = {rev/avg:.4f}"
 
 
-def candidates(chunk,raw,metric,year,period):
+def row_without_acronym(label):
+    """仅去掉与前方全称逐字对应的括号缩写，保留净额、部门等口径限定。"""
+    match = re.fullmatch(r"(.+?)\s*\(([a-z&]{2,12})\)", label, re.I)
+    if match:
+        words = re.findall(r"[a-z]+", match[1].casefold())
+        acronym = match[2].casefold().replace("&", "")
+        for start in range(len(words)):
+            initials = "".join(w[0] for w in words[start:] if w not in {"and", "of", "the"})
+            if initials == acronym:
+                return match[1].rstrip()
+    return label
+
+
+def candidates(chunk,raw,metric,year,period,allow_acronym=False):
     if raw["id"]!=chunk["id"] or raw["document_id"]!=chunk["document_id"]:
         raise ValueError("回读来源不匹配")
     shown=evidence_lines(chunk["content"])
@@ -90,7 +103,8 @@ def candidates(chunk,raw,metric,year,period):
     original=[{"number":i,"text":t} for i,t in enumerate(src,1)]
     for i,line in enumerate(shown,1):
         label=line.strip(" |").split("|")[0].strip().casefold()
-        if not re.fullmatch(ROWS[metric].replace(" ",r"\s*"),label) or src.count(line)!=1:
+        name = row_without_acronym(label) if allow_acronym else label
+        if not re.fullmatch(ROWS[metric].replace(" ",r"\s*"),name) or src.count(line)!=1:
             continue
         for match in NUM.finditer(line[len(label):]):
             for currency in (("XXX",) if metric=="毛利率" else ("USD","EUR","GBP","XXX")):

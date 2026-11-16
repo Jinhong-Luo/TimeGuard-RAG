@@ -14,7 +14,7 @@ from .native_baseline import CONTAINER, private_runtime
 from .native_matrix import judge
 
 
-def render(rows, arms, reviews=None, pages=None, guards=None):
+def render(rows, arms, reviews=None, pages=None, guards=None, history=None, history_swap=False):
     names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "evidence_review", "paired_render")
     with tempfile.TemporaryDirectory() as d:
         pkg = Path(d,"timeguard")
@@ -31,6 +31,9 @@ def render(rows, arms, reviews=None, pages=None, guards=None):
         inputs.append({k:a[k] for k in ("snapshot","selected","block_hashes")} |
                       {"body":req["body"],"question":row["question"],"arms":arms})
     for item,row in zip(inputs,rows,strict=True):
+        if history is not None:
+            item["history"] = history[row["id"]]["chunks"]
+            item["history_swap"] = history_swap
         if guards is not None:
             item["guard"] = guards[row["id"]]
         if pages is not None:
@@ -66,6 +69,8 @@ def main():
     p.add_argument("output",type=Path)
     p.add_argument("--arms",nargs="+",default=["original","page_select"])
     p.add_argument("--query-ids",nargs="+")
+    p.add_argument("--history-tables",action="store_true",help="允许将唯一匹配行名与年份的合并原表作为待核材料送达")
+    p.add_argument("--history-swap",action="store_true",help="允许历史原块占用原证据的位置，记录原先实收块的减少数")
     args = p.parse_args()
     args.output.mkdir(exist_ok=False,parents=True)
     rows = read_jsonl(args.source/"results.jsonl")
@@ -109,7 +114,18 @@ def main():
         for row in rows:
             guards[row["id"]]=guard_row(row,client)
             write_json(args.output/"guards-private.json",guards)
-    packets = render(rows,args.arms,reviews,pages,guards)
+    history = None
+    if "history_read" in args.arms:
+        from .history_read import history_reader
+        if args.arms[0] != "original":
+            raise ValueError("历史回读需先回放原版以核对完整实收块")
+        reader = history_reader(args.source)
+        history = {}
+        for row in rows:
+            history[row["id"]] = reader(row,args.history_tables)
+            history[row["id"]]["audit"]["允许待核原表"] = args.history_tables
+            write_json(args.output/"history-private.json",history)
+    packets = render(rows,args.arms,reviews,pages,guards,history,args.history_swap)
     for arm in args.arms:
         dest = args.output/arm
         dest.mkdir()

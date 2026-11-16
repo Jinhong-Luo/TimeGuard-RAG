@@ -67,6 +67,22 @@ def compare(root, gold, arms):
         guards=read_json(root/"guards-private.json")
         result["公式核验"]={qid:{key:r.get(key) for key in ("active","metric","reads","required","verified","calculated","seconds")}
                           for qid,r in guards.items()}
+    if "history_read" in arms:
+        saved = read_json(root/"history-private.json")
+        final = {}
+        for arm in arms:
+            final[arm] = {}
+            for row in read_jsonl(root/arm/"results.jsonl"):
+                answer, = row["native_trace"]["evidence_layers"]["answers"]
+                request, = answer["requests"]
+                final[arm][row["id"]] = (digest(request["body"]), answer.get("history_fallback"),
+                                         answer.get("history_displaced", 0))
+        result["历史回读"] = {
+            qid: {**r["audit"], "补入块数": len(r["chunks"]),
+                  "最终请求相同": final["original"][qid][0] == final["history_read"][qid][0],
+                  "原有实收块减少数": final["history_read"][qid][2],
+                  "预算回退": final["history_read"][qid][1]}
+            for qid, r in saved.items()}
     if "review" in arms:
         reviews = read_json(root/"review-private.json")
         result["审查"] = {

@@ -1,5 +1,6 @@
 """在固定 RAGFlow 容器中用原版函数渲染配对方案，不访问裁判或金标。"""
 import asyncio
+from copy import deepcopy
 import json
 import sys
 from pathlib import Path
@@ -45,6 +46,12 @@ async def render(item):
                     raise ValueError("原生研究摘要范围大于本题允许范围")
                 if any(c["document_id"] not in allowed for c in chunks):
                     raise ValueError("最终引用越界")
+            elif arm == "history_read":
+                extra = item["history"]
+                if any(c["document_id"] not in value["tools"]["doc_scope"] for c in extra):
+                    raise ValueError("历史块越界")
+                if extra:
+                    chunks = [*extra, *chunks][:12]
             elif arm == "review":
                 if not item["review"]["fallback"]:
                     from .evidence_review import catalog
@@ -100,6 +107,17 @@ async def render(item):
             ids = {c["id"] for c in record["visible"]}
             if any(f["chunk_id"] not in ids for f in item["guard"].get("facts",[])):
                 raise ValueError("校验操作数所在块未完整送达")
+        if arm == "history_read":
+            def identities(chunks):
+                return {(c["document_id"], c["id"], digest(c["content"])) for c in chunks}
+            old = identities(result["original"]["visible"])
+            received = identities(record["visible"])
+            lost = old - received
+            if not identities(item["history"]).issubset(received) or (lost and not item["history_swap"]):
+                record = deepcopy(result["original"])
+                record["history_fallback"] = "新增或原有完整块无法在原预算内送达"
+            else:
+                record["history_displaced"] = len(lost)
         result[arm] = record
     return result
 
