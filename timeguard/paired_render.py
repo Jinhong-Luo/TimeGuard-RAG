@@ -37,7 +37,11 @@ async def render(item):
                 yield ""
         def prompt(info, budget):
             chunks = info["chunks"]
-            if arm in ("page_select", "budget"):
+            if "fours" in item:
+                chunks = item["fours"][arm]
+                if len(chunks)!=4 or any(c["document_id"] not in value["tools"]["doc_scope"] for c in chunks):
+                    raise ValueError("四块对照超出范围")
+            elif arm in ("page_select", "budget"):
                 chunks = select(item["question"],value["state"]["kbinfos"]["chunks"],value["tools"]["doc_scope"])
             elif arm in ("page","supplement"):
                 chunks = item["page_result"][arm]
@@ -85,6 +89,11 @@ async def render(item):
         graph.kb_prompt = prompt
         try:
             active = snapshot
+            if "fours" in item:
+                chosen = item["fours"][arm]
+                state = {"question":item["question"], "kbinfos":{"chunks":chosen}}
+                changed = {**value,"state":state}
+                active = {"input":changed,"sha256":fingerprint(changed)}
             if arm in ("formula","brief"):
                 extension = (item["guard"]["instruction"] if arm=="formula" else
                              BRIEF_RULE)

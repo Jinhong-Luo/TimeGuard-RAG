@@ -14,7 +14,7 @@ from .native_baseline import CONTAINER, private_runtime
 from .native_matrix import judge
 
 
-def render(rows, arms, reviews=None, pages=None, guards=None, history=None, history_swap=False):
+def render(rows, arms, reviews=None, pages=None, guards=None, history=None, history_swap=False, fours=None):
     names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "evidence_review", "paired_render")
     with tempfile.TemporaryDirectory() as d:
         pkg = Path(d,"timeguard")
@@ -31,6 +31,8 @@ def render(rows, arms, reviews=None, pages=None, guards=None, history=None, hist
         inputs.append({k:a[k] for k in ("snapshot","selected","block_hashes")} |
                       {"body":req["body"],"question":row["question"],"arms":arms})
     for item,row in zip(inputs,rows,strict=True):
+        if fours is not None:
+            item["fours"] = fours[row["id"]]
         if history is not None:
             item["history"] = history[row["id"]]["chunks"]
             item["history_swap"] = history_swap
@@ -126,11 +128,15 @@ def main():
             history[row["id"]]["audit"]["允许待核原表"] = args.history_tables
             write_json(args.output/"history-private.json",history)
     packets = render(rows,args.arms,reviews,pages,guards,history,args.history_swap)
-    for arm in args.arms:
-        dest = args.output/arm
+    run_packets(args.source,args.output,args.arms,rows,packets,rt)
+
+
+def run_packets(source,output,arms,rows,packets,rt):
+    for arm in arms:
+        dest = output/arm
         dest.mkdir()
         write_json(dest/"manifest.json",{"identity":{"query_ids":[r["id"] for r in rows],"arm":arm,
-                   "inputs":[v[arm]["snapshot"]["sha256"] for v in packets],"source":digest((args.source/"results.jsonl").read_bytes())}})
+                   "inputs":[v[arm]["snapshot"]["sha256"] for v in packets],"source":digest((source/"results.jsonl").read_bytes())}})
         def one(pair):
             src,variants = pair
             a = variants[arm]
