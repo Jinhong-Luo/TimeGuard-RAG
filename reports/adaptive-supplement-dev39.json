@@ -1,0 +1,2952 @@
+{
+  "题数": 39,
+  "联合达标": {
+    "fixed": 21,
+    "adaptive": 20
+  },
+  "救回": [
+    "financebench_id_01936",
+    "financebench_id_00685"
+  ],
+  "损失": [
+    "financebench_id_01077",
+    "financebench_id_00517",
+    "financebench_id_00678"
+  ],
+  "独立重答": {
+    "financebench_id_01936": {
+      "fixed": false,
+      "adaptive": false
+    },
+    "financebench_id_00685": {
+      "fixed": true,
+      "adaptive": true
+    },
+    "financebench_id_01077": {
+      "fixed": true,
+      "adaptive": true
+    },
+    "financebench_id_00517": {
+      "fixed": true,
+      "adaptive": false
+    },
+    "financebench_id_00678": {
+      "fixed": false,
+      "adaptive": false
+    }
+  },
+  "逐题": {
+    "financebench_id_03882": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 41937,
+          "completion_tokens": 94,
+          "total_tokens": 42031,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 27
+          }
+        }
+      ],
+      "筛选秒": 16.31360613089055,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 10841,
+          "completion_tokens": 88,
+          "total_tokens": 10929,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.84319157479331,
+        "裁判用量": {
+          "prompt_tokens": 9552,
+          "completion_tokens": 280,
+          "total_tokens": 9832,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 111
+          }
+        },
+        "裁判秒": 21.637601
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 1,
+        "实收块": 1,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9609,
+          "completion_tokens": 89,
+          "total_tokens": 9698,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.557271922007203,
+        "裁判用量": {
+          "prompt_tokens": 9553,
+          "completion_tokens": 219,
+          "total_tokens": 9772,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 50
+          }
+        },
+        "裁判秒": 20.906652
+      }
+    },
+    "financebench_id_01935": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9144,
+          "completion_tokens": 154,
+          "total_tokens": 9298,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 14.505064650904387,
+        "裁判用量": {
+          "prompt_tokens": 8472,
+          "completion_tokens": 140,
+          "total_tokens": 8612,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 19.593464
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9144,
+          "completion_tokens": 154,
+          "total_tokens": 9298,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 14.505064650904387,
+        "裁判用量": {
+          "prompt_tokens": 8472,
+          "completion_tokens": 140,
+          "total_tokens": 8612,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 19.593464
+      }
+    },
+    "financebench_id_00799": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 44467,
+          "completion_tokens": 1204,
+          "total_tokens": 45671,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 90
+          }
+        }
+      ],
+      "筛选秒": 34.18441519001499,
+      "回退": "ValueError",
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10498,
+          "completion_tokens": 325,
+          "total_tokens": 10823,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 15.153470021206886,
+        "裁判用量": {
+          "prompt_tokens": 10000,
+          "completion_tokens": 323,
+          "total_tokens": 10323,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 136
+          }
+        },
+        "裁判秒": 25.371552
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8958,
+          "completion_tokens": 132,
+          "total_tokens": 9090,
+          "prompt_tokens_details": {
+            "cached_tokens": 8832
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.75374336866662,
+        "裁判用量": {
+          "prompt_tokens": 8350,
+          "completion_tokens": 359,
+          "total_tokens": 8709,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 142
+          }
+        },
+        "裁判秒": 23.016296
+      }
+    },
+    "financebench_id_01079": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 30331,
+          "completion_tokens": 405,
+          "total_tokens": 30736,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 61
+          }
+        }
+      ],
+      "筛选秒": 26.141593226697296,
+      "回退": "ValueError",
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12620,
+          "completion_tokens": 348,
+          "total_tokens": 12968,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 24.998718714807183,
+        "裁判用量": {
+          "prompt_tokens": 13109,
+          "completion_tokens": 325,
+          "total_tokens": 13434,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 106
+          }
+        },
+        "裁判秒": 27.578444
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12620,
+          "completion_tokens": 348,
+          "total_tokens": 12968,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 24.998718714807183,
+        "裁判用量": {
+          "prompt_tokens": 13109,
+          "completion_tokens": 325,
+          "total_tokens": 13434,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 106
+          }
+        },
+        "裁判秒": 27.578444
+      }
+    },
+    "financebench_id_01148": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8941,
+          "completion_tokens": 67,
+          "total_tokens": 9008,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 21.346892793662846,
+        "裁判用量": {
+          "prompt_tokens": 6978,
+          "completion_tokens": 95,
+          "total_tokens": 7073,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 7.69011
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8941,
+          "completion_tokens": 67,
+          "total_tokens": 9008,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 21.346892793662846,
+        "裁判用量": {
+          "prompt_tokens": 6978,
+          "completion_tokens": 95,
+          "total_tokens": 7073,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 7.69011
+      }
+    },
+    "financebench_id_00684": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 31816,
+          "completion_tokens": 364,
+          "total_tokens": 32180,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 59
+          }
+        }
+      ],
+      "筛选秒": 26.56968845706433,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9967,
+          "completion_tokens": 351,
+          "total_tokens": 10318,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.59351106127724,
+        "裁判用量": {
+          "prompt_tokens": 8743,
+          "completion_tokens": 248,
+          "total_tokens": 8991,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 96
+          }
+        },
+        "裁判秒": 21.463387
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 2,
+        "实收块": 2,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9200,
+          "completion_tokens": 388,
+          "total_tokens": 9588,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.757659921888262,
+        "裁判用量": {
+          "prompt_tokens": 8780,
+          "completion_tokens": 273,
+          "total_tokens": 9053,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 103
+          }
+        },
+        "裁判秒": 23.667228
+      }
+    },
+    "financebench_id_01936": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 24457,
+          "completion_tokens": 474,
+          "total_tokens": 24931,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 121
+          }
+        }
+      ],
+      "筛选秒": 24.970433240756392,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9076,
+          "completion_tokens": 350,
+          "total_tokens": 9426,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 16.680377015843987,
+        "裁判用量": {
+          "prompt_tokens": 8563,
+          "completion_tokens": 366,
+          "total_tokens": 8929,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 192
+          }
+        },
+        "裁判秒": 28.957564
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 5,
+        "实收块": 5,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9520,
+          "completion_tokens": 316,
+          "total_tokens": 9836,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.853152498602867,
+        "裁判用量": {
+          "prompt_tokens": 8520,
+          "completion_tokens": 187,
+          "total_tokens": 8707,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          }
+        },
+        "裁判秒": 30.013965
+      }
+    },
+    "financebench_id_01928": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 11838,
+          "completion_tokens": 64,
+          "total_tokens": 11902,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.914764584973454,
+        "裁判用量": {
+          "prompt_tokens": 8608,
+          "completion_tokens": 124,
+          "total_tokens": 8732,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 18.347759
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 11838,
+          "completion_tokens": 64,
+          "total_tokens": 11902,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.914764584973454,
+        "裁判用量": {
+          "prompt_tokens": 8608,
+          "completion_tokens": 124,
+          "total_tokens": 8732,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 18.347759
+      }
+    },
+    "financebench_id_01930": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9914,
+          "completion_tokens": 193,
+          "total_tokens": 10107,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 34
+          }
+        },
+        "回答秒": 20.505342888180166,
+        "裁判用量": {
+          "prompt_tokens": 7068,
+          "completion_tokens": 147,
+          "total_tokens": 7215,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 20.56787
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9914,
+          "completion_tokens": 193,
+          "total_tokens": 10107,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 34
+          }
+        },
+        "回答秒": 20.505342888180166,
+        "裁判用量": {
+          "prompt_tokens": 7068,
+          "completion_tokens": 147,
+          "total_tokens": 7215,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 20.56787
+      }
+    },
+    "financebench_id_02608": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 12975,
+          "completion_tokens": 124,
+          "total_tokens": 13099,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.7549868109636,
+        "裁判用量": {
+          "prompt_tokens": 9247,
+          "completion_tokens": 380,
+          "total_tokens": 9627,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 252
+          }
+        },
+        "裁判秒": 27.887686
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 12975,
+          "completion_tokens": 124,
+          "total_tokens": 13099,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.7549868109636,
+        "裁判用量": {
+          "prompt_tokens": 9247,
+          "completion_tokens": 380,
+          "total_tokens": 9627,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 252
+          }
+        },
+        "裁判秒": 27.887686
+      }
+    },
+    "financebench_id_04417": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 3,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 12979,
+          "completion_tokens": 63,
+          "total_tokens": 13042,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 13.376573028974235,
+        "裁判用量": {
+          "prompt_tokens": 8903,
+          "completion_tokens": 120,
+          "total_tokens": 9023,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 15.430543
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 3,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 12979,
+          "completion_tokens": 63,
+          "total_tokens": 13042,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 13.376573028974235,
+        "裁判用量": {
+          "prompt_tokens": 8903,
+          "completion_tokens": 120,
+          "total_tokens": 9023,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 15.430543
+      }
+    },
+    "financebench_id_00685": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 34063,
+          "completion_tokens": 298,
+          "total_tokens": 34361,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 83
+          }
+        }
+      ],
+      "筛选秒": 22.938289314042777,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": null,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12955,
+          "completion_tokens": 399,
+          "total_tokens": 13354,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 21.696373607963324,
+        "裁判用量": {
+          "prompt_tokens": 10329,
+          "completion_tokens": 213,
+          "total_tokens": 10542,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 48
+          }
+        },
+        "裁判秒": 19.891334
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 2,
+        "实收块": 2,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 11235,
+          "completion_tokens": 529,
+          "total_tokens": 11764,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.73178148502484,
+        "裁判用量": {
+          "prompt_tokens": 11215,
+          "completion_tokens": 159,
+          "total_tokens": 11374,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 21.739087
+      }
+    },
+    "financebench_id_01077": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 23077,
+          "completion_tokens": 63,
+          "total_tokens": 23140,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "筛选秒": 15.467676989734173,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 8958,
+          "completion_tokens": 251,
+          "total_tokens": 9209,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 13.062925280071795,
+        "裁判用量": {
+          "prompt_tokens": 8426,
+          "completion_tokens": 323,
+          "total_tokens": 8749,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 151
+          }
+        },
+        "裁判秒": 22.375474
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 2,
+        "实收块": 2,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 8316,
+          "completion_tokens": 261,
+          "total_tokens": 8577,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.715742285363376,
+        "裁判用量": {
+          "prompt_tokens": 8436,
+          "completion_tokens": 379,
+          "total_tokens": 8815,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 202
+          }
+        },
+        "裁判秒": 27.169264
+      }
+    },
+    "financebench_id_01275": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10175,
+          "completion_tokens": 101,
+          "total_tokens": 10276,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 28.66339395660907,
+        "裁判用量": {
+          "prompt_tokens": 10000,
+          "completion_tokens": 127,
+          "total_tokens": 10127,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 23.046318
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10175,
+          "completion_tokens": 101,
+          "total_tokens": 10276,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 28.66339395660907,
+        "裁判用量": {
+          "prompt_tokens": 10000,
+          "completion_tokens": 127,
+          "total_tokens": 10127,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 23.046318
+      }
+    },
+    "financebench_id_00288": {
+      "fixed": {
+        "判对": false,
+        "引用支持": null,
+        "达标": false,
+        "选中块": 0,
+        "实收块": 0,
+        "实收题页": 0,
+        "回答用量": null,
+        "回答秒": null,
+        "裁判用量": {
+          "prompt_tokens": 8764,
+          "completion_tokens": 114,
+          "total_tokens": 8878,
+          "prompt_tokens_details": {
+            "cached_tokens": 8576
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 51.612016
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": null,
+        "达标": false,
+        "选中块": 0,
+        "实收块": 0,
+        "实收题页": 0,
+        "回答用量": null,
+        "回答秒": null,
+        "裁判用量": {
+          "prompt_tokens": 8764,
+          "completion_tokens": 114,
+          "total_tokens": 8878,
+          "prompt_tokens_details": {
+            "cached_tokens": 8576
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 51.612016
+      }
+    },
+    "financebench_id_00460": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 23411,
+          "completion_tokens": 517,
+          "total_tokens": 23928,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 110
+          }
+        }
+      ],
+      "筛选秒": 23.61998460488394,
+      "回退": "ValueError",
+      "fixed": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 11259,
+          "completion_tokens": 121,
+          "total_tokens": 11380,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.77513663377613,
+        "裁判用量": {
+          "prompt_tokens": 12028,
+          "completion_tokens": 310,
+          "total_tokens": 12338,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 89
+          }
+        },
+        "裁判秒": 23.801423
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 11259,
+          "completion_tokens": 121,
+          "total_tokens": 11380,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.77513663377613,
+        "裁判用量": {
+          "prompt_tokens": 12028,
+          "completion_tokens": 310,
+          "total_tokens": 12338,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 89
+          }
+        },
+        "裁判秒": 23.801423
+      }
+    },
+    "financebench_id_01902": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 27759,
+          "completion_tokens": 568,
+          "total_tokens": 28327,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 18
+          }
+        }
+      ],
+      "筛选秒": 28.475162466987967,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9943,
+          "completion_tokens": 178,
+          "total_tokens": 10121,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.781100560911,
+        "裁判用量": {
+          "prompt_tokens": 9259,
+          "completion_tokens": 224,
+          "total_tokens": 9483,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 59
+          }
+        },
+        "裁判秒": 12.471078
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 1,
+        "实收块": 1,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8164,
+          "completion_tokens": 204,
+          "total_tokens": 8368,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 25
+          }
+        },
+        "回答秒": 19.35229839803651,
+        "裁判用量": {
+          "prompt_tokens": 7881,
+          "completion_tokens": 218,
+          "total_tokens": 8099,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 53
+          }
+        },
+        "裁判秒": 11.400488
+      }
+    },
+    "financebench_id_04660": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10942,
+          "completion_tokens": 108,
+          "total_tokens": 11050,
+          "prompt_tokens_details": {
+            "cached_tokens": 10752
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 25.491988060064614,
+        "裁判用量": {
+          "prompt_tokens": 9439,
+          "completion_tokens": 132,
+          "total_tokens": 9571,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 18.616697
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10942,
+          "completion_tokens": 108,
+          "total_tokens": 11050,
+          "prompt_tokens_details": {
+            "cached_tokens": 10752
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 25.491988060064614,
+        "裁判用量": {
+          "prompt_tokens": 9439,
+          "completion_tokens": 132,
+          "total_tokens": 9571,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 18.616697
+      }
+    },
+    "financebench_id_03838": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10986,
+          "completion_tokens": 132,
+          "total_tokens": 11118,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.91777763981372,
+        "裁判用量": {
+          "prompt_tokens": 9633,
+          "completion_tokens": 135,
+          "total_tokens": 9768,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 17.146835
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10986,
+          "completion_tokens": 132,
+          "total_tokens": 11118,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.91777763981372,
+        "裁判用量": {
+          "prompt_tokens": 9633,
+          "completion_tokens": 135,
+          "total_tokens": 9768,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 17.146835
+      }
+    },
+    "financebench_id_07661": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 11324,
+          "completion_tokens": 69,
+          "total_tokens": 11393,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.353552483022213,
+        "裁判用量": {
+          "prompt_tokens": 11343,
+          "completion_tokens": 135,
+          "total_tokens": 11478,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 28.904687
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 11324,
+          "completion_tokens": 69,
+          "total_tokens": 11393,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.353552483022213,
+        "裁判用量": {
+          "prompt_tokens": 11343,
+          "completion_tokens": 135,
+          "total_tokens": 11478,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 28.904687
+      }
+    },
+    "financebench_id_10285": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 11645,
+          "completion_tokens": 60,
+          "total_tokens": 11705,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.35979782510549,
+        "裁判用量": {
+          "prompt_tokens": 9090,
+          "completion_tokens": 118,
+          "total_tokens": 9208,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 19.544784
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 11645,
+          "completion_tokens": 60,
+          "total_tokens": 11705,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.35979782510549,
+        "裁判用量": {
+          "prompt_tokens": 9090,
+          "completion_tokens": 118,
+          "total_tokens": 9208,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 19.544784
+      }
+    },
+    "financebench_id_00517": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 23312,
+          "completion_tokens": 431,
+          "total_tokens": 23743,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 39
+          }
+        }
+      ],
+      "筛选秒": 22.442061099689454,
+      "回退": "ValueError",
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10398,
+          "completion_tokens": 238,
+          "total_tokens": 10636,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.921722720377147,
+        "裁判用量": {
+          "prompt_tokens": 9029,
+          "completion_tokens": 205,
+          "total_tokens": 9234,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 64
+          }
+        },
+        "裁判秒": 23.010229
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9638,
+          "completion_tokens": 222,
+          "total_tokens": 9860,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 20
+          }
+        },
+        "回答秒": 19.026758681982756,
+        "裁判用量": {
+          "prompt_tokens": 7809,
+          "completion_tokens": 197,
+          "total_tokens": 8006,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 38
+          }
+        },
+        "裁判秒": 20.630595
+      }
+    },
+    "financebench_id_01091": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 20067,
+          "completion_tokens": 99,
+          "total_tokens": 20166,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 25
+          }
+        }
+      ],
+      "筛选秒": 16.287879828363657,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8962,
+          "completion_tokens": 173,
+          "total_tokens": 9135,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 12
+          }
+        },
+        "回答秒": 16.685810865834355,
+        "裁判用量": {
+          "prompt_tokens": 7627,
+          "completion_tokens": 267,
+          "total_tokens": 7894,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 92
+          }
+        },
+        "裁判秒": 16.843684
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 1,
+        "实收块": 1,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 7929,
+          "completion_tokens": 124,
+          "total_tokens": 8053,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 37
+          }
+        },
+        "回答秒": 23.025457327719778,
+        "裁判用量": {
+          "prompt_tokens": 7090,
+          "completion_tokens": 262,
+          "total_tokens": 7352,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 87
+          }
+        },
+        "裁判秒": 25.991692
+      }
+    },
+    "financebench_id_00678": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 24794,
+          "completion_tokens": 477,
+          "total_tokens": 25271,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 54
+          }
+        }
+      ],
+      "筛选秒": 22.945851705037057,
+      "回退": "ValueError",
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9787,
+          "completion_tokens": 469,
+          "total_tokens": 10256,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 57
+          }
+        },
+        "回答秒": 24.164435307029635,
+        "裁判用量": {
+          "prompt_tokens": 9560,
+          "completion_tokens": 287,
+          "total_tokens": 9847,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 143
+          }
+        },
+        "裁判秒": 25.652662
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9025,
+          "completion_tokens": 324,
+          "total_tokens": 9349,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 16.43560535972938,
+        "裁判用量": {
+          "prompt_tokens": 8712,
+          "completion_tokens": 253,
+          "total_tokens": 8965,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 33
+          }
+        },
+        "裁判秒": 20.78401
+      }
+    },
+    "financebench_id_01290": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 24598,
+          "completion_tokens": 102,
+          "total_tokens": 24700,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "筛选秒": 22.706909851171076,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9021,
+          "completion_tokens": 215,
+          "total_tokens": 9236,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.693587218411267,
+        "裁判用量": {
+          "prompt_tokens": 10307,
+          "completion_tokens": 269,
+          "total_tokens": 10576,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 103
+          }
+        },
+        "裁判秒": 26.261302
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 5,
+        "实收块": 5,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9353,
+          "completion_tokens": 183,
+          "total_tokens": 9536,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.514618058223277,
+        "裁判用量": {
+          "prompt_tokens": 10275,
+          "completion_tokens": 251,
+          "total_tokens": 10526,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 102
+          }
+        },
+        "裁判秒": 15.844267
+      }
+    },
+    "financebench_id_00464": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8924,
+          "completion_tokens": 216,
+          "total_tokens": 9140,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.005829520057887,
+        "裁判用量": {
+          "prompt_tokens": 7850,
+          "completion_tokens": 214,
+          "total_tokens": 8064,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 77
+          }
+        },
+        "裁判秒": 22.212231
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8924,
+          "completion_tokens": 216,
+          "total_tokens": 9140,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.005829520057887,
+        "裁判用量": {
+          "prompt_tokens": 7850,
+          "completion_tokens": 214,
+          "total_tokens": 8064,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 77
+          }
+        },
+        "裁判秒": 22.212231
+      }
+    },
+    "financebench_id_00494": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9039,
+          "completion_tokens": 184,
+          "total_tokens": 9223,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.9561227587983,
+        "裁判用量": {
+          "prompt_tokens": 8727,
+          "completion_tokens": 224,
+          "total_tokens": 8951,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 77
+          }
+        },
+        "裁判秒": 25.311709
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 9039,
+          "completion_tokens": 184,
+          "total_tokens": 9223,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.9561227587983,
+        "裁判用量": {
+          "prompt_tokens": 8727,
+          "completion_tokens": 224,
+          "total_tokens": 8951,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 77
+          }
+        },
+        "裁判秒": 25.311709
+      }
+    },
+    "financebench_id_00585": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": null,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10260,
+          "completion_tokens": 81,
+          "total_tokens": 10341,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.20538594806567,
+        "裁判用量": {
+          "prompt_tokens": 7669,
+          "completion_tokens": 357,
+          "total_tokens": 8026,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 178
+          }
+        },
+        "裁判秒": 24.11132
+      },
+      "adaptive": {
+        "判对": null,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 10260,
+          "completion_tokens": 81,
+          "total_tokens": 10341,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 18.20538594806567,
+        "裁判用量": {
+          "prompt_tokens": 7669,
+          "completion_tokens": 357,
+          "total_tokens": 8026,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 178
+          }
+        },
+        "裁判秒": 24.11132
+      }
+    },
+    "financebench_id_05915": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 31029,
+          "completion_tokens": 134,
+          "total_tokens": 31163,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "筛选秒": 20.646001181099564,
+      "回退": "ValueError",
+      "fixed": {
+        "判对": false,
+        "引用支持": null,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12971,
+          "completion_tokens": 166,
+          "total_tokens": 13137,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 16
+          }
+        },
+        "回答秒": 21.96196475205943,
+        "裁判用量": {
+          "prompt_tokens": 12017,
+          "completion_tokens": 222,
+          "total_tokens": 12239,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 27
+          }
+        },
+        "裁判秒": 19.751304
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12970,
+          "completion_tokens": 179,
+          "total_tokens": 13149,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 20
+          }
+        },
+        "回答秒": 21.024694925174117,
+        "裁判用量": {
+          "prompt_tokens": 13423,
+          "completion_tokens": 216,
+          "total_tokens": 13639,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 30
+          }
+        },
+        "裁判秒": 22.047801
+      }
+    },
+    "financebench_id_00790": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 34602,
+          "completion_tokens": 773,
+          "total_tokens": 35375,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 71
+          }
+        }
+      ],
+      "筛选秒": 28.95224994281307,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 10119,
+          "completion_tokens": 184,
+          "total_tokens": 10303,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.09712532768026,
+        "裁判用量": {
+          "prompt_tokens": 10325,
+          "completion_tokens": 240,
+          "total_tokens": 10565,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 76
+          }
+        },
+        "裁判秒": 19.484053
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": false,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 10119,
+          "completion_tokens": 188,
+          "total_tokens": 10307,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 16.837222394999117,
+        "裁判用量": {
+          "prompt_tokens": 10328,
+          "completion_tokens": 284,
+          "total_tokens": 10612,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 56
+          }
+        },
+        "裁判秒": 22.301333
+      }
+    },
+    "financebench_id_01107": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 21986,
+          "completion_tokens": 81,
+          "total_tokens": 22067,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "筛选秒": 17.592764275614172,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 10764,
+          "completion_tokens": 439,
+          "total_tokens": 11203,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 33.3607989391312,
+        "裁判用量": {
+          "prompt_tokens": 13251,
+          "completion_tokens": 246,
+          "total_tokens": 13497,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 55
+          }
+        },
+        "裁判秒": 17.991287
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 10764,
+          "completion_tokens": 439,
+          "total_tokens": 11203,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 33.3607989391312,
+        "裁判用量": {
+          "prompt_tokens": 13251,
+          "completion_tokens": 246,
+          "total_tokens": 13497,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 55
+          }
+        },
+        "裁判秒": 17.991287
+      }
+    },
+    "financebench_id_01244": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 8919,
+          "completion_tokens": 74,
+          "total_tokens": 8993,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.29630767693743,
+        "裁判用量": {
+          "prompt_tokens": 7264,
+          "completion_tokens": 131,
+          "total_tokens": 7395,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 28.755544
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 8919,
+          "completion_tokens": 74,
+          "total_tokens": 8993,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.29630767693743,
+        "裁判用量": {
+          "prompt_tokens": 7264,
+          "completion_tokens": 131,
+          "total_tokens": 7395,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 28.755544
+      }
+    },
+    "financebench_id_04171": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 34459,
+          "completion_tokens": 57,
+          "total_tokens": 34516,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "筛选秒": 18.84401419572532,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12981,
+          "completion_tokens": 82,
+          "total_tokens": 13063,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.456175027880818,
+        "裁判用量": {
+          "prompt_tokens": 12902,
+          "completion_tokens": 242,
+          "total_tokens": 13144,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 74
+          }
+        },
+        "裁判秒": 21.165051
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 1,
+        "实收块": 1,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9585,
+          "completion_tokens": 84,
+          "total_tokens": 9669,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 17.470921920612454,
+        "裁判用量": {
+          "prompt_tokens": 9718,
+          "completion_tokens": 263,
+          "total_tokens": 9981,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 99
+          }
+        },
+        "裁判秒": 21.234319
+      }
+    },
+    "financebench_id_03849": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": null,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 2,
+        "回答用量": {
+          "prompt_tokens": 12986,
+          "completion_tokens": 341,
+          "total_tokens": 13327,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          }
+        },
+        "回答秒": 17.151844704989344,
+        "裁判用量": {
+          "prompt_tokens": 18186,
+          "completion_tokens": 213,
+          "total_tokens": 18399,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 60
+          }
+        },
+        "裁判秒": 21.85655
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": null,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 2,
+        "实收题页": 2,
+        "回答用量": {
+          "prompt_tokens": 12986,
+          "completion_tokens": 341,
+          "total_tokens": 13327,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          }
+        },
+        "回答秒": 17.151844704989344,
+        "裁判用量": {
+          "prompt_tokens": 18186,
+          "completion_tokens": 213,
+          "total_tokens": 18399,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 60
+          }
+        },
+        "裁判秒": 21.85655
+      }
+    },
+    "financebench_id_01254": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 12641,
+          "completion_tokens": 66,
+          "total_tokens": 12707,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.418770167045295,
+        "裁判用量": {
+          "prompt_tokens": 11277,
+          "completion_tokens": 152,
+          "total_tokens": 11429,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 26.21811
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 1,
+        "回答用量": {
+          "prompt_tokens": 12641,
+          "completion_tokens": 66,
+          "total_tokens": 12707,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.418770167045295,
+        "裁判用量": {
+          "prompt_tokens": 11277,
+          "completion_tokens": 152,
+          "total_tokens": 11429,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 26.21811
+      }
+    },
+    "financebench_id_00382": {
+      "筛选用量": [],
+      "筛选秒": 0,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8993,
+          "completion_tokens": 85,
+          "total_tokens": 9078,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.3721975479275,
+        "裁判用量": {
+          "prompt_tokens": 7388,
+          "completion_tokens": 133,
+          "total_tokens": 7521,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 50.733072
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8993,
+          "completion_tokens": 85,
+          "total_tokens": 9078,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 20.3721975479275,
+        "裁判用量": {
+          "prompt_tokens": 7388,
+          "completion_tokens": 133,
+          "total_tokens": 7521,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 50.733072
+      }
+    },
+    "financebench_id_01911": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 36332,
+          "completion_tokens": 92,
+          "total_tokens": 36424,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 27
+          }
+        }
+      ],
+      "筛选秒": 20.442085831891745,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12423,
+          "completion_tokens": 236,
+          "total_tokens": 12659,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 56
+          }
+        },
+        "回答秒": 21.731102633755654,
+        "裁判用量": {
+          "prompt_tokens": 9348,
+          "completion_tokens": 252,
+          "total_tokens": 9600,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 93
+          }
+        },
+        "裁判秒": 10.182675
+      },
+      "adaptive": {
+        "判对": null,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 2,
+        "实收块": 2,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9038,
+          "completion_tokens": 248,
+          "total_tokens": 9286,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 59
+          }
+        },
+        "回答秒": 20.094096046872437,
+        "裁判用量": {
+          "prompt_tokens": 9361,
+          "completion_tokens": 257,
+          "total_tokens": 9618,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 63
+          }
+        },
+        "裁判秒": 23.150673
+      }
+    },
+    "financebench_id_01912": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 31329,
+          "completion_tokens": 1003,
+          "total_tokens": 32332,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 60
+          }
+        }
+      ],
+      "筛选秒": 34.385504071135074,
+      "回退": null,
+      "fixed": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 4,
+        "实收块": 4,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 9697,
+          "completion_tokens": 107,
+          "total_tokens": 9804,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.42318794131279,
+        "裁判用量": {
+          "prompt_tokens": 9760,
+          "completion_tokens": 122,
+          "total_tokens": 9882,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判秒": 16.502307
+      },
+      "adaptive": {
+        "判对": true,
+        "引用支持": true,
+        "达标": true,
+        "选中块": 1,
+        "实收块": 1,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 8706,
+          "completion_tokens": 159,
+          "total_tokens": 8865,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "回答秒": 19.29785880399868,
+        "裁判用量": {
+          "prompt_tokens": 9465,
+          "completion_tokens": 178,
+          "total_tokens": 9643,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 32
+          }
+        },
+        "裁判秒": 22.561994
+      }
+    },
+    "financebench_id_00407": {
+      "筛选用量": [
+        {
+          "prompt_tokens": 45020,
+          "completion_tokens": 75,
+          "total_tokens": 45095,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 13
+          }
+        }
+      ],
+      "筛选秒": 20.065252360422164,
+      "回退": null,
+      "fixed": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 4,
+        "实收块": 3,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 12999,
+          "completion_tokens": 125,
+          "total_tokens": 13124,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 27
+          }
+        },
+        "回答秒": 20.37122167274356,
+        "裁判用量": {
+          "prompt_tokens": 9762,
+          "completion_tokens": 273,
+          "total_tokens": 10035,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 91
+          }
+        },
+        "裁判秒": 54.865639
+      },
+      "adaptive": {
+        "判对": false,
+        "引用支持": true,
+        "达标": false,
+        "选中块": 1,
+        "实收块": 1,
+        "实收题页": 0,
+        "回答用量": {
+          "prompt_tokens": 7987,
+          "completion_tokens": 118,
+          "total_tokens": 8105,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 29
+          }
+        },
+        "回答秒": 17.696558475028723,
+        "裁判用量": {
+          "prompt_tokens": 7397,
+          "completion_tokens": 245,
+          "total_tokens": 7642,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 77
+          }
+        },
+        "裁判秒": 56.154487
+      }
+    }
+  },
+  "补搜新增请求": 0,
+  "首次实际回答": 55,
+  "首次实际裁判": 56,
+  "失败次数": 0
+}
