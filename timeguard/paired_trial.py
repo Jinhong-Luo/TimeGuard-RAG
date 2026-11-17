@@ -131,16 +131,27 @@ def main():
     run_packets(args.source,args.output,args.arms,rows,packets,rt)
 
 
-def run_packets(source,output,arms,rows,packets,rt):
+def run_packets(source,output,arms,rows,packets,rt,recovery_root=None):
     for arm in arms:
         dest = output/arm
         dest.mkdir()
+        previous_file = recovery_root/arm/"results.jsonl" if recovery_root else None
+        previous = {r["id"]:r for r in read_jsonl(previous_file)} if previous_file and previous_file.is_file() else {}
         write_json(dest/"manifest.json",{"identity":{"query_ids":[r["id"] for r in rows],"arm":arm,
                    "inputs":[v[arm]["snapshot"]["sha256"] for v in packets],"source":digest((source/"results.jsonl").read_bytes())}})
         def one(pair):
             src,variants = pair
             a = variants[arm]
             body = a.pop("body")
+            existing = previous.get(src["id"])
+            if existing is not None:
+                old, = existing["native_trace"]["evidence_layers"]["answers"]
+                old_request, = old["requests"]
+                if (old["snapshot"]!=a["snapshot"] or old_request["body"]!=body
+                        or old["selected"]!=a["selected"] or old["block_hashes"]!=a["block_hashes"]):
+                    raise ValueError("拒绝跨输入复用已完成回答")
+                if existing["status"]=="ok" and old_request.get("status")==200:
+                    return {**existing,"恢复来源":recovery_root.name}
             visible = a.pop("visible")
             started = time.monotonic()
             req = {"body":body,"status":None}

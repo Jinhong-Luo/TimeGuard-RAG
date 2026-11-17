@@ -1,0 +1,812 @@
+{
+  "类型": "固定快照小样本，两个方案均重新生成和评分",
+  "题数": 3,
+  "错转对": [
+    "financebench_id_03029",
+    "financebench_id_02987"
+  ],
+  "对转错": [],
+  "no_feedback": {
+    "汇总": {
+      "判错": 3,
+      "判对且引用支持": 0,
+      "选中块数": 12,
+      "装入块数": 12,
+      "实收整块数": 12,
+      "选中": 1,
+      "装入": 1,
+      "实收": 1,
+      "标准页数": 4,
+      "生成请求": 3,
+      "生成失败": 0,
+      "耗时": 56.88860186189413,
+      "prompt_tokens": 29049,
+      "completion_tokens": 475,
+      "total_tokens": 29524
+    },
+    "裁判": {
+      "actual_calls": 3,
+      "failed_calls": 0,
+      "tokens": 30836,
+      "wall_seconds": 39.67278455989435
+    },
+    "逐题": {
+      "financebench_id_03029": {
+        "判对": false,
+        "引用支持": null,
+        "耗时": 19.18403629399836,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 8758,
+          "completion_tokens": 103,
+          "total_tokens": 8861,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 24
+          }
+        },
+        "裁判耗时": 20.35503,
+        "裁判用量": {
+          "prompt_tokens": 8882,
+          "completion_tokens": 314,
+          "total_tokens": 9196,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 149
+          }
+        },
+        "标准页数": 1,
+        "选块顺序指纹": "f843e23cfe3a965f04c9d83e80f537fbd6f97483a861e1218055c691b6407c47",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "a2b01e56af640b777977b9e1d6671bdd8b3ce4e9be8cbbc140b0acb5acc5b44b",
+        "选中": 0,
+        "装入": 0,
+        "实收": 0,
+        "冻结原文操作数": {
+          "active": true,
+          "required": 1,
+          "verified": 0
+        }
+      },
+      "financebench_id_02987": {
+        "判对": false,
+        "引用支持": true,
+        "耗时": 20.99831602908671,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 11277,
+          "completion_tokens": 165,
+          "total_tokens": 11442,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 19.990867,
+        "裁判用量": {
+          "prompt_tokens": 12310,
+          "completion_tokens": 311,
+          "total_tokens": 12621,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 95
+          }
+        },
+        "标准页数": 2,
+        "选块顺序指纹": "4817b9a61cd0b3c9d4c131bf2fe5c92c83451413642776f0e60189281935fa1b",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "68d9ea656cde88dc68ca846f13f3a9dfcf05ff873de13bf5c8d0d49a4b0fe37a",
+        "选中": 1,
+        "装入": 1,
+        "实收": 1,
+        "冻结原文操作数": {
+          "active": true,
+          "required": 3,
+          "verified": 0
+        }
+      },
+      "financebench_id_01226": {
+        "判对": false,
+        "引用支持": true,
+        "耗时": 16.70624953880906,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 9014,
+          "completion_tokens": 207,
+          "total_tokens": 9221,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 19.546608,
+        "裁判用量": {
+          "prompt_tokens": 8742,
+          "completion_tokens": 277,
+          "total_tokens": 9019,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 80
+          }
+        },
+        "标准页数": 1,
+        "选块顺序指纹": "b535a59038a699a4a499abb44d150efd772649c48ee40a6154d55e2a16e016ec",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "fa895f6d37662530f7f745708c8ca3aa2d47c199a235d7537a84f2c339f24206",
+        "选中": 0,
+        "装入": 0,
+        "实收": 0,
+        "冻结原文操作数": {
+          "active": false
+        }
+      }
+    }
+  },
+  "feedback": {
+    "汇总": {
+      "判对": 2,
+      "判对且引用支持": 1,
+      "选中块数": 12,
+      "装入块数": 12,
+      "实收整块数": 12,
+      "选中": 2,
+      "装入": 2,
+      "实收": 2,
+      "标准页数": 4,
+      "生成请求": 3,
+      "生成失败": 0,
+      "耗时": 55.58305280935019,
+      "prompt_tokens": 29354,
+      "completion_tokens": 611,
+      "total_tokens": 29965,
+      "判错": 1
+    },
+    "裁判": {
+      "actual_calls": 3,
+      "failed_calls": 0,
+      "tokens": 29893,
+      "wall_seconds": 38.765207760967314
+    },
+    "逐题": {
+      "financebench_id_03029": {
+        "判对": true,
+        "引用支持": true,
+        "耗时": 19.501958596985787,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 10143,
+          "completion_tokens": 76,
+          "total_tokens": 10219,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 23.570552,
+        "裁判用量": {
+          "prompt_tokens": 10148,
+          "completion_tokens": 134,
+          "total_tokens": 10282,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "标准页数": 1,
+        "选块顺序指纹": "ede0511853d37f8c549553893fbb0d2e4b36e5eacf961c98e4224d44eb6850c0",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "a2b01e56af640b777977b9e1d6671bdd8b3ce4e9be8cbbc140b0acb5acc5b44b",
+        "选中": 1,
+        "装入": 1,
+        "实收": 1,
+        "冻结原文操作数": {
+          "active": true,
+          "required": 1,
+          "verified": 0
+        }
+      },
+      "financebench_id_02987": {
+        "判对": true,
+        "引用支持": false,
+        "耗时": 19.556136730592698,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 10307,
+          "completion_tokens": 169,
+          "total_tokens": 10476,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 24.447343,
+        "裁判用量": {
+          "prompt_tokens": 10291,
+          "completion_tokens": 226,
+          "total_tokens": 10517,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 57
+          }
+        },
+        "标准页数": 2,
+        "选块顺序指纹": "fecf81498ed39c78d7c6dca3aa783666a4c2fe1804a247f56b689f97d039e47e",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "68d9ea656cde88dc68ca846f13f3a9dfcf05ff873de13bf5c8d0d49a4b0fe37a",
+        "选中": 1,
+        "装入": 1,
+        "实收": 1,
+        "冻结原文操作数": {
+          "active": true,
+          "required": 3,
+          "verified": 0
+        }
+      },
+      "financebench_id_01226": {
+        "判对": false,
+        "引用支持": true,
+        "耗时": 16.524957481771708,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 8904,
+          "completion_tokens": 366,
+          "total_tokens": 9270,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 15.047799,
+        "裁判用量": {
+          "prompt_tokens": 8823,
+          "completion_tokens": 271,
+          "total_tokens": 9094,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 83
+          }
+        },
+        "标准页数": 1,
+        "选块顺序指纹": "09f92b051d128971584f7287f92e1948ae0940e00283973edea07adf0711ae67",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "fa895f6d37662530f7f745708c8ca3aa2d47c199a235d7537a84f2c339f24206",
+        "选中": 0,
+        "装入": 0,
+        "实收": 0,
+        "冻结原文操作数": {
+          "active": false
+        }
+      }
+    }
+  },
+  "候选与成本": {
+    "financebench_id_03029": {
+      "候选数": 20,
+      "候选指纹": "a2b01e56af640b777977b9e1d6671bdd8b3ce4e9be8cbbc140b0acb5acc5b44b",
+      "初搜命中标准题页": 0,
+      "初搜秒": 0.46363100595772266,
+      "起始排名": [
+        6,
+        1,
+        8,
+        20
+      ],
+      "补搜次数": 1,
+      "补搜失败": 0,
+      "补搜秒": 0.3808835227973759,
+      "新增候选数": 15,
+      "反馈缺项数": 1,
+      "旧池复查后缺项数": 1,
+      "最终仍缺项数": 0,
+      "最终排名": [
+        6,
+        1,
+        8,
+        24
+      ],
+      "复用已完成反馈与工具调用": true,
+      "额外阶段": [
+        {
+          "usage": {
+            "prompt_tokens": 6383,
+            "completion_tokens": 62,
+            "total_tokens": 6445,
+            "prompt_tokens_details": {
+              "cached_tokens": 3456
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "seconds": 21.455839269328862,
+          "阶段": "主模型反馈"
+        },
+        {
+          "usage": {
+            "prompt_tokens": 17361,
+            "completion_tokens": 72,
+            "total_tokens": 17433,
+            "prompt_tokens_details": {
+              "cached_tokens": 3456
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "seconds": 19.190017872024328,
+          "阶段": "旧池复查"
+        },
+        {
+          "阶段": "定向补搜",
+          "返回块数": 20,
+          "seconds": 0.3808835227973759
+        },
+        {
+          "usage": {
+            "prompt_tokens": 27279,
+            "completion_tokens": 97,
+            "total_tokens": 27376,
+            "prompt_tokens_details": {
+              "cached_tokens": 4608
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "seconds": 21.482238616794348,
+          "阶段": "补搜后筛选"
+        }
+      ],
+      "复查改变最终请求": false,
+      "补搜改变最终请求": true,
+      "补搜首次找回的标准题页数": 1
+    },
+    "financebench_id_02987": {
+      "候选数": 20,
+      "候选指纹": "68d9ea656cde88dc68ca846f13f3a9dfcf05ff873de13bf5c8d0d49a4b0fe37a",
+      "初搜命中标准题页": 1,
+      "初搜秒": 0.423011785838753,
+      "起始排名": [
+        14,
+        2,
+        6,
+        19
+      ],
+      "补搜次数": 1,
+      "补搜失败": 0,
+      "补搜秒": 0.34696025820448995,
+      "新增候选数": 16,
+      "反馈缺项数": 2,
+      "旧池复查后缺项数": 2,
+      "最终仍缺项数": 0,
+      "最终排名": [
+        14,
+        31,
+        32,
+        21
+      ],
+      "复用已完成反馈与工具调用": true,
+      "额外阶段": [
+        {
+          "usage": {
+            "prompt_tokens": 8946,
+            "completion_tokens": 89,
+            "total_tokens": 9035,
+            "prompt_tokens_details": {
+              "cached_tokens": 4608
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "seconds": 22.419433925766498,
+          "阶段": "主模型反馈"
+        },
+        {
+          "usage": {
+            "prompt_tokens": 16162,
+            "completion_tokens": 113,
+            "total_tokens": 16275,
+            "prompt_tokens_details": {
+              "cached_tokens": 3456
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 18
+            }
+          },
+          "seconds": 19.014491950161755,
+          "阶段": "旧池复查"
+        },
+        {
+          "阶段": "定向补搜",
+          "返回块数": 20,
+          "seconds": 0.34696025820448995
+        },
+        {
+          "usage": {
+            "prompt_tokens": 23928,
+            "completion_tokens": 242,
+            "total_tokens": 24170,
+            "prompt_tokens_details": {
+              "cached_tokens": 4608
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 103
+            }
+          },
+          "seconds": 22.035486087668687,
+          "阶段": "补搜后筛选"
+        }
+      ],
+      "复查改变最终请求": false,
+      "补搜改变最终请求": true,
+      "补搜首次找回的标准题页数": 0
+    },
+    "financebench_id_01226": {
+      "候选数": 20,
+      "候选指纹": "fa895f6d37662530f7f745708c8ca3aa2d47c199a235d7537a84f2c339f24206",
+      "初搜命中标准题页": 0,
+      "初搜秒": 0.3418763508088887,
+      "起始排名": [
+        10,
+        19,
+        14,
+        6
+      ],
+      "补搜次数": 1,
+      "补搜失败": 0,
+      "补搜秒": 0.576078780926764,
+      "新增候选数": 18,
+      "反馈缺项数": 2,
+      "旧池复查后缺项数": 2,
+      "最终仍缺项数": 2,
+      "最终排名": [
+        10,
+        19,
+        33,
+        35
+      ],
+      "复用已完成反馈与工具调用": true,
+      "额外阶段": [
+        {
+          "usage": {
+            "prompt_tokens": 6730,
+            "completion_tokens": 98,
+            "total_tokens": 6828,
+            "prompt_tokens_details": {
+              "cached_tokens": 4608
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "seconds": 23.52992307394743,
+          "阶段": "主模型反馈"
+        },
+        {
+          "usage": {
+            "prompt_tokens": 15127,
+            "completion_tokens": 149,
+            "total_tokens": 15276,
+            "prompt_tokens_details": {
+              "cached_tokens": 3456
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 56
+            }
+          },
+          "seconds": 29.717102106194943,
+          "阶段": "旧池复查"
+        },
+        {
+          "阶段": "定向补搜",
+          "返回块数": 20,
+          "seconds": 0.576078780926764
+        },
+        {
+          "usage": {
+            "prompt_tokens": 29656,
+            "completion_tokens": 152,
+            "total_tokens": 29808,
+            "prompt_tokens_details": {
+              "cached_tokens": 4608
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 74
+            }
+          },
+          "seconds": 24.71571783721447,
+          "阶段": "补搜后筛选"
+        }
+      ],
+      "复查改变最终请求": false,
+      "补搜改变最终请求": true,
+      "补搜首次找回的标准题页数": 1
+    }
+  },
+  "中断和恢复": {
+    "no_feedback": {
+      "首次回答次数": 3,
+      "首次回答失败": 0,
+      "复用成功回答": 3,
+      "首次裁判": {
+        "actual_calls": 2,
+        "failed_calls": 2,
+        "tokens": 0,
+        "wall_seconds": 212.91036166390404
+      }
+    },
+    "history_only": {
+      "首次回答次数": 0,
+      "首次回答失败": 0,
+      "复用成功回答": 0,
+      "首次裁判": {
+        "actual_calls": 0,
+        "failed_calls": 0,
+        "tokens": 0,
+        "wall_seconds": 0
+      }
+    },
+    "feedback": {
+      "首次回答次数": 0,
+      "首次回答失败": 0,
+      "复用成功回答": 0,
+      "首次裁判": {
+        "actual_calls": 0,
+        "failed_calls": 0,
+        "tokens": 0,
+        "wall_seconds": 0
+      }
+    }
+  },
+  "history_only": {
+    "汇总": {
+      "判错": 3,
+      "判对且引用支持": 0,
+      "选中块数": 12,
+      "装入块数": 12,
+      "实收整块数": 12,
+      "选中": 1,
+      "装入": 1,
+      "实收": 1,
+      "标准页数": 4,
+      "生成请求": 3,
+      "生成失败": 0,
+      "耗时": 53.56252929056063,
+      "prompt_tokens": 29049,
+      "completion_tokens": 526,
+      "total_tokens": 29575
+    },
+    "裁判": {
+      "actual_calls": 3,
+      "failed_calls": 0,
+      "tokens": 30546,
+      "wall_seconds": 47.24217221606523
+    },
+    "逐题": {
+      "financebench_id_03029": {
+        "判对": false,
+        "引用支持": false,
+        "耗时": 17.82598447985947,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 8758,
+          "completion_tokens": 111,
+          "total_tokens": 8869,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 18
+          }
+        },
+        "裁判耗时": 29.144045,
+        "裁判用量": {
+          "prompt_tokens": 9150,
+          "completion_tokens": 190,
+          "total_tokens": 9340,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 28
+          }
+        },
+        "标准页数": 1,
+        "选块顺序指纹": "f843e23cfe3a965f04c9d83e80f537fbd6f97483a861e1218055c691b6407c47",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "a2b01e56af640b777977b9e1d6671bdd8b3ce4e9be8cbbc140b0acb5acc5b44b",
+        "选中": 0,
+        "装入": 0,
+        "实收": 0,
+        "冻结原文操作数": {
+          "active": true,
+          "required": 1,
+          "verified": 0
+        }
+      },
+      "financebench_id_02987": {
+        "判对": false,
+        "引用支持": false,
+        "耗时": 17.77075662696734,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 11277,
+          "completion_tokens": 149,
+          "total_tokens": 11426,
+          "prompt_tokens_details": {
+            "cached_tokens": 4608
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 29.77104,
+        "裁判用量": {
+          "prompt_tokens": 11789,
+          "completion_tokens": 245,
+          "total_tokens": 12034,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 42
+          }
+        },
+        "标准页数": 2,
+        "选块顺序指纹": "4817b9a61cd0b3c9d4c131bf2fe5c92c83451413642776f0e60189281935fa1b",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "68d9ea656cde88dc68ca846f13f3a9dfcf05ff873de13bf5c8d0d49a4b0fe37a",
+        "选中": 1,
+        "装入": 1,
+        "实收": 1,
+        "冻结原文操作数": {
+          "active": true,
+          "required": 3,
+          "verified": 0
+        }
+      },
+      "financebench_id_01226": {
+        "判对": false,
+        "引用支持": true,
+        "耗时": 17.96578818373382,
+        "生成请求": 1,
+        "生成失败": 0,
+        "用量": {
+          "prompt_tokens": 9014,
+          "completion_tokens": 266,
+          "total_tokens": 9280,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "裁判耗时": 17.967591,
+        "裁判用量": {
+          "prompt_tokens": 8801,
+          "completion_tokens": 371,
+          "total_tokens": 9172,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 163
+          }
+        },
+        "标准页数": 1,
+        "选块顺序指纹": "b535a59038a699a4a499abb44d150efd772649c48ee40a6154d55e2a16e016ec",
+        "选中块数": 4,
+        "装入块数": 4,
+        "实收整块数": 4,
+        "输入指纹": "fa895f6d37662530f7f745708c8ca3aa2d47c199a235d7537a84f2c339f24206",
+        "选中": 0,
+        "装入": 0,
+        "实收": 0,
+        "冻结原文操作数": {
+          "active": false
+        }
+      }
+    }
+  },
+  "分段变化": {
+    "仅回看相对无反馈": {
+      "错转对": [],
+      "对转错": []
+    },
+    "可补搜相对仅回看": {
+      "错转对": [
+        "financebench_id_03029",
+        "financebench_id_02987"
+      ],
+      "对转错": []
+    },
+    "完整流程相对无反馈": {
+      "错转对": [
+        "financebench_id_03029",
+        "financebench_id_02987"
+      ],
+      "对转错": []
+    }
+  },
+  "额外阶段汇总": {
+    "主模型反馈": {
+      "请求": 3,
+      "累计秒": 67.40519626904279,
+      "缺失用量": 0,
+      "prompt_tokens": 22059,
+      "completion_tokens": 249,
+      "触发回退": 0
+    },
+    "旧池复查": {
+      "请求": 3,
+      "累计秒": 67.92161192838103,
+      "缺失用量": 0,
+      "prompt_tokens": 48650,
+      "completion_tokens": 334,
+      "触发回退": 0
+    },
+    "定向补搜": {
+      "请求": 3,
+      "累计秒": 1.3039225619286299,
+      "失败": 0
+    },
+    "补搜后筛选": {
+      "请求": 3,
+      "累计秒": 68.2334425416775,
+      "缺失用量": 0,
+      "prompt_tokens": 80863,
+      "completion_tokens": 491,
+      "触发回退": 0
+    }
+  }
+}

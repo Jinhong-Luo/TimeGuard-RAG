@@ -112,7 +112,7 @@ def stored_bodies(folder):
     return data
 
 
-def run(source, root, pools, rows, arms, choose, prior_bodies=None):
+def run(source, root, pools, rows, arms, choose, prior_bodies=None, recovery_root=None):
     records = {}
     selections = {}
     _,rt = private_runtime()
@@ -147,7 +147,7 @@ def run(source, root, pools, rows, arms, choose, prior_bodies=None):
             if list(map(identity,packet["selected"]))!=expected:
                 raise ValueError("送入原生渲染器的块或顺序不一致")
             packet["snapshot"]["sha256"] = pools[row["id"]]["sha256"]
-    run_packets(source,root,arms,rows,packets,rt)
+    run_packets(source,root,arms,rows,packets,rt,recovery_root)
     evaluate(root,pools,[arms[0],arms[-1]])
     if len(arms)==3:
         evaluate(root,pools,arms[1:],"supplement-summary.json")
