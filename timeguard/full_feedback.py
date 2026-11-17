@@ -35,7 +35,7 @@ def cached(path, action):
 
 
 class Experiment:
-    def __init__(self, source, root, workers):
+    def __init__(self, source, root, workers, outline=False, adaptive=False):
         self.source, self.root, self.workers = source, root, workers
         self.queries = {q["id"]:q for q in read_jsonl("data/financebench/queries.jsonl") if q["split"]=="dev"}
         self.rows = {r["id"]:r for r in read_jsonl(source/"results.jsonl")}
@@ -43,9 +43,12 @@ class Experiment:
             raise ValueError("开发集必须完整覆盖三十九道不同题")
         state = read_json("data/ingestion.json")
         self.docs = catalog(read_jsonl("data/financebench/documents.jsonl"),state)
+        self.adaptive = adaptive
         self.config = read_json("configs/r0-low.json")
         self.config["dataset_ids"] = [state["dataset_id"]]
         self.client = Client(self.config["base_url"])
+        from .outline_search import OutlineSearch
+        self.outline = OutlineSearch(self.client,state["dataset_id"],self.docs) if outline else None
         _,self.rt = private_runtime()
         freeze = frozen_index(Path("data/ingestion.json"),Path("runs/r0-gpu-retrieval-all"),Path("data/financebench/queries.jsonl"))
         if freeze!=read_json(source/"manifest.json")["identity"]["freeze"]:
@@ -53,6 +56,8 @@ class Experiment:
         self.root.mkdir(exist_ok=True,parents=True)
         identity = {"source":digest((source/"results.jsonl").read_bytes()), "freeze":freeze,
                     "questions":digest(self.queries),"protocol":"开发集补搜配对第一版"}
+        if outline or adaptive:
+            identity.update(按目录补搜=outline, 自定块数=adaptive)
         if cached(root/"manifest.json",lambda:identity)!=identity:
             raise ValueError("续跑来源或语料已变")
 
@@ -80,7 +85,7 @@ class Experiment:
             raise ValueError("初搜范围不一致")
         def choose():
             log = []
-            picks = select_four(self.rt,row["question"],p["chunks"],log)
+            picks = select_four(self.rt,row["question"],p["chunks"],log,self.adaptive)
             return {"ids":picks,"log":log,"pool_sha256":digest(p)}
         cached(folder/"selection.json",choose)
 
@@ -93,7 +98,7 @@ def packets(exp, ids, arms, chosen, filename):
     todo = [qid for qid in ids if not (exp.root/qid/filename).exists()]
     for offset in range(0,len(todo),6):
         batch = todo[offset:offset+6]
-        items = render([exp.rows[qid] for qid in batch],arms,fours={qid:chosen(qid) for qid in batch})
+        items = render([exp.rows[qid] for qid in batch],arms,fours={qid:chosen(qid) for qid in batch}, adaptive=exp.adaptive)
         for qid,item in zip(batch,items,strict=True):
             expected = chosen(qid)
             for arm,packet in item.items():
@@ -139,8 +144,17 @@ def trial(exp):
         def decide():
             pool = read_json(folder/"pool.json")
             ids = read_json(folder/"selection.json")["ids"]
+            def native(q):
+                return scoped_search(exp.client,exp.config,q,pool["allowed"])
+            nav = {}
+            def lookup(q):
+                if exp.outline is None:
+                    return native(q)
+                return exp.outline.search(q,pool["allowed"],native,nav)
             plan,record = feedback(exp.rt,exp.queries[qid],pool,ids,req["complete_chunks"],
-                                   lambda q:scoped_search(exp.client,exp.config,q,pool["allowed"]))
+                                   lookup,exp.adaptive)
+            if nav:
+                record["目录补搜"] = nav
             return {"choices":plan,"audit":record}
         cached(folder/"feedback.json",decide)
     exp.parallel(research,active)
@@ -222,8 +236,10 @@ def main():
     parser.add_argument("root",type=Path)
     parser.add_argument("stage",choices=["select","trial","grade","confirm"])
     parser.add_argument("--workers",type=int,choices=range(1,5),default=4)
+    parser.add_argument("--outline",action="store_true",help="缺项时先按财报实际章节目录找页")
+    parser.add_argument("--adaptive",action="store_true",help="筛选者自主选择1至12块")
     args = parser.parse_args()
-    exp = Experiment(args.source,args.root,args.workers)
+    exp = Experiment(args.source,args.root,args.workers,args.outline,args.adaptive)
     if args.stage=="select":
         exp.parallel(exp.select,sorted(exp.queries))
     elif args.stage=="trial":

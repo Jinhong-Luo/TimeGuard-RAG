@@ -39,7 +39,8 @@ async def render(item):
             chunks = info["chunks"]
             if "fours" in item:
                 chunks = item["fours"][arm]
-                if len(chunks)!=4 or any(c["document_id"] not in value["tools"]["doc_scope"] for c in chunks):
+                valid_size = 1 <= len(chunks) <= 12 if item.get("adaptive") else len(chunks)==4
+                if not valid_size or any(c["document_id"] not in value["tools"]["doc_scope"] for c in chunks):
                     raise ValueError("四块对照超出范围")
             elif arm in ("page_select", "budget"):
                 chunks = select(item["question"],value["state"]["kbinfos"]["chunks"],value["tools"]["doc_scope"])

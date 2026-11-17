@@ -87,7 +87,11 @@ def make(root,labels):
                     c["回退"] += 1
                 item["阶段"][name] = dict(c)
                 costs.setdefault(name,Counter()).update(c)
-            item.update({k:v for k,v in dec.items() if k not in ("log","最终排名","起始排名")})
+            item.update({k:v for k,v in dec.items() if k not in ("log","最终排名","起始排名","目录补搜")})
+            if "目录补搜" in dec:
+                nav = dec["目录补搜"]
+                item["目录补搜"] = {k:v for k,v in nav.items() if k!="章节范围"}
+                item["目录补搜"]["选用章节数"] = len(nav.get("章节范围", []))
         item["回看改变实发输入"] = keys[ARMS[0]]!=keys[ARMS[1]]
         item["补搜改变实发输入"] = keys[ARMS[1]]!=keys[ARMS[2]]
         used = set()

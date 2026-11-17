@@ -14,7 +14,7 @@ from .native_baseline import CONTAINER, private_runtime
 from .native_matrix import judge
 
 
-def render(rows, arms, reviews=None, pages=None, guards=None, history=None, history_swap=False, fours=None):
+def render(rows, arms, reviews=None, pages=None, guards=None, history=None, history_swap=False, fours=None, adaptive=False):
     names = ("__init__", "common", "final_snapshot", "evidence_layers", "page_select", "message_budget", "evidence_review", "paired_render")
     with tempfile.TemporaryDirectory() as d:
         pkg = Path(d,"timeguard")
@@ -33,6 +33,7 @@ def render(rows, arms, reviews=None, pages=None, guards=None, history=None, hist
     for item,row in zip(inputs,rows,strict=True):
         if fours is not None:
             item["fours"] = fours[row["id"]]
+            item["adaptive"] = adaptive
         if history is not None:
             item["history"] = history[row["id"]]["chunks"]
             item["history_swap"] = history_swap
