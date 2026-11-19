@@ -65,7 +65,7 @@ async def render(item):
             elif arm not in ("original","formula","brief","wide"):
                 raise ValueError("未知方案")
             info = {**info,"chunks": chunks}
-            if arm == "budget":
+            if arm in ("budget", "fact_deliver"):
                 record["to_pack"] = chunks
                 record["selected"] = [location(c) for c in generator.chunks_format(info)]
                 return [MARKER]
@@ -78,8 +78,8 @@ async def render(item):
             record["block_hashes"] = [digest(b) for b in blocks]
             return blocks
         def fit_message(messages,limit):
-            if arm == "budget":
-                mapped,messages = pack(messages,limit,record.pop("to_pack"),item["question"],generator._kb_block,
+            if arm in ("budget", "fact_deliver"):
+                mapped,messages = pack(messages,min(limit, 8000) if arm=="fact_deliver" else limit,record.pop("to_pack"),item["question"],generator._kb_block,
                                        generator.num_tokens_from_string)
                 record["mapped"] = [(generator.chunks_format({"chunks":[c]})[0],b) for c,b in mapped]
                 record["block_hashes"] = [digest(b) for c,b in mapped]
@@ -110,6 +110,11 @@ async def render(item):
         mapped = record.pop("mapped")
         record["packet"] = [location(c) for c,b in mapped]
         record["visible"] = visible_blocks(mapped,record["body"]["messages"])
+        if arm=="fact_deliver":
+            record["delivery_complete"] = len(record["visible"])==len(record["selected"])
+            record["input_tokens"] = sum(generator.num_tokens_from_string(m["content"]) for m in record["body"]["messages"])
+            if record["input_tokens"]>8000:
+                raise ValueError("事实送达方案超过统一预算")
         if arm == "original" and (record["body"] != item["body"] or record["selected"] != item["selected"] or
                                   record["block_hashes"] != item["block_hashes"]):
             raise ValueError("配对驱动与真实原版不一致")

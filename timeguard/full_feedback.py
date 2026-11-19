@@ -120,7 +120,7 @@ def answer(exp,qid,packet):
             raise
         a = {k:v for k,v in packet.items() if k not in ("body","visible","requests")}
         a["requests"] = [{"body":packet["body"],"status":200,"request_id":request_id,"complete_chunks":packet["visible"]}]
-        return {"id":qid,"question":exp.queries[qid]["question"],"split":"dev","answer":txt,"status":"ok",
+        return {"id":qid,"question":exp.queries[qid]["question"],"split":exp.queries[qid].get("split","dev"),"answer":txt,"status":"ok",
                 "usage":usage,"elapsed_seconds":time.monotonic()-start,
                 "native_trace":{"citation_origin":"model","evidence_layers":{"answers":[a]}}}
     return cached(folder/(key+".json"),call)
