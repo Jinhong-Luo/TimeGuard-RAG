@@ -27,7 +27,11 @@ def frozen_choice(exp,base,q):
 
 
 def totals(root,pattern):
-    paths=[p for p in root.glob(pattern) if '.failure-' not in p.name]
+    # 公司澄清占位由程序生成，没有发出模型请求。
+    paths = [
+        path for path in root.glob(pattern)
+        if ".failure-" not in path.name and path.name != "scope.json"
+    ]
     data=[read_json(p) for p in paths]
     return {"请求":len(data),"用量缺失":sum(not d.get("usage") for d in data),
             "累计秒":sum(d.get("elapsed_seconds",0) for d in data),
