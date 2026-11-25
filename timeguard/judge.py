@@ -188,16 +188,21 @@ def build_request(gold, generated):
     }
 
 
-def parse_judgement(response):
+def parse_judgement(response, transport=TRANSPORT):
     metadata = response.get("bridge_metadata") or {}
-    if metadata.get("transport") != TRANSPORT or metadata.get("reasoning_effort") != EFFORT:
+    if metadata.get("transport") != transport or metadata.get("reasoning_effort") != EFFORT:
         raise ValueError("裁判响应缺少固定传输或 medium 强度证据")
-    if metadata.get("api_equivalent") is not False:
-        raise ValueError("裁判响应缺少 Codex 传输变体标记")
-    if response.get("model") not in (MODEL, "openai/" + MODEL):
-        raise ValueError("裁判响应模型与固定模型不符")
-    if metadata.get("actual_model") != MODEL:
-        raise ValueError("裁判实际模型不符")
+    if transport == TRANSPORT:
+        if metadata.get("api_equivalent") is not False:
+            raise ValueError("裁判响应缺少 Codex 传输变体标记")
+        if response.get("model") not in (MODEL, "openai/" + MODEL) or metadata.get("actual_model") != MODEL:
+            raise ValueError("裁判实际模型不符")
+    else:
+        from . import openai_transport
+        if (transport != openai_transport.TRANSPORT or response.get("model") != MODEL
+                or not openai_transport.model_matches(metadata.get("actual_model"))
+                or not metadata.get("openai_request_id") or not metadata.get("openai_response_id")):
+            raise ValueError("裁判缺少官方 Responses API 调用凭证")
     message = response["choices"][0]["message"]
     if message.get("tool_calls"):
         raise ValueError("离线裁判不允许调用工具")
@@ -232,7 +237,7 @@ def post_completion(base_url, payload, token, timeout):
         raise RuntimeError(f"裁判桥接 HTTP {error.code}：{detail}") from None
 
 
-def judge_one(gold, generated, signature, base_url, token, timeout, request_fn=post_completion):
+def judge_one(gold, generated, signature, base_url, token, timeout, request_fn=post_completion, transport=TRANSPORT):
     started = time.perf_counter()
     record = {
         "id": gold["id"], "judge_type": "model", "judge_status": "pending",
@@ -261,7 +266,7 @@ def judge_one(gold, generated, signature, base_url, token, timeout, request_fn=p
             record["usage"] = response.get("usage")
             record["bridge_metadata"] = response.get("bridge_metadata")
             record["raw_judgement"] = response.get("choices", [{}])[0].get("message", {}).get("content")
-            judgement, raw = parse_judgement(response)
+            judgement, raw = parse_judgement(response, transport)
             record.update(apply_citation_policy(judgement, record["citation_mapping"]))
             record.update({"judge_status": "ok", "raw_judgement": raw})
         except Exception as error:
@@ -272,7 +277,7 @@ def judge_one(gold, generated, signature, base_url, token, timeout, request_fn=p
 
 
 def judge_queries(ids, gold, generated, signature, output, base_url, token, timeout,
-                  concurrency=1, request_fn=None, reuse_rows=()):
+                  concurrency=1, request_fn=None, reuse_rows=(), transport=TRANSPORT):
     """独立裁判请求不共享对话；主线程逐条持久化，续跑只补未记录题。"""
     if type(concurrency) is not int or concurrency < 1:
         raise ValueError("并发数必须是正整数")
@@ -301,7 +306,7 @@ def judge_queries(ids, gold, generated, signature, output, base_url, token, time
                 if ident is None:
                     break
                 pending.add(pool.submit(judge_one, gold[ident], generated.get(ident, {}), signature,
-                                        base_url, token, timeout, request_fn))
+                                        base_url, token, timeout, request_fn, transport))
             if not pending:
                 break
             completed, pending = wait(pending, return_when=FIRST_COMPLETED)
@@ -378,11 +383,18 @@ def main():
     parser.add_argument("--gold", type=Path, default=Path("data/financebench/gold.jsonl"))
     parser.add_argument("--output", type=Path, help="默认写入运行目录下 model_reviews.jsonl；不要复用人工复核文件")
     parser.add_argument("--base-url", default=os.environ.get("CODEX_BRIDGE_BASE_URL", "http://127.0.0.1:18862/v1"))
+    parser.add_argument("--model-provider", choices=("codex", "openai"), default="codex",
+                        help="默认沿用 Codex 桥。openai 固定使用官方 Responses API")
     parser.add_argument("--timeout", type=float, default=360)
     parser.add_argument("--concurrency", type=int, default=1, help="固定写入裁判配置签名的并发数，默认1")
     parser.add_argument("--reuse-reviews", type=Path, help="全量运行复用已选开发集裁判；逐题输入及完整来源必须一致")
     parser.add_argument("--execute", action="store_true", help="实际调用固定模型，未提供时只显示计划")
     args = parser.parse_args()
+    from . import openai_transport
+    official = args.model_provider == "openai"
+    transport = openai_transport.TRANSPORT if official else TRANSPORT
+    if official and args.reuse_reviews:
+        parser.error("官方 API 裁判必须新建结果，不能复用历史 Codex 裁判")
     if args.concurrency < 1:
         parser.error("--concurrency 必须为正整数")
     if not math.isfinite(args.timeout) or args.timeout <= 0:
@@ -398,13 +410,15 @@ def main():
         raise ValueError("金标题号缺失或生成结果超出固定清单")
     identity = {
         "version": JUDGE_VERSION, "judge_type": "model", "model": MODEL, "effort": EFFORT,
-        "transport": TRANSPORT, "expected_ids": ids, "concurrency": args.concurrency,
+        "transport": transport, "expected_ids": ids, "concurrency": args.concurrency,
         "request_timeout_seconds": args.timeout,
         "generation_manifest_sha256": digest(manifest_path.read_bytes()),
         "generation_results_sha256": digest(results_path.read_bytes()),
         "gold_sha256": digest(args.gold.read_bytes()), "prompt_sha256": digest(INSTRUCTIONS),
         "code_sha256": digest(Path(__file__).read_bytes()), "schema": SCHEMA,
     }
+    if official:
+        identity["transport_code_sha256"] = digest(Path(openai_transport.__file__).read_bytes())
     reused_rows = []
     if args.reuse_reviews:
         reused_rows, reuse_proof = reuse_judgements(args.reuse_reviews, identity, manifest, gold, generated)
@@ -428,14 +442,15 @@ def main():
     else:
         write_json(judge_manifest_path, {"identity": identity, "signature": signature,
                                         "created_at_utc": datetime.now(timezone.utc).isoformat()})
-    token = os.environ.get("CODEX_BRIDGE_TOKEN") or "local-codex"
+    token = openai_transport.api_key() if official else os.environ.get("CODEX_BRIDGE_TOKEN") or "local-codex"
     before = read_jsonl(output) if output.exists() else []
     started_at = datetime.now(timezone.utc).isoformat()
     started = time.perf_counter()
     status = "interrupted"
     try:
         completed = judge_queries(ids, gold, generated, signature, output, args.base_url, token, args.timeout, args.concurrency,
-                                  reuse_rows=reused_rows)
+                                  request_fn=openai_transport.post_completion if official else None,
+                                  reuse_rows=reused_rows, transport=transport)
         status = "stopped_on_error" if completed is False else "completed"
     finally:
         after = read_jsonl(output) if output.exists() else []
