@@ -5,7 +5,7 @@ import json
 
 from .common import digest
 from .fact_selection import PROMPT, received_facts, selection_input, validate
-from .formula_guard import check as check_formula
+from .formula_guard import check as check_formula, requirements
 from .four_blocks import display, identity
 from .four_feedback import gaps
 from .scope import rank
@@ -36,11 +36,30 @@ def checked_pool(raw, normalize, allowed, plan, documents):
             raise ValueError("候选超出本题可见报告范围")
         if row.get("content") and row.get("positions") and row["id"]:
             key = identity(row)
-            if key in chunks and digest(chunks[key]["content"]) != digest(row["content"]):
-                raise ValueError("同一候选编号对应两个原文")
+            # 同一块可能被不同原生工具截成不同片段。编号去重后以索引正文为准。
             chunks.setdefault(key, row)
             native.setdefault(key, block)
     return rank(chunks.values(), plan["years"], documents, plan["quarters"])[:20], native
+
+
+def original_pool(candidates, native, read, trace):
+    """研究工具可能回传摘要或片段。筛选器只接收索引原文，不继承摘要正文。"""
+    sources, originals = [], {}
+    for chunk in candidates:
+        key = identity(chunk)
+        try:
+            source = read(chunk)
+            if identity(source) != key or not source.get("content") or not source.get("positions"):
+                raise ValueError("未找到同一报告和编号的索引原文")
+        except (KeyError, ValueError):
+            trace["unverified_candidates"] += 1
+            continue
+        if digest(source["content"]) != digest(chunk["content"]):
+            trace["rehydrated_candidates"] += 1
+        sources.append(source)
+        originals[key] = {**native[key], "content": source["content"], "content_with_weight": source["content"],
+                          "positions": source["positions"], "position_int": source["positions"]}
+    return sources, originals
 
 
 async def enhance(question, plan, documents, state, tools, normalize, read, preview, trace):
@@ -48,7 +67,7 @@ async def enhance(question, plan, documents, state, tools, normalize, read, prev
     allowed = set(tools.doc_scope or ()) & set(plan["document_ids"] or ())
     if set(tools.doc_scope or ()) - allowed:
         raise ValueError("研究范围超出本题可见报告")
-    trace.update(supplement_calls=0, original_count=0, stages=[])
+    trace.update(supplement_calls=0, original_count=0, rehydrated_candidates=0, unverified_candidates=0, stages=[])
     try:
         async with asyncio.timeout(120):
             original = await preview(None, "")
@@ -68,6 +87,7 @@ async def enhance(question, plan, documents, state, tools, normalize, read, prev
             if missing:
                 raw = list((state.get("kbinfos") or {}).get("chunks") or ())
                 candidates, native = checked_pool(raw, normalize, allowed, plan, documents)
+                candidates, verified_native = original_pool(candidates, native, read, trace)
                 def original_ids(pool):
                     keys = {identity(c) for c in original}
                     return [i for i, c in enumerate(pool, 1) if identity(c) in keys]
@@ -87,25 +107,36 @@ async def enhance(question, plan, documents, state, tools, normalize, read, prev
                     async with asyncio.timeout(30):
                         extra = await tools.retrieve(query, doc_scope=sorted(allowed), using_embedding=True)
                     # 先保留前次选中的证据，再分配新增候选的名额。
-                    first = [native[identity(candidates[i - 1])] for i in decision["ids"]]
+                    first = [verified_native[identity(candidates[i - 1])] for i in decision["ids"]]
                     supplement, new_native = checked_pool(extra["chunks"], normalize, allowed, plan, documents)
                     added = [new_native[identity(c)] for c in supplement if identity(c) not in native]
                     if not added:
                         raise ValueError("补搜没有新的可用原文")
-                    candidates, native = checked_pool([*first, *added, *raw], normalize, allowed, plan, documents)
+                    first_ids = {identity(candidates[i - 1]) for i in decision["ids"]}
+                    rest = [c for c in raw if identity(normalize({"chunks": [c]})[0]) not in first_ids]
+                    candidates, native = checked_pool([*first, *added, *rest], normalize, allowed, plan, documents)
+                    candidates, verified_native = original_pool(candidates, native, read, trace)
                     trace["stages"].append("补搜后按事实筛选")
                     decision = await decide(candidates)
                 trace["unresolved"] = [missing[i - 1] for i in decision["unresolved"]]
                 selected = [candidates[i - 1] for i in decision["ids"]]
                 for chunk in selected:
                     read_checked(chunk)
-                chosen = [native[identity(c)] for c in selected]
+                chosen = [verified_native[identity(c)] for c in selected]
                 facts = decision["facts"]
                 visible = await preview(chosen, "")
                 if len(visible) != len(chosen) or len(received_facts(facts, visible)) != len(facts):
                     raise ValueError("原始事实块在最终预算内无法完整送达")
 
-            guard = check_formula(question, visible, allowed, read_checked)
+            verified_visible, verified_sources = [], {}
+            if requirements(question):
+                for chunk in visible:
+                    try:
+                        verified_sources[identity(chunk)] = read_checked(chunk)
+                    except (KeyError, ValueError):
+                        continue
+                    verified_visible.append(chunk)
+            guard = check_formula(question, verified_visible, allowed, lambda c: verified_sources[identity(c)])
             trace["calculation"] = {k: v for k, v in guard.items() if k != "instruction"}
             instruction = guard["instruction"]
             if instruction:

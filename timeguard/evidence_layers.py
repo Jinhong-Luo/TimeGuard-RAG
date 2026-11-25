@@ -2,6 +2,7 @@
 from contextvars import ContextVar
 from functools import wraps
 import json
+import re
 import time
 
 from .common import digest
@@ -41,10 +42,29 @@ def visible_blocks(mapped, messages):
              "block_sha256": digest(block)} for chunk, block in mapped if sep and block in evidence]
 
 
+def source_relation(shown, original, table_view):
+    if shown == original:
+        return "intact"
+    if not shown or not original:
+        return "edited"
+    # 上游关键词标星和段首尾省略号属于展示格式。核对全文或同一原生表视图中的连续摘录。
+    def normalized(text):
+        return re.sub(r"\s+", " ", text.replace("*", "")).strip()
+
+    excerpt = normalized(shown.removeprefix("...").removesuffix("..."))
+    if excerpt and excerpt in normalized(original):
+        return "verbatim_excerpt"
+    rendered = table_view(original)
+    if excerpt and rendered and excerpt in normalized(rendered):
+        return "native_table_view"
+    return "edited"
+
+
 def install(generator, settings, current, tools_class, snapshot_spec=None):
     import httpx
     from rag.advanced_rag import agentic_rag_graph as graph
     from rag.advanced_rag.harness.tools import search
+    from rag.advanced_rag.harness.tools.table_view import render_tables
     from rag.nlp.search import index_name
 
     composing = ContextVar("本次最终证据包", default=None)
@@ -151,13 +171,16 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                     finally:
                         tools.system_prompt = previous
                         composing.reset(preview_token)
-                    return visible_blocks(preview_slot["mapped"], check.get("body", {}).get("messages")) or []
+                    visible = visible_blocks(preview_slot["mapped"], check.get("body", {}).get("messages")) or []
+                    numbers = {sha: i for i, sha in enumerate(check.get("block_hashes", ()), 1)}
+                    return [{**c, "citation_number": numbers[c["block_sha256"]]} for c in visible]
 
                 def read(chunk):
                     raw = settings.docStoreConn.get(chunk["id"], index_name(tools.tenant_ids[0]), tools.kb_ids)
-                    if not raw or not raw.get("content_with_weight"):
+                    if not raw or raw.get("id") != chunk["id"] or not raw.get("content_with_weight"):
                         raise ValueError("索引未返回所选原块")
-                    return {**chunk, "document_id": raw.get("doc_id"), "content": raw["content_with_weight"]}
+                    return {**chunk, "document_id": raw.get("doc_id"), "content": raw["content_with_weight"],
+                            "positions": raw.get("position_int")}
 
                 trace = current.get()
                 record["enhancement"] = {}
@@ -201,7 +224,11 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                         if raw and raw.get("doc_id") == c["document_id"] and raw.get("content_with_weight"):
                             source = raw["content_with_weight"]
                             c["source_sha256"] = digest(source)
-                            c["source_check"] = "intact" if source == c["content"] else "edited"
+                            if paired:
+                                c["source_check"] = source_relation(c["content"], source, render_tables)
+                                c["positions"] = raw.get("position_int") or c["positions"]
+                            else:
+                                c["source_check"] = "intact" if source == c["content"] else "edited"
                     except Exception as exc:
                         c["readback_error"] = type(exc).__name__
             if snapshot_spec is not None and not paired:

@@ -52,10 +52,20 @@ class LiveFinanceTest(unittest.IsolatedAsyncioTestCase):
 
         result, trace, _, retrieve = await self.execute([{"missing": ["2019 年财报原因"]},
                                                        selection([1, 2, 3, 4], True)], read=read)
-        self.assertEqual(read_ids, ["1", "2", "3", "4"])
+        self.assertEqual(read_ids, ["1", "2", "3", "4"] * 2)
         self.assertEqual(trace["path"], "事实筛选")
         self.assertEqual(len(result[0]), 4)
         retrieve.assert_not_awaited()
+
+    async def test_selector_gets_index_text_when_research_pass_has_a_summary(self):
+        def read(row):
+            return {**row, "content": "索引原文包含 2021 财年及所需口径。"}
+
+        result, trace, model, _ = await self.execute([{"missing": ["2021 年报告口径"]},
+                                                    selection([1, 2, 3, 4], True)], read=read)
+        self.assertEqual(trace["rehydrated_candidates"], 4)
+        request = json.loads(model.await_args_list[-1].args[1][0]["content"])
+        self.assertEqual(request["候选"][0]["原文行"][0]["text"], result[0][0]["content"])
 
     async def test_f09_supplement_is_once_and_same_scope(self):
         result, trace, _, retrieve = await self.execute([

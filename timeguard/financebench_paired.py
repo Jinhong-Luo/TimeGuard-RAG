@@ -26,6 +26,7 @@ UPSTREAM = (
     "common/metadata_utils.py", "rag/advanced_rag/harness/config.py",
     "rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py",
     "rag/advanced_rag/harness/action_session.py", "rag/advanced_rag/harness/tools/search.py",
+    "rag/advanced_rag/harness/tools/table_view.py",
     "rag/advanced_rag/harness/prompts/report_prompt.py",
 )
 
@@ -216,7 +217,8 @@ def pilot_gate(pilot, generated, reviews, official):
         "live_fact_selection": any(e.get("selected_facts") and e["path"] == "事实筛选" for e in enhancement),
         "native_model_tool_round": not official or any(e["success"] and e.get("model_tool_results", 0) for e in events),
         "actual_citations_traced": any(a.get("block_hashes") and any(
-            c.get("source_check") == "intact" for r in a["requests"] for c in r.get("complete_chunks") or []) for a in layers),
+            c.get("source_check") in judge.VERIFIED_CITATIONS
+            for r in a["requests"] for c in r.get("complete_chunks") or []) for a in layers),
     }
 
 

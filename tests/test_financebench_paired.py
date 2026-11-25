@@ -3,6 +3,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from timeguard.common import write_jsonl
+from timeguard.evidence_layers import source_relation
 from timeguard.financebench_paired import COUNTS, PILOT, SPLITS, generation_state, make_plan, summarize
 from timeguard.judge import citation_context
 
@@ -60,3 +61,10 @@ class FinanceBenchPairedTest(unittest.TestCase):
         self.assertEqual(citation_context(row)["mapping_status"], "incomplete")
         chunk["source_check"] = "intact"
         self.assertEqual(citation_context(row)["mapping_status"], "mapped")
+
+    def test_table_view_verification_preserves_numbers_and_row_mapping(self):
+        raw = "<table><tr><td>2022</td><td>200</td></tr><tr><td>2023</td><td>255</td></tr></table>"
+        rendered = lambda _: "| 2022 | 200 |\n| 2023 | 255 |"
+        self.assertEqual(source_relation("...| *2023* | 255 |...", raw, rendered), "native_table_view")
+        self.assertEqual(source_relation("| 2023 | 200 |", raw, rendered), "edited")
+        self.assertEqual(source_relation("...*Net sales*...", "The Net sales were stable.", rendered), "verbatim_excerpt")

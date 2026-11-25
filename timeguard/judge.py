@@ -23,6 +23,7 @@ EFFORT = "medium"
 TRANSPORT = "codex-app-server-structured-output-v1"
 JUDGE_VERSION = "timeguard-financebench-judge-v2"
 FIELDS = ("answer_correct", "numeric_and_scope_correct", "citation_support")
+VERIFIED_CITATIONS = ("intact", "verbatim_excerpt", "native_table_view")
 SCHEMA = {
     "type": "object", "additionalProperties": False,
     "properties": {
@@ -89,7 +90,7 @@ def citation_context(generated):
                 chunks = [None] * (len(hashes) + 1)
                 for c in requests[0].get("complete_chunks") or []:
                     sha = c["block_sha256"]
-                    if hashes.count(sha) == 1 and (not paired or c.get("source_check") == "intact"):
+                    if hashes.count(sha) == 1 and (not paired or c.get("source_check") in VERIFIED_CITATIONS):
                         chunks[hashes.index(sha) + 1] = c
         context["reference_candidate_count"] = sum(c is not None for c in chunks)
     traced = "citation_trace" in generated
