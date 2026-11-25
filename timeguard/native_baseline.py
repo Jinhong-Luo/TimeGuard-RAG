@@ -136,6 +136,10 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
+    official = spec.get("model_provider") == "openai"
+    if official:
+        from .openai_native import install
+        install(spec["model_endpoint"], CURRENT)
     if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
         from .evidence_layers import install
         install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final") else None)
@@ -165,7 +169,7 @@ async def native_worker(spec):
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
         try:
             found, dialog = service.DialogService.get_by_id(spec["chat_id"])
-            if not found or dialog.llm_id != MODEL or dialog.kb_ids != [spec["dataset_id"]]:
+            if not found or dialog.llm_id != spec.get("model", MODEL) or dialog.kb_ids != [spec["dataset_id"]]:
                 raise ValueError("独立原生对话身份不匹配")
             cfg = spec["arm_config"]
             dialog.rerank_id = cfg["rerank_id"]
@@ -200,6 +204,8 @@ async def native_worker(spec):
                         async for result in service.rag_agent(dialog, messages, stream=False, reasoning=cfg["reasoning"]):
                             row.update(answer=result.get("answer"), reference={"chunks": generator.chunks_format(result.get("reference"))},
                                        usage=result.get("usage"))
+                        if official and not any(e["kind"] == "openai_request" and e["success"] for e in state["events"]):
+                            raise ValueError("本题没有可验证的官方 API 调用")
             if spec.get("candidate") == "evidence":
                 row["citation_trace"] = {"version": 1, "visible": state.get("visible", {}),
                                          "origin": "model", "raw_answer": state.get("evidence_raw_answer")}
@@ -209,6 +215,7 @@ async def native_worker(spec):
             row.update(status="request_error", error=(type(exc).__name__+": "+str(exc))[:1500])
         finally:
             CURRENT.reset(token)
+            state.pop("_openai_tool_turns", None)
         state.pop("prompt_blocks", None)
         row.update(native_trace=state, retrieved_chunks=state["retrieved"], elapsed_seconds=time.monotonic()-started)
         print("TIMEGUARD_RESULT "+json.dumps(row,ensure_ascii=False),flush=True)
@@ -220,22 +227,30 @@ async def native_worker(spec):
     return True
 
 
+def worker_sources(candidate, official=False):
+    files = ["__init__.py", "common.py", "native_baseline.py"]
+    if official:
+        files.extend(["openai_transport.py", "openai_native.py"])
+    if candidate:
+        files.extend(["agentic_candidate.py", "scope.py", "score.py"])
+    if candidate in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+        files.append("evidence_layers.py")
+    if candidate in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+        files.append("final_snapshot.py")
+    if candidate == "route":
+        files.extend(["finance_route.py", "page_select.py", "evidence_review.py", "judge.py"])
+    if candidate == "page_select":
+        files.append("page_select.py")
+    if candidate in ("adaptive", "finance"):
+        files.extend(["agentic_finance.py", "financial_agent.py"])
+    return files
+
+
 def container_worker(spec, out):
+    official = spec.get("model_provider") == "openai"
     with tempfile.TemporaryDirectory() as temp:
         package=Path(temp,"timeguard");package.mkdir()
-        files = ["__init__.py","common.py","native_baseline.py"]
-        if spec.get("candidate"):
-            files.extend(["agentic_candidate.py", "scope.py", "score.py"])
-        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
-            files.append("evidence_layers.py")
-        if spec.get("candidate") in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
-            files.append("final_snapshot.py")
-        if spec.get("candidate")=="route":
-            files.extend(["finance_route.py","page_select.py","evidence_review.py","judge.py"])
-        if spec.get("candidate") == "page_select":
-            files.append("page_select.py")
-        if spec.get("candidate") in ("adaptive", "finance"):
-            files.extend(["agentic_finance.py", "financial_agent.py"])
+        files = worker_sources(spec.get("candidate"), official)
         for name in files:
             shutil.copyfile(Path(__file__).with_name(name),package/name)
         hashes = {name:digest((package/name).read_bytes()) for name in files}
@@ -246,6 +261,11 @@ def container_worker(spec, out):
         subprocess.run(["docker","cp",str(package),CONTAINER+":"+target+"/"],check=True,stdout=subprocess.DEVNULL)
     argv=["docker","exec","-i","-w","/ragflow","-e","PYTHONPATH="+target+":/ragflow",CONTAINER,"python","-m","timeguard.native_baseline","--worker"]
     env=os.environ.copy()
+    if official:
+        from .openai_transport import api_key
+        env["OPENAI_API_KEY"] = api_key()
+        index = argv.index(CONTAINER)
+        argv[index:index] = ["-e", "OPENAI_API_KEY"]
     if spec.get("candidate")=="route":
         _,rt=private_runtime()
         env.update(TIMEGUARD_REVIEW_TOKEN=rt["token"],TIMEGUARD_REVIEW_URL=rt["base_url"])
@@ -317,13 +337,19 @@ def prepare(out):
     print("已创建独立模型实例和原生对话；工具能力仍须从实际模型对象和调用核验",flush=True)
 
 
-def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_ids=None):
+def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_ids=None,
+            model_provider="codex", setup_path=None):
     if label and not re.fullmatch(r"[a-z0-9_-]+",label):raise ValueError("运行标签格式错误")
     if candidate and arm != "combined":
         raise ValueError("优化候选只适用于公司过滤与 Agentic medium 组合")
-    out=root/(arm+("-"+candidate if candidate else "")+("-"+label if label else "")+("-smoke" if limit else "-"+split))
+    official = model_provider == "openai"
+    if official:
+        from . import openai_transport as api
+        api.api_key()
+    setup=read_json(setup_path or root/"setup.json")
+    out=root/(arm+("-"+candidate if candidate else "")+("-openai" if official else "")+
+              ("-"+label if label else "")+("-smoke" if limit else "-"+split))
     out.mkdir(parents=True,exist_ok=False)
-    setup=read_json(root/"setup.json")
     queries=select_queries(read_jsonl("data/financebench/queries.jsonl"),split,limit)
     if query_ids:
         if limit or len(query_ids) != len(set(query_ids)):
@@ -337,28 +363,22 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
                      "common/metadata_utils.py","rag/advanced_rag/harness/config.py")}
     spec={**{k:setup[k] for k in ("chat_id","dataset_id","model")},"queries":queries,
           "arm_config":arm_config(arm,reranker),"concurrency":2,"upstream_files":upstream_files,"timeout_seconds":1200}
+    if official:
+        spec.update(model_provider=model_provider, model_endpoint=setup["bridge_base_url"])
     if candidate:
         spec["candidate"] = candidate
-        names = ["__init__.py", "common.py", "native_baseline.py", "agentic_candidate.py", "scope.py", "score.py"]
-        if candidate in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
-            names.append("evidence_layers.py")
         if candidate in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
-            names.append("final_snapshot.py")
             for name in ("rag/advanced_rag/harness/tools/search.py", "rag/advanced_rag/harness/prompts/report_prompt.py"):
                 upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
-        if candidate in ("adaptive", "finance"):
-            names.extend(["agentic_finance.py", "financial_agent.py"])
-        if candidate=="route":
-            names.extend(["finance_route.py","page_select.py","evidence_review.py","judge.py"])
-        if candidate == "page_select":
-            names.append("page_select.py")
-        spec["candidate_files"] = {name:digest(Path(__file__).with_name(name).read_bytes()) for name in names}
         spec["candidate_source_sha256"] = digest(Path(__file__).with_name("agentic_candidate.py").read_bytes())
         for name in ("rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py"):
             upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
         if candidate in ("temporal", "adaptive", "finance", "page", "supplement", "route", "final"):
             from .retrieval_experiment import catalog
             spec["documents"] = catalog(read_jsonl("data/financebench/documents.jsonl"), read_json("data/ingestion.json"))
+    if candidate or official:
+        spec["candidate_files"] = {name: digest(Path(__file__).with_name(name).read_bytes())
+                                   for name in worker_sources(candidate, official)}
     if candidate in ("page", "supplement"):
         from .filing_pages import FilingPages
         from .scope import scope
@@ -397,22 +417,41 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
         "source_sha256":digest(Path(__file__).read_bytes()),"queries_sha256":digest(Path("data/financebench/queries.jsonl").read_bytes()),
         "upstream":read_json("upstream.lock.json"),"upstream_files":upstream_files,"freeze":freeze,"spec_sha256":digest(spec)},
         "created_at_utc":datetime.now(timezone.utc).isoformat()}
+    if official:
+        manifest["identity"]["transport"] = api.TRANSPORT
     write_json(out/"manifest.json",manifest);write_json(out/"spec.json",spec)
-    private,_=private_runtime();audit=private/"bridge-audit.jsonl"
-    start=audit.stat().st_size if audit.exists() else 0
+    audit = None
+    if not official:
+        private,_=private_runtime()
+        audit=private/"bridge-audit.jsonl"
+    start=audit.stat().st_size if audit and audit.exists() else 0
     began=time.monotonic()
     code=container_worker(spec,out)
-    end=audit.stat().st_size if audit.exists() else 0
-    raw=audit.read_bytes()[start:end] if end else b""
-    records=[json.loads(l) for l in raw.splitlines() if l.strip()]
     rows=read_jsonl(out/"results.jsonl")
+    if official:
+        records = [event for row in rows for event in row["native_trace"]["events"]
+                   if event["kind"] == "openai_request" and event["attempted"]]
+        raw = "\n".join(json.dumps(r, ensure_ascii=False) for r in records).encode()
+        end = len(raw)
+        ids = [r["openai_request_id"] for r in records if r.get("openai_request_id")]
+        successes = [r for r in records if r["success"]]
+        verified = bool(successes) and all(api.model_matches(r.get("actual_model")) and
+                                           r.get("reasoning_effort") == "low" for r in successes)
+        tokens = sum((r.get("raw_usage") or {}).get("total_tokens", 0) for r in records)
+    else:
+        end=audit.stat().st_size if audit.exists() else 0
+        raw=audit.read_bytes()[start:end] if end else b""
+        records=[json.loads(l) for l in raw.splitlines() if l.strip()]
+        ids = [r.get("request_id") for r in records]
+        verified = all(r.get("actual_model")=="gpt-6.1-sol" and r.get("reasoning_effort")=="low"
+                       for r in records if r.get("success"))
+        tokens = sum((r.get("usage") or {}).get("totalTokens",0) for r in records)
     write_json(out/"execution.json",{"returncode":code,"planned":len(queries),"completed":len(rows),
         "wall_seconds":time.monotonic()-began,"statuses":dict(Counter(r["status"] for r in rows)),
         "audit_byte_start":start,"audit_byte_end":end,"audit_sha256":digest(raw),"actual_calls":len(records),
         "failed_calls":sum(r.get("success") is not True for r in records),
-        "model_identity_verified":all(r.get("actual_model")=="gpt-6.1-sol" and r.get("reasoning_effort")=="low" for r in records if r.get("success")),
-        "unique_audit_request_ids":len({r.get("request_id") for r in records})==len(records),
-        "tokens":sum((r.get("usage") or {}).get("totalTokens",0) for r in records),
+        "model_identity_verified":verified, "unique_audit_request_ids":len(set(ids))==len(records),
+        "tokens":tokens,
         "results_sha256":digest((out/"results.jsonl").read_bytes()),"cost_usd":None,
         "raw_upstream":not bool(candidate),"candidate":candidate,
         "notes":"独立候选实验" if candidate else "原生基线"})
@@ -431,6 +470,8 @@ def main():
     p.add_argument("--limit",type=int)
     p.add_argument("--query-ids", nargs="+")
     p.add_argument("--label",default="")
+    p.add_argument("--model-provider", choices=("codex", "openai"), default="codex")
+    p.add_argument("--setup", type=Path, help="可复用现有专用原生对话配置")
     if "--worker" not in sys.argv:
         from .agentic_candidate import VARIANTS
         p.add_argument("--candidate", choices=VARIANTS)
@@ -445,7 +486,8 @@ def main():
     elif args.prepare:
         prepare(args.output)
     else:
-        run_arm(args.output,args.arm,args.split,args.limit,args.reranker,args.label,args.candidate,args.query_ids)
+        run_arm(args.output,args.arm,args.split,args.limit,args.reranker,args.label,args.candidate,args.query_ids,
+                args.model_provider,args.setup)
 
 
 if __name__=="__main__":

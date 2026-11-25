@@ -1,5 +1,8 @@
 import json
+from contextvars import ContextVar
+import os
 import unittest
+from unittest.mock import patch
 
 from timeguard import judge, openai_transport as api
 
@@ -57,3 +60,41 @@ class OpenAITransportTest(unittest.TestCase):
             api.completion(body, payload, response("low", [], status="incomplete"), "req_test")
         with self.assertRaisesRegex(ValueError, "推理档位"):
             api.completion(body, payload, response("medium", []), "req_test")
+
+
+class NativeTransportTest(unittest.IsolatedAsyncioTestCase):
+    async def test_only_the_selected_model_endpoint_uses_official_api(self):
+        import httpx
+        from timeguard.openai_native import install
+
+        current = ContextVar("题目", default=None)
+        endpoint = "http://127.0.0.1:18866/v1"
+        observed = []
+
+        async def send(client, request, *args, **kwargs):
+            observed.append(request)
+            if str(request.url) != api.URL:
+                return httpx.Response(202, request=request)
+            output = [{"type": "message", "content": [{"type": "output_text", "text": "结果"}]}]
+            return httpx.Response(200, json=response("low", output), headers={"x-request-id": "req_test"},
+                                  request=request)
+
+        with patch.object(httpx.AsyncClient, "send", send), patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}):
+            install(endpoint, current)
+            async with httpx.AsyncClient() as client:
+                self.assertEqual((await client.get(endpoint + "/models")).status_code, 202)
+                state = {"events": []}
+                token = current.set(state)
+                try:
+                    body = {"model": api.MODEL, "stream": True, "messages": [{"role": "user", "content": "问题"}]}
+                    result = await client.post(endpoint + "/chat/completions", json=body,
+                                               headers={"Authorization": "Bearer codex-placeholder"})
+                finally:
+                    current.reset(token)
+        self.assertIn("data: [DONE]", result.text)
+        self.assertIn("结果", result.text)
+        self.assertEqual(observed[1].headers["Authorization"], "Bearer test-key")
+        event, = state["events"]
+        self.assertTrue(event["success"])
+        self.assertEqual(event["openai_request_id"], "req_test")
+        self.assertNotIn("test-key", json.dumps(event))
