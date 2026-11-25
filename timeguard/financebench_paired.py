@@ -20,6 +20,7 @@ SPLITS = {"tune": "历史调优", "dev": "历史开发", "test": "历史跨公�
 COUNTS = {"tune": 88, "dev": 39, "test": 23}
 QUERY_PATH = Path("data/financebench/queries.jsonl")
 INGESTION_PATH = Path("data/ingestion.json")
+GOLD_PATH = Path("data/financebench/gold.jsonl")
 UPSTREAM = (
     "api/db/services/dialog_service.py", "rag/prompts/generator.py", "rag/nlp/search.py",
     "common/metadata_utils.py", "rag/advanced_rag/harness/config.py",
@@ -83,7 +84,8 @@ def worker_spec(args):
                   "setup_sha256": digest(setup), "evidence_budget": 8000,
                   "judge": {"model": judge.MODEL, "effort": judge.EFFORT, "concurrency": args.concurrency,
                             "timeout_seconds": 360, "schema_sha256": digest(judge.SCHEMA),
-                            "instructions_sha256": digest(judge.INSTRUCTIONS)}}
+                            "instructions_sha256": digest(judge.INSTRUCTIONS),
+                            "gold_sha256": digest(GOLD_PATH.read_bytes())}}
 
 
 def generation_state(attempts, planned):
@@ -130,7 +132,7 @@ def rule_judgement(row, why):
 def grade(out, queries, generated, signature, spec):
     folder = out / "judgements"
     folder.mkdir(exist_ok=True)
-    gold = judge.unique_rows(read_jsonl("data/financebench/gold.jsonl"), "评分金标")
+    gold = judge.unique_rows(read_jsonl(GOLD_PATH), "评分金标")
     official = spec["model_provider"] == "openai"
     if official:
         transport, fn, base, key = openai_transport.TRANSPORT, openai_transport.post_completion, None, openai_transport.api_key()

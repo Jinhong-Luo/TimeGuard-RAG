@@ -60,6 +60,7 @@ def retrieval(state, docs):
     client = Client(config["base_url"], timeout=60)
     plan = scope("3M FY2018 consolidated net sales", docs)
     require(plan["companies"] == ["3M"], "公司识别失败")
+    require(scope("Advanced Micro Devices FY2022 quarterly results", docs)["companies"] == ["AMD"], "公司别名识别失败")
     base = {**config["retrieval"], "dataset_ids": [state["dataset_id"]], "document_ids": plan["document_ids"],
             "question": "3M FY2018 consolidated net sales", "keyword": False}
     counts = {}
@@ -105,15 +106,16 @@ def calculation(parent):
     require(all(v in text for v in ("32,765", "31,657", "2018", "2017")), "冻结表格的期间或操作数变化")
     lines = [{"number": i, "text": value} for i, value in enumerate(evidence_lines(text), 1)]
     line = next(x["number"] for x in lines if "32,765" in x["text"] and "31,657" in x["text"])
+    # 原表使用同一张金额表内的美元符号，逐列核验时保留表内币种口径。
     operands = [Operand(chunk_id=source["id"], line_number=line, year=year, period="FY",
-                        number=value, currency="USD", scale="millions", kind="money", row_label="Netsales")
+                        number=value, currency="XXX", scale="millions", kind="money", row_label="Netsales")
                 for year, value in ((2018, "32,765"), (2017, "31,657"))]
     for operand in operands:
         verify_operand(operand, source, lines)
     result = calculate_financial_metric("growth", *operands)
     expected = ((Decimal(32765) / Decimal(31657) - 1) * 100).quantize(Decimal(".0001"))
     require(Decimal(result.split("=")[-1].strip().removesuffix("%")) == expected, "Decimal 结果与原文操作数不符")
-    return {"source_sha256": digest(text), "growth_percent": str(expected)}
+    return {"source_sha256": digest(text), "growth_percent": str(expected), "currency_in_table": "$"}
 
 
 def trace_check(path):
