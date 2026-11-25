@@ -48,6 +48,16 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
     from rag.nlp.search import index_name
 
     composing = ContextVar("本次最终证据包", default=None)
+    variant = (snapshot_spec or {}).get("candidate")
+    paired = variant in ("pair_a0", "pair_a1")
+    endpoint = (snapshot_spec or {}).get("model_endpoint")
+    model_url = httpx.URL(endpoint.rstrip("/") + "/chat/completions") if endpoint else None
+
+    def model_request(request):
+        if model_url is not None:
+            return request.method == "POST" and request.url == model_url
+        return request.url.port == 18866 and request.url.path.endswith("/chat/completions")
+
     wide=bool(snapshot_spec and snapshot_spec["candidate"]=="wide")
     if wide:
         original_fit=graph.message_fit_in
@@ -112,12 +122,51 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             events.append({"call":len(events)+1,"channel":variant,"node":"最终页级找页","search_round":None,
                            "chunks":[{**location(c),"content_sha256":digest(c["content"])} for c in chosen]})
         slot = {"record": record, "mapped": None}
+        native_prompt = getattr(tools, "system_prompt", None)
+        instruction = ""
         if snapshot_spec is not None:
             from .final_snapshot import freeze
             config = kwargs["answer_conf"] if "answer_conf" in kwargs else args[1]
             identity = {k: snapshot_spec[k] for k in ("dataset_id", "model", "arm_config", "upstream_files")}
             slot["tools"] = tools
-            record["snapshot"] = freeze(state, tools, config, identity)
+            if not paired:
+                record["snapshot"] = freeze(state, tools, config, identity)
+            if paired:
+                record["paired"] = current.get()["pair_arm"]
+            if snapshot_spec["candidate"] == "pair_a1" and current.get()["pair_arm"] == "A1":
+                from .final_snapshot import replay, RequestCaptured
+                from .live_finance import enhance
+
+                async def preview(chunks, instruction):
+                    check = {"selected": None, "packet": None, "requests": []}
+                    preview_slot = {"record": check, "mapped": None, "replay": True, "paired_chunks": chunks}
+                    preview_token = composing.set(preview_slot)
+                    previous = tools.system_prompt
+                    try:
+                        if instruction:
+                            tools.system_prompt = (previous or "") + "\n" + instruction
+                        await replay(freeze(state, tools, config, identity), original_compose, tools.chat_mdl)
+                    except RequestCaptured:
+                        pass
+                    finally:
+                        tools.system_prompt = previous
+                        composing.reset(preview_token)
+                    return visible_blocks(preview_slot["mapped"], check.get("body", {}).get("messages")) or []
+
+                def read(chunk):
+                    raw = settings.docStoreConn.get(chunk["id"], index_name(tools.tenant_ids[0]), tools.kb_ids)
+                    if not raw or not raw.get("content_with_weight"):
+                        raise ValueError("索引未返回所选原块")
+                    return {**chunk, "document_id": raw.get("doc_id"), "content": raw["content_with_weight"]}
+
+                trace = current.get()
+                record["enhancement"] = {}
+                slot["paired_chunks"], instruction = await enhance(
+                    trace["question"], trace["plan"], paired_documents, state, tools,
+                    generator.chunks_format, read, preview, record["enhancement"],
+                )
+                if instruction:
+                    tools.system_prompt = (native_prompt or "") + "\n" + instruction
             if snapshot_spec["candidate"]=="route":
                 import asyncio
                 import os
@@ -155,7 +204,7 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                             c["source_check"] = "intact" if source == c["content"] else "edited"
                     except Exception as exc:
                         c["readback_error"] = type(exc).__name__
-            if snapshot_spec is not None:
+            if snapshot_spec is not None and not paired:
                 from .final_snapshot import replay, RequestCaptured
                 check = {"selected": None, "packet": None, "requests": []}
                 slot.update(record=check, mapped=None, replay=True)
@@ -173,6 +222,8 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                 }
             return result
         finally:
+            if instruction:
+                tools.system_prompt = native_prompt
             composing.reset(token)
     if snapshot_spec and snapshot_spec["candidate"]=="brief":
         from .final_snapshot import BRIEF_RULE
@@ -192,6 +243,11 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
     @wraps(original_prompt)
     def prompt(info, *args, **kwargs):
         slot = composing.get()
+        if slot is not None and slot.get("paired_chunks") is not None:
+            chunks = slot["paired_chunks"]
+            info = {**info, "chunks": chunks}
+            if not slot.get("replay"):
+                slot["tools"]._rag_cite_chunk_ids = [str(c.get("chunk_id") or c.get("id") or "") for c in chunks]
         if slot is not None and snapshot_spec and snapshot_spec["candidate"] == "page_select":
             from .page_select import select
             source = current.get()["evidence_layers"]["answers"][-1]["snapshot"]["input"]
@@ -229,7 +285,7 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
         @wraps(transport)
         async def audited(client, request, *args, **kwargs):
             state = current.get()
-            if state is None or request.url.port != 18866 or not request.url.path.endswith("/chat/completions"):
+            if state is None or not model_request(request):
                 return await transport(client, request, *args, **kwargs)
             started = time.monotonic()
             node,number = node_context.get()
@@ -256,7 +312,7 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
     @wraps(original_send)
     async def send(client, request, *args, **kwargs):
         slot = composing.get()
-        if slot is None or request.url.port != 18866 or not request.url.path.endswith("/chat/completions"):
+        if slot is None or not model_request(request):
             return await original_send(client, request, *args, **kwargs)
         entry = {"status": None, "complete_chunks": None}
         slot["record"]["requests"].append(entry)
@@ -275,3 +331,4 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
             entry["model"] = json.loads(request.content).get("model")
         return response
     httpx.AsyncClient.send = send
+    paired_documents = {d["doc_name"].casefold(): d for d in (snapshot_spec or {}).get("documents", ())}

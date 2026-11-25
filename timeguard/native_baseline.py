@@ -2,11 +2,13 @@
 import argparse
 import asyncio
 from collections import Counter
+from contextlib import ExitStack
 import contextvars
 from datetime import datetime, timezone
 import functools
 import hashlib
 import inspect
+from itertools import groupby
 import json
 import os
 from pathlib import Path
@@ -23,8 +25,13 @@ CONTAINER = "timeguard_ljh-ragflow-cpu-1"
 INSTANCE = "native_baseline_20261109"
 PROVIDER = "OpenAI-API-Compatible"
 MODEL = f"gpt-6.1-sol@low@{INSTANCE}@{PROVIDER}"
+DEFAULT_RERANKER = "cross-encoder/ms-marco-MiniLM-L6-v2@timeguard_r1_ce_tokenizer@HuggingFace"
 ARMS = ("plain", "keyword", "rerank", "metadata_auto", "metadata_all", "agent_low", "agent_medium", "agent_high", "agent_ultra", "combined")
 CURRENT = contextvars.ContextVar("原生基线题目", default=None)
+PAIRED = ("pair_a0", "pair_a1")
+SNAPSHOTS = ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final", *PAIRED)
+SCOPED = ("temporal", "adaptive", "finance", "page", "supplement", "route", "final", *PAIRED)
+BOUND = ("final", "route", "page", "supplement", *PAIRED)
 
 
 def arm_config(name, reranker):
@@ -136,17 +143,19 @@ async def native_worker(spec):
     from api.db.services import dialog_service as service
     from rag.prompts import generator
     install_observers(service, generator, settings.retriever)
+    candidate = spec.get("candidate")
+    paired = candidate in PAIRED
     official = spec.get("model_provider") == "openai"
     if official:
         from .openai_native import install
         install(spec["model_endpoint"], CURRENT)
-    if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+    if candidate in ("layers", *SNAPSHOTS):
         from .evidence_layers import install
-        install(generator, settings, CURRENT, service.RAGTools, spec if spec["candidate"] in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final") else None)
-    elif spec.get("candidate"):
+        install(generator, settings, CURRENT, service.RAGTools, spec if candidate in SNAPSHOTS else None)
+    elif candidate:
         from .agentic_candidate import install
         install(service, generator, settings, spec, CURRENT, trace_event)
-    if spec.get("candidate") in ("final","route","page","supplement"):
+    if candidate in BOUND:
         from .scope import intersect_scope
         native_filter=service.apply_meta_data_filter
         @functools.wraps(native_filter)
@@ -159,11 +168,15 @@ async def native_worker(spec):
         service.apply_meta_data_filter=bounded_filter
     async def one(q):
         started = time.monotonic()
+        if spec.get("ordered_pairs"):
+            print("TIMEGUARD_START " + json.dumps({"position": q["position"]}), flush=True)
         state = {"events": [], "retrieved": [], "prompt_blocks": [], "visible_ids": [], "citation_origin": "model"}
         state["question"] = q["question"]
+        if paired:
+            state["pair_arm"] = q.get("pair_arm", "A1" if candidate == "pair_a1" else "A0")
         if spec.get("candidate") in ("page", "supplement"):
             state["page_search"] = spec["page_searches"][q["id"]]
-        if spec.get("candidate") in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+        if candidate in ("layers", *SNAPSHOTS):
             state["evidence_layers"] = {"version": 2, "retrievals": [], "answers": []}
         token = CURRENT.set(state)
         row = {**q, "status": "ok", "answer": None, "reference": {}, "usage": None, "cost_usd": None}
@@ -183,13 +196,17 @@ async def native_worker(spec):
                 if not support:
                     raise ValueError("模型未声明工具能力，禁止把普通问答回退当作Agentic成功")
             messages = [{"role": "user", "content": q["question"]}]
-            if spec.get("candidate") in ("temporal", "adaptive", "finance", "page", "supplement", "route", "final"):
+            if candidate in SCOPED:
                 from .scope import scope
                 state["plan"] = scope(q["question"], spec["documents"], q.get("as_of"))
-                if not state["plan"]["companies"]:
+                if not state["plan"]["companies"] or (paired and len(state["plan"]["companies"]) != 1):
                     row.update(answer="请明确要查询的公司。", reference={"chunks": []})
+                    if paired:
+                        row["answer_status"] = "clarification"
                 elif state["plan"]["document_ids"] == []:
                     row.update(answer="截止日内没有可核验的已披露文档。", reference={"chunks": []})
+                    if paired:
+                        row["answer_status"] = "no_evidence"
                 else:
                     messages[0]["doc_ids"] = state["plan"]["document_ids"]
             if spec.get("candidate")=="route":
@@ -206,6 +223,19 @@ async def native_worker(spec):
                                        usage=result.get("usage"))
                         if official and not any(e["kind"] == "openai_request" and e["success"] for e in state["events"]):
                             raise ValueError("本题没有可验证的官方 API 调用")
+                        if paired and official and any(e["kind"] == "openai_request" and not e["attempted"]
+                                                      for e in state["events"]):
+                            raise ValueError("原生模型请求有未通过转换校验的位置")
+                        if paired:
+                            layers = state["evidence_layers"]["answers"]
+                            if len(layers) != 1:
+                                raise ValueError("本题缺少唯一的最终作答节点")
+                            if layers[0].get("empty_response"):
+                                row["answer_status"] = "no_evidence"
+                            elif not any(r["status"] == 200 for r in layers[0]["requests"]):
+                                raise ValueError("本题缺少成功的最终模型请求")
+                            else:
+                                row["answer_status"] = "completed"
             if spec.get("candidate") == "evidence":
                 row["citation_trace"] = {"version": 1, "visible": state.get("visible", {}),
                                          "origin": "model", "raw_answer": state.get("evidence_raw_answer")}
@@ -220,6 +250,18 @@ async def native_worker(spec):
         row.update(native_trace=state, retrieved_chunks=state["retrieved"], elapsed_seconds=time.monotonic()-started)
         print("TIMEGUARD_RESULT "+json.dumps(row,ensure_ascii=False),flush=True)
         return row["status"] == "ok"
+    if spec.get("ordered_pairs"):
+        groups = [list(group) for _, group in groupby(spec["queries"], key=lambda query: query["id"])]
+
+        async def pair(group):
+            results = [await one(query) for query in group]
+            return all(results)
+
+        successful = True
+        for i in range(0, len(groups), spec["concurrency"]):
+            results = await asyncio.gather(*(pair(group) for group in groups[i:i + spec["concurrency"]]))
+            successful = all(results) and successful
+        return successful
     for i in range(0,len(spec["queries"]),spec["concurrency"]):
         ok = await asyncio.gather(*(one(q) for q in spec["queries"][i:i+spec["concurrency"]]))
         if not all(ok):
@@ -228,14 +270,17 @@ async def native_worker(spec):
 
 
 def worker_sources(candidate, official=False):
+    if candidate == "pair_a1":
+        # 新入口复用已验证的筛选、财务校验和原生追踪模块；冻结其完整依赖。
+        return sorted(p.name for p in Path(__file__).parent.glob("*.py"))
     files = ["__init__.py", "common.py", "native_baseline.py"]
     if official:
         files.extend(["openai_transport.py", "openai_native.py"])
     if candidate:
         files.extend(["agentic_candidate.py", "scope.py", "score.py"])
-    if candidate in ("layers", "snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+    if candidate in ("layers", *SNAPSHOTS):
         files.append("evidence_layers.py")
-    if candidate in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+    if candidate in SNAPSHOTS:
         files.append("final_snapshot.py")
     if candidate == "route":
         files.extend(["finance_route.py", "page_select.py", "evidence_review.py", "judge.py"])
@@ -271,13 +316,20 @@ def container_worker(spec, out):
         env.update(TIMEGUARD_REVIEW_TOKEN=rt["token"],TIMEGUARD_REVIEW_URL=rt["base_url"])
         index=argv.index(CONTAINER)
         argv[index:index]=["-e","TIMEGUARD_REVIEW_TOKEN","-e","TIMEGUARD_REVIEW_URL"]
-    with (out/"worker.log").open("w") as log,(out/"results.jsonl").open("x") as rows:
-        with subprocess.Popen(argv,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,text=True) as proc:
+    with ExitStack() as handles:
+        log = handles.enter_context((out/"worker.log").open("w", encoding="utf-8"))
+        rows = handles.enter_context((out/"results.jsonl").open("x", encoding="utf-8"))
+        started = handles.enter_context((out/"started.jsonl").open("x", encoding="utf-8")) if spec.get("ordered_pairs") else None
+        with subprocess.Popen(argv,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,
+                              text=True,encoding="utf-8",errors="replace") as proc:
             proc.stdin.write(json.dumps(spec));proc.stdin.close()
             for line in proc.stdout:
                 if line.startswith("TIMEGUARD_RESULT "):
                     row=json.loads(line.partition(" ")[2]);rows.write(json.dumps(row,ensure_ascii=False)+"\n");rows.flush()
-                    print(out.name,row["id"],row["status"],round(row["elapsed_seconds"],2),flush=True)
+                    print(out.name,row.get("position",row["id"]),row["status"],round(row["elapsed_seconds"],2),flush=True)
+                elif started is not None and line.startswith("TIMEGUARD_START "):
+                    started.write(line.partition(" ")[2])
+                    started.flush()
                 else:
                     log.write(line);log.flush()
             return proc.wait()
@@ -367,13 +419,13 @@ def run_arm(root, arm, split, limit, reranker, label="", candidate=None, query_i
         spec.update(model_provider=model_provider, model_endpoint=setup["bridge_base_url"])
     if candidate:
         spec["candidate"] = candidate
-        if candidate in ("snapshot", "page_select", "page", "supplement", "brief", "wide", "route", "final"):
+        if candidate in SNAPSHOTS:
             for name in ("rag/advanced_rag/harness/tools/search.py", "rag/advanced_rag/harness/prompts/report_prompt.py"):
                 upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
         spec["candidate_source_sha256"] = digest(Path(__file__).with_name("agentic_candidate.py").read_bytes())
         for name in ("rag/advanced_rag/agentic_rag_graph.py", "rag/advanced_rag/agentic_rag.py"):
             upstream_files[name] = digest(Path("vendor/ragflow", name).read_bytes())
-        if candidate in ("temporal", "adaptive", "finance", "page", "supplement", "route", "final"):
+        if candidate in SCOPED:
             from .retrieval_experiment import catalog
             spec["documents"] = catalog(read_jsonl("data/financebench/documents.jsonl"), read_json("data/ingestion.json"))
     if candidate or official:
@@ -475,7 +527,7 @@ def main():
     if "--worker" not in sys.argv:
         from .agentic_candidate import VARIANTS
         p.add_argument("--candidate", choices=VARIANTS)
-    p.add_argument("--reranker",default="cross-encoder/ms-marco-MiniLM-L6-v2@timeguard_r1_ce_tokenizer@HuggingFace")
+    p.add_argument("--reranker", default=DEFAULT_RERANKER)
     args=p.parse_args()
     if args.worker:
         raise SystemExit(0 if asyncio.run(native_worker(json.load(sys.stdin))) else 1)

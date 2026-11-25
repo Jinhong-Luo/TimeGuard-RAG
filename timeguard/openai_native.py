@@ -47,7 +47,10 @@ def install(endpoint, current):
             payload = api.request_payload(body, history)
             audit.update(model=payload["model"], requested_effort=payload["reasoning"]["effort"],
                          request_sha256=digest(payload), attempted=True,
-                         tool_results=sum(item.get("type") == "function_call_output" for item in payload["input"]))
+                         tool_results=sum(item.get("type") == "function_call_output" for item in payload["input"]),
+                         model_tool_results=sum(item.get("type") == "function_call_output"
+                                                and not item["call_id"].startswith("call_tg_")
+                                                for item in payload["input"]))
             outbound = httpx.Request("POST", api.URL, json=payload, extensions=dict(request.extensions),
                                      headers={"Authorization": "Bearer " + key})
             response = await original(client, outbound, follow_redirects=False, auth=None)

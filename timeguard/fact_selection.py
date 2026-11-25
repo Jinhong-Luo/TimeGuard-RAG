@@ -68,11 +68,15 @@ def validate(reply, candidates, missing):
     return {"ids":ids,"facts":accepted,"rejected":rejected,"unresolved":unresolved}
 
 
-def select(rt, question, missing, candidates, original, log):
+def selection_input(question, missing, candidates, original):
     shown = [{"编号":i,"报告":c["document_name"],"页位置":c["positions"],
               "原文行":[{"line":n,"text":s} for n,s in enumerate(evidence_lines(c["content"]),1)]}
              for i,c in enumerate(candidates,1)]
-    reply = chat(rt,PROMPT,{"问题":question,"缺项":missing,"当前块":original,"候选":shown},log)
+    return {"问题": question, "缺项": missing, "当前块": original, "候选": shown}
+
+
+def select(rt, question, missing, candidates, original, log):
+    reply = chat(rt, PROMPT, selection_input(question, missing, candidates, original), log)
     return validate(reply,candidates,missing)
 
 

@@ -76,7 +76,8 @@ def citation_context(generated):
                "reference_candidate_count": len(chunks) if isinstance(chunks, list) else None,
                "citations": []}
     answers = (generated.get("native_trace") or {}).get("evidence_layers", {}).get("answers", [])
-    if any("snapshot" in a for a in answers):
+    paired = any(a.get("paired") for a in answers)
+    if paired or any("snapshot" in a for a in answers):
         # 原生提示从 1 编号，按真正发送的整块指纹映射，允许裁剪造成编号空缺。
         chunks = []
         context["index_base"] = 1
@@ -88,7 +89,7 @@ def citation_context(generated):
                 chunks = [None] * (len(hashes) + 1)
                 for c in requests[0].get("complete_chunks") or []:
                     sha = c["block_sha256"]
-                    if hashes.count(sha) == 1:
+                    if hashes.count(sha) == 1 and (not paired or c.get("source_check") == "intact"):
                         chunks[hashes.index(sha) + 1] = c
         context["reference_candidate_count"] = sum(c is not None for c in chunks)
     traced = "citation_trace" in generated
