@@ -14,6 +14,18 @@ def response(effort, output, status="completed"):
 
 
 class OpenAITransportTest(unittest.TestCase):
+    def test_ragflow_generated_navigation_does_not_require_api_history(self):
+        for ident in ("nav_scoped", "ladder_rank"):
+            body = {"model": api.MODEL, "messages": [
+                {"role": "assistant", "content": "", "tool_calls": [
+                    {"id": ident, "type": "function", "function": {"name": "retrieve", "arguments": "{}"}}]},
+                {"role": "tool", "tool_call_id": ident, "content": [{"type": "text", "text": "来源原文"}]},
+            ]}
+            self.assertEqual(api.request_payload(body)["input"], [
+                {"type": "function_call", "call_id": "call_tg_" + ident, "name": "retrieve", "arguments": "{}"},
+                {"type": "function_call_output", "call_id": "call_tg_" + ident, "output": "来源原文"},
+            ])
+
     def test_tool_round_trip_stays_in_the_question(self):
         body = {"model": api.MODEL + "@low", "messages": [{"role": "user", "content": "查询一份财报"}],
                 "tools": [{"type": "function", "function": {"name": "search", "parameters": {"type": "object"}}}]}

@@ -33,6 +33,18 @@ def model_matches(value):
     return isinstance(value, str) and bool(re.fullmatch(r"gpt-6\.1-sol(?:-\d{4}-\d{2}-\d{2})?", value))
 
 
+def native_navigation_id(value):
+    # 固定版 RAGFlow 在模型首次研究前执行导航，使用这两个本地编号前缀。
+    return isinstance(value, str) and value.startswith(("nav_", "ladder_"))
+
+
+def text_content(content):
+    if isinstance(content, list) and all(isinstance(part, dict) and part.get("type") == "text"
+                                          and isinstance(part.get("text"), str) for part in content):
+        return "".join(part["text"] for part in content)
+    return content
+
+
 def request_payload(body, tool_turns=None):
     model, separator, alias = body["model"].partition("@")
     effort = body.get("reasoning_effort") or alias or "low"
@@ -41,16 +53,26 @@ def request_payload(body, tool_turns=None):
     tool_turns = tool_turns if tool_turns is not None else {}
     messages = []
     for message in body["messages"]:
-        role, content = message["role"], message.get("content")
+        role, content = message["role"], text_content(message.get("content"))
         if role == "tool":
             if not isinstance(content, str):
                 raise ValueError("本地检索工具结果必须是文本")
-            messages.append({"type": "function_call_output", "call_id": message["tool_call_id"], "output": content})
+            ident = message["tool_call_id"]
+            messages.append({"type": "function_call_output",
+                             "call_id": "call_tg_" + ident if native_navigation_id(ident) else ident,
+                             "output": content})
         elif role == "assistant" and message.get("tool_calls"):
             ids = tuple(call["id"] for call in message["tool_calls"])
-            if ids not in tool_turns:
+            if ids in tool_turns:
+                messages.extend(tool_turns[ids])
+            elif all(native_navigation_id(ident) for ident in ids):
+                if content:
+                    messages.append({"role": "assistant", "content": content})
+                messages.extend({"type": "function_call", "call_id": "call_tg_" + call["id"],
+                                 "name": call["function"]["name"], "arguments": call["function"]["arguments"]}
+                                for call in message["tool_calls"])
+            else:
                 raise ValueError("缺少本题工具调用的官方响应上下文")
-            messages.extend(tool_turns[ids])
         elif role in ("system", "developer", "user", "assistant") and isinstance(content, str):
             messages.append({"role": role, "content": content})
         else:
