@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="FinanceBench 150 题逐题回放:按服务器上的真实运行记录,看原版和增强版从确定范围、检索、作答到评分的每一步。">
+<title>TimeGuard-RAG · 逐题回放</title>
+<!--STYLE-->
+</head>
+<body>
+<header class="top">
+  <div class="brand">TimeGuard-RAG · 逐题回放 <small>FinanceBench 公开 150 题 · 按真实运行记录</small></div>
+  <nav><a href="TimeGuard-RAG-实验导览.html">导览页</a><a href="https://github.com/Jinhong-Luo/TimeGuard-RAG/tree/experiment/finance-evidence-selection" target="_blank" rel="noopener noreferrer">实验代码</a></nav>
+</header>
+<main class="layout">
+  <aside class="picker" id="picker" aria-label="题库">
+    <button class="picker-toggle" id="picker-toggle" type="button" aria-expanded="false">题库 <span id="picker-count"></span></button>
+    <div class="picker-body">
+      <div class="picker-head">
+        <div class="filters">
+          <label class="wide">搜索题号、公司或题干<input id="f-text" type="search" placeholder="例如 01079、Amcor、working capital" autocomplete="off"></label>
+          <label>分组<select id="f-split"></select></label>
+          <label>题型<select id="f-type"></select></label>
+          <label>公司<select id="f-company"></select></label>
+          <label>两组对比<select id="f-cmp"></select></label>
+        </div>
+        <p class="legend"><span class="chip ok">答 ✓</span><span class="chip bad">答 ✗</span><span class="chip unk">引 ?</span><span>答 = 答案是否正确,引 = 引用是否支持结论;? 表示无法判断,按未达标计入分母</span></p>
+      </div>
+      <p class="list-count" id="list-count"></p>
+      <div id="list"></div>
+    </div>
+  </aside>
+  <section class="detail" id="detail" aria-label="本题回放">
+    <div class="detail-head">
+      <span class="pos" id="pos"></span>
+      <span class="nav" id="jumps"></span>
+      <span class="nav"><button class="btn" id="prev" type="button">← 上一题</button><button class="btn" id="next" type="button">下一题 →</button></span>
+    </div>
+    <div class="detail-body" id="detail-body"></div>
+  </section>
+</main>
+<!--DATA-->
+<!--APP-->
+</body>
+</html>
