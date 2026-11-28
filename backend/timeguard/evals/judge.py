@@ -90,6 +90,14 @@ def citation_context(generated):
                     sha = c["block_sha256"]
                     if hashes.count(sha) == 1 and (not paired or c.get("source_check") in VERIFIED_CITATIONS):
                         chunks[hashes.index(sha) + 1] = c
+                # 只接收经同版索引核验的实收摘录；历史轨迹没有此字段。
+                for c in requests[0].get("verified_excerpts", ()):
+                    sha = c["block_sha256"]
+                    if hashes.count(sha) == 1 and c.get("spans") and c.get("source_sha256"):
+                        slot = hashes.index(sha) + 1
+                        anchor = (answer_call.get("packet") or [])[slot - 1]
+                        if chunks[slot] is None and (c["id"], c["document_id"]) == (anchor["id"], anchor["document_id"]):
+                            chunks[slot] = c
         context["reference_candidate_count"] = sum(c is not None for c in chunks)
     traced = "citation_trace" in generated
     trace = generated.get("citation_trace") or {}

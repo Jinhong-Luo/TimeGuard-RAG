@@ -183,6 +183,10 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                             "positions": raw.get("position_int")}
 
                 trace = current.get()
+                # 研究已完成。仅增强组的终答及其预算预演使用用户提交的题干。
+                record["research_question"] = state.get("question")
+                record["answer_question"] = trace["question"]
+                state = {**state, "question": trace["question"]}
                 record["enhancement"] = {}
                 slot["paired_chunks"], instruction = await enhance(
                     trace["question"], trace["plan"], paired_documents, state, tools,
@@ -217,6 +221,11 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                 record.update(selected=[], packet=[], empty_response=True)
             # 在回答完成后按索引原块核验。回读只进入诊断记录。
             for req in record["requests"]:
+                sections = {}
+                if paired and req.get("status") == 200:
+                    from timeguard.evidence.citation_spans import recover, visible_sections
+                    sections = visible_sections(req["body"]["messages"])
+                    req["verified_excerpts"] = []
                 for c in req["complete_chunks"] or []:
                     c["source_check"] = "unknown"
                     try:
@@ -231,6 +240,24 @@ def install(generator, settings, current, tools_class, snapshot_spec=None):
                                 c["source_check"] = "intact" if source == c["content"] else "edited"
                     except Exception as exc:
                         c["readback_error"] = type(exc).__name__
+                if sections:
+                    complete = {c["block_sha256"]: c for c in req["complete_chunks"] or []}
+                    retrievals = current.get()["evidence_layers"]["retrievals"]
+                    for n, anchor in enumerate(record.get("packet") or [], 1):
+                        c = complete.get(record["block_hashes"][n - 1])
+                        if n not in sections or (c and c.get("source_check") != "edited"):
+                            continue
+                        historical = {chunk.get("content_sha256") for event in retrievals
+                                      for chunk in event.get("chunks") or [] if chunk["id"] == anchor["id"]}
+                        try:
+                            raw = settings.docStoreConn.get(anchor["id"], index_name(tools.tenant_ids[0]), tools.kb_ids)
+                            if raw and raw.get("id") == anchor["id"]:
+                                excerpt = recover(n, record, sections[n], c, raw, historical,
+                                                  render_tables(raw["content_with_weight"]))
+                                if excerpt:
+                                    req["verified_excerpts"].append(excerpt)
+                        except Exception as exc:
+                            req.setdefault("excerpt_errors", {})[n] = type(exc).__name__
             if snapshot_spec is not None and not paired:
                 from timeguard.evidence.final_snapshot import replay, RequestCaptured
                 check = {"selected": None, "packet": None, "requests": []}

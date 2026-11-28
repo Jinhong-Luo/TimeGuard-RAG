@@ -277,6 +277,8 @@ def worker_sources(candidate, official=False):
         files.extend(["research/agentic_candidate.py", "retrieval/scope.py", "retrieval/catalog.py"])
     if candidate in ("layers", *SNAPSHOTS):
         files.append("evidence/evidence_layers.py")
+    if candidate in PAIRED:
+        files.append("evidence/citation_spans.py")
     if candidate in SNAPSHOTS:
         files.append("evidence/final_snapshot.py")
     if candidate in ("route", "page_select"):
