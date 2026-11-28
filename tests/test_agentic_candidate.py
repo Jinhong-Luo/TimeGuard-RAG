@@ -5,8 +5,8 @@ import tempfile
 import unittest
 from uuid import uuid4
 
-from timeguard.agentic_candidate import evidence_blocks
-from timeguard.scope import scope
+from timeguard.research.agentic_candidate import evidence_blocks
+from timeguard.retrieval.scope import scope
 
 
 class CandidateTests(unittest.TestCase):
@@ -26,10 +26,10 @@ class CandidateTests(unittest.TestCase):
             self.assertEqual(scope("AMD FY2020 as of "+day, docs)["document_ids"],expected)
 
 try:
-    from timeguard.agentic_finance import direct_lookup
-    from timeguard.financial_agent import Operand, calculate_financial_metric, present_evidence, verify_operand
+    from timeguard.research.agentic_finance import direct_lookup
+    from timeguard.research.financial_agent import Operand, calculate_financial_metric, present_evidence, verify_operand
     from fastapi.testclient import TestClient
-    from timeguard.app import create_app
+    from timeguard.server.app import create_app
 except ModuleNotFoundError as exc:
     if exc.name not in {"langgraph","pydantic","fastapi","httpx"}:
         raise
@@ -111,7 +111,7 @@ class FinancialTests(unittest.TestCase):
     def test_native_http_failures(self):
         import httpx
         from unittest.mock import patch
-        from timeguard.app import native_graph
+        from timeguard.server.app import native_graph
 
         async def run():
             docs = [{"company":"AMD","id":"d","doc_name":"AMD_2022_10K"}]
@@ -119,7 +119,7 @@ class FinancialTests(unittest.TestCase):
             for response in (httpx.Response(502), httpx.Response(200, content=b"{"),httpx.Response(200,content=b"null"),
                              httpx.Response(200, json={"code":0,"data":{"chunks":[{"document_id":"other"}]}})):
                 async with httpx.AsyncClient(transport=httpx.MockTransport(lambda _:response)) as http:
-                    with patch("timeguard.app.read_json",return_value=config), patch("timeguard.app.read_jsonl",return_value=[]), patch("timeguard.app.catalog",return_value=docs), patch.dict("os.environ",RAGFLOW_API_KEY="test",CODEX_BRIDGE_TOKEN="test"):
+                    with patch("timeguard.server.app.read_json",return_value=config), patch("timeguard.server.app.read_jsonl",return_value=[]), patch("timeguard.server.app.catalog",return_value=docs), patch.dict("os.environ",RAGFLOW_API_KEY="test",CODEX_BRIDGE_TOKEN="test"):
                         graph = native_graph(http,{"dataset_id":"kb"})
                         with self.assertRaises((ValueError,httpx.HTTPStatusError)):
                             await graph.ainvoke({"question":"AMD FY2022 margin"})

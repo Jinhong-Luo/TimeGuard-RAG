@@ -3,7 +3,7 @@
 import json
 import unittest
 
-from timeguard.judge import EFFORT, MODEL, TRANSPORT, build_request, citation_context, judge_one, parse_judgement, unique_rows
+from timeguard.evals.judge import EFFORT, MODEL, TRANSPORT, build_request, citation_context, judge_one, parse_judgement, unique_rows
 
 
 class JudgeTests(unittest.TestCase):

@@ -4,8 +4,8 @@ from tempfile import TemporaryDirectory
 from pathlib import Path
 from unittest.mock import Mock
 
-from timeguard.four_blocks import pick
-from timeguard.outline_search import OutlineSearch, headings, rank_sections
+from timeguard.evals.trials.four_blocks import pick
+from timeguard.retrieval.outline_search import OutlineSearch, headings, rank_sections
 
 
 class OutlineTests(unittest.TestCase):

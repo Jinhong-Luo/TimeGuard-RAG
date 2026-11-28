@@ -1,7 +1,7 @@
 """检查证据排序范围、重复段落和互补指标。"""
 import unittest
 
-from timeguard.page_select import select
+from timeguard.retrieval.page_select import select
 
 
 class SelectionTest(unittest.TestCase):

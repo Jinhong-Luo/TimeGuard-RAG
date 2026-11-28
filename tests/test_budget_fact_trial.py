@@ -4,7 +4,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
-from timeguard.budget_fact_trial import frozen_choice, totals
+from timeguard.evals.trials.budget_fact_trial import frozen_choice, totals
 
 
 class FrozenBudgetTest(unittest.TestCase):
@@ -14,8 +14,8 @@ class FrozenBudgetTest(unittest.TestCase):
             "native_trace":{"evidence_layers":{"answers":[{"snapshot":{"input":{"tools":{"doc_scope":["d"]}}}}]}}}})
 
     def call(self):
-        with patch("timeguard.budget_fact_trial.read_json",return_value={"choices":{"fact_select":self.chunks}}), \
-             patch("timeguard.budget_fact_trial.scope",return_value={"companies":["公司"],"document_ids":["d"]}):
+        with patch("timeguard.evals.trials.budget_fact_trial.read_json",return_value={"choices":{"fact_select":self.chunks}}), \
+             patch("timeguard.evals.trials.budget_fact_trial.scope",return_value={"companies":["公司"],"document_ids":["d"]}):
             return frozen_choice(self.exp,Path("unused"),"q")
 
     def test_both_arms_share_exact_frozen_order_and_text(self):

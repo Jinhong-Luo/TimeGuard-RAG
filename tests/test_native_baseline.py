@@ -3,8 +3,8 @@ import unittest
 import asyncio
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, Mock
-from timeguard.native_baseline import arm_config, select_queries, install_observers
-from timeguard.native_metadata import expected_metadata, restore_allowed
+from timeguard.evals.baselines.native_baseline import arm_config, select_queries, install_observers
+from timeguard.evals.baselines.native_metadata import expected_metadata, restore_allowed
 
 
 class NativeBaselineTests(unittest.TestCase):

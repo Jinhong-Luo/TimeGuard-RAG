@@ -1,5 +1,5 @@
 import unittest
-from timeguard.filing_pages import FilingPages,missing_query,pages_for
+from timeguard.retrieval.filing_pages import FilingPages,missing_query,pages_for
 
 
 class FilingPageTest(unittest.TestCase):

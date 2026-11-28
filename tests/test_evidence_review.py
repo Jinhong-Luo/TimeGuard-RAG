@@ -1,7 +1,7 @@
 """证据审查不得接受越界、伪造和无依据的块。"""
 import unittest
-from timeguard.evidence_review import catalog,inspect_once,validated
-from timeguard.final_snapshot import fingerprint
+from timeguard.evidence.evidence_review import catalog,inspect_once,validated
+from timeguard.evidence.final_snapshot import fingerprint
 
 
 class ReviewTest(unittest.TestCase):

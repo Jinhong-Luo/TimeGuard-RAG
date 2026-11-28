@@ -8,7 +8,8 @@ from pathlib import Path
 import re
 import subprocess
 
-from timeguard import judge, openai_transport as api
+from timeguard.evals import judge
+from timeguard.llm import openai_transport as api
 
 RUN = Path("runs/financebench-openai-20261125-v2")
 # 从旧选块定位表格。只登记块号、物理页、表题及边界，不指定任何答案行或数值。

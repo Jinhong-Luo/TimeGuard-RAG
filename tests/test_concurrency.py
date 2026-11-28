@@ -10,7 +10,8 @@ import time
 import unittest
 from unittest.mock import Mock, patch
 
-from timeguard import judge, run
+from timeguard.evals import judge
+from timeguard.evals.baselines import run
 from timeguard.common import digest, read_json, read_jsonl, write_json, write_jsonl
 
 
@@ -199,7 +200,7 @@ class ConcurrencyTests(unittest.TestCase):
                                            "url", "token", 1, concurrency=2)
             return run.run_queries(queries, self.config, "chat", output, concurrency=2)
 
-        target = "timeguard.judge.judge_one" if judging else "timeguard.run.run_one"
+        target = "timeguard.evals.judge.judge_one" if judging else "timeguard.evals.baselines.run.run_one"
         with patch(target, side_effect=worker), contextlib.redirect_stdout(io.StringIO()):
             self.assertFalse(execute())
         self.assertEqual(set(calls), {"q0", "q1"})

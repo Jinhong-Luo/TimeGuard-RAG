@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from timeguard.common import digest
-from timeguard.history_read import recover, recover_row
+from timeguard.retrieval.history_read import recover, recover_row
 
 
 class HistoryReadTest(unittest.TestCase):
@@ -77,7 +77,7 @@ class HistoryReadTest(unittest.TestCase):
         client = Mock()
         with self.assertRaises(ValueError):
             recover_row(row, client, [], "另一个资料库")
-        with patch("timeguard.history_read.scope", return_value={"companies":["甲"], "document_ids":[]}):
+        with patch("timeguard.retrieval.history_read.scope", return_value={"companies":["甲"], "document_ids":[]}):
             with self.assertRaises(ValueError):
                 recover_row(row, client, [], "资料库")
         client.request.assert_not_called()

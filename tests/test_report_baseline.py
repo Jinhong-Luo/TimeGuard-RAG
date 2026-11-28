@@ -3,7 +3,7 @@
 import unittest
 
 from timeguard.common import digest
-from timeguard.report_baseline import bound_reason
+from timeguard.evals.analysis.report_baseline import bound_reason
 
 
 class ReasonBindingTests(unittest.TestCase):

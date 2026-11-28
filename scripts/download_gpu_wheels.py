@@ -12,7 +12,7 @@ import time
 import urllib.parse
 from pathlib import Path
 
-items=json.loads(Path('reports/gpu-wheel-lock.json').read_text())
+items=json.loads(Path('deploy/locks/gpu-wheel-lock.json').read_text())
 root=Path('.cache/gpu-wheelhouse')
 root.mkdir(parents=True,exist_ok=True)
 part_size=8*1024*1024

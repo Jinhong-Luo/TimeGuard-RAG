@@ -13,11 +13,11 @@ from unittest.mock import Mock, patch
 from uuid import uuid4
 
 from timeguard.common import digest
-from timeguard.judge import citation_context
-from timeguard.scope import needs_expansion, rank, scope, search
-from timeguard.table_trial import windows
-from timeguard.native_trial import STATE, install_hooks
-from timeguard.tei_adapter import Handler
+from timeguard.evals.judge import citation_context
+from timeguard.retrieval.scope import needs_expansion, rank, scope, search
+from timeguard.evals.trials.table_trial import windows
+from timeguard.evals.baselines.native_trial import STATE, install_hooks
+from timeguard.llm.tei_adapter import Handler
 
 
 class RetrievalTests(unittest.TestCase):
@@ -74,7 +74,7 @@ class RetrievalTests(unittest.TestCase):
         handler.respond = Mock()
         opener = Mock()
         opener.open.return_value = io.BytesIO(b'[{"index": 0, "score": 0.5}]')
-        with patch("timeguard.tei_adapter.urllib.request.build_opener", return_value=opener):
+        with patch("timeguard.llm.tei_adapter.urllib.request.build_opener", return_value=opener):
             handler.do_POST()
         payload = json.loads(opener.open.call_args.args[0].data)
         self.assertEqual(payload, {**data, "truncate": True})
@@ -115,8 +115,8 @@ class RetrievalTests(unittest.TestCase):
 
 try:
     from fastapi.testclient import TestClient
-    from timeguard.app import create_app
-    from timeguard.financial_agent import Operand, build_graph, calculate_financial_metric, verify_operand, tool_selection, present_evidence
+    from timeguard.server.app import create_app
+    from timeguard.research.financial_agent import Operand, build_graph, calculate_financial_metric, verify_operand, tool_selection, present_evidence
 except ModuleNotFoundError as dependency:
     if dependency.name not in {"fastapi", "httpx", "langgraph", "pydantic"}:
         raise

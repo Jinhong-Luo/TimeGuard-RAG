@@ -1,7 +1,7 @@
 """确保模型裁判不会被报告成已完成人工核验。"""
 
 import unittest
-from timeguard.score import summarize
+from timeguard.evals.score import summarize
 
 
 class ReviewSourceTests(unittest.TestCase):

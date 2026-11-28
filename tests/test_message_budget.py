@@ -1,5 +1,5 @@
 import unittest
-from timeguard.message_budget import MARKER,pack,shorten_table
+from timeguard.evidence.message_budget import MARKER,pack,shorten_table
 
 class BudgetTest(unittest.TestCase):
     def test_skip_long_and_preserve_fixed_messages(self):

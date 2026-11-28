@@ -3,9 +3,9 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from timeguard.common import write_jsonl
-from timeguard.evidence_layers import source_relation
-from timeguard.financebench_paired import COUNTS, PILOT, SPLITS, generation_state, make_plan, summarize
-from timeguard.judge import citation_context
+from timeguard.evidence.evidence_layers import source_relation
+from timeguard.evals.financebench_paired import COUNTS, PILOT, SPLITS, generation_state, make_plan, summarize
+from timeguard.evals.judge import citation_context
 
 
 class FinanceBenchPairedTest(unittest.TestCase):

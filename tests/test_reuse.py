@@ -9,7 +9,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from timeguard import judge, run
+from timeguard.evals import judge
+from timeguard.evals.baselines import run
 from timeguard.common import digest, read_json, read_jsonl, write_json, write_jsonl
 
 

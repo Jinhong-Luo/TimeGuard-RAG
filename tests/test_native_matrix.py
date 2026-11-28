@@ -3,7 +3,7 @@ import tempfile
 from pathlib import Path
 import unittest
 from timeguard.common import write_json,write_jsonl
-from timeguard.native_matrix import summarize_run
+from timeguard.evals.baselines.native_matrix import summarize_run
 
 
 class NativeMatrixTests(unittest.TestCase):

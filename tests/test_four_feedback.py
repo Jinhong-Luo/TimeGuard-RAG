@@ -5,8 +5,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, patch
 
-from timeguard.four_feedback import feedback
-from timeguard.paired_trial import run_packets
+from timeguard.evals.trials.four_feedback import feedback
+from timeguard.evals.trials.paired_trial import run_packets
 
 
 class FeedbackTest(unittest.TestCase):
@@ -18,7 +18,7 @@ class FeedbackTest(unittest.TestCase):
         self.old = {"selected":[2,3,4,8],"checks":[None],"query":"consolidated revenue"}
 
     def execute(self, replies, search):
-        with patch("timeguard.four_feedback.chat",side_effect=replies):
+        with patch("timeguard.evals.trials.four_feedback.chat",side_effect=replies):
             return feedback({},self.query,{"chunks":self.chunks},[1,2,3,4],self.chunks[:4],search)
 
     def test_sufficient_evidence_skips_review_and_search(self):
@@ -81,7 +81,7 @@ class FeedbackTest(unittest.TestCase):
                 out = Path(tmp,str(changed))
                 out.mkdir()
                 packet = {**record(),"body":{} if changed else body,"visible":[]}
-                with patch("timeguard.paired_trial.generate") as generate, patch("timeguard.paired_trial.judge",return_value=0):
+                with patch("timeguard.evals.trials.paired_trial.generate") as generate, patch("timeguard.evals.trials.paired_trial.judge",return_value=0):
                     if changed:
                         with self.assertRaises(ValueError):
                             run_packets(source,out,["对照"],[row],[{"对照":packet}],{},source)

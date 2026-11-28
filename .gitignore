@@ -12,3 +12,6 @@ runs/
 deploy/runtime.env
 deploy/compose.generated.json
 deploy/*.runtime.json
+
+# 实验汇总、运行记录和离线展示数据只在本地保存。
+/reports/

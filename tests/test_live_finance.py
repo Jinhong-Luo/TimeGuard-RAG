@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock
 
-from timeguard.live_finance import FEEDBACK, enhance
+from timeguard.research.live_finance import FEEDBACK, enhance
 
 
 def chunk(i, document="d", content="原文说明第 2021 财年。"):

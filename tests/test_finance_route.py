@@ -4,11 +4,11 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 from timeguard.common import digest,write_json
-from timeguard.final_report import generation_cost
-from timeguard.finance_route import simple_metric,simple_lookup,needs_review
-from timeguard.filing_pages import FilingPages,pages_for
-from timeguard.scope import intersect_scope
-from timeguard.judge import citation_context
+from timeguard.evals.analysis.final_report import generation_cost
+from timeguard.research.finance_route import simple_metric,simple_lookup,needs_review
+from timeguard.retrieval.filing_pages import FilingPages,pages_for
+from timeguard.retrieval.scope import intersect_scope
+from timeguard.evals.judge import citation_context
 
 
 class RoutingTest(unittest.TestCase):
@@ -35,7 +35,7 @@ class RoutingTest(unittest.TestCase):
         c={"id":"块","document_id":"甲","content":"Revenue in 2021","positions":[[1]]}
         idx=FilingPages(None,"库",[{"id":"甲","company":"Example","doc_name":"年报"}])
         idx.cache["甲"]=[c]
-        with patch("timeguard.filing_pages.pages_for",side_effect=[([c],[("甲",1)]),TimeoutError()]) as search:
+        with patch("timeguard.retrieval.filing_pages.pages_for",side_effect=[([c],[("甲",1)]),TimeoutError()]) as search:
             result=idx.retrieve("Example revenue in 2022",{"input":{"tools":{"doc_scope":["甲"]}}})
         self.assertEqual(search.call_count,2)
         self.assertEqual(result["extra_error"],"TimeoutError")

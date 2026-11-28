@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from timeguard import audit_index
+from timeguard.indexing import audit_index
 from timeguard.common import digest
 
 

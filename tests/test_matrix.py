@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from timeguard.matrix import audit_summary, run_batch, same_bridge_as_history
+from timeguard.evals.baselines.matrix import audit_summary, run_batch, same_bridge_as_history
 from timeguard.common import digest, read_jsonl, write_jsonl
 
 
@@ -63,9 +63,9 @@ class MatrixAuditTests(unittest.TestCase):
                                                    {"id": "q1", "status": "ok"}])
                 return 1
 
-            with patch("timeguard.matrix.subprocess.call", side_effect=failed_command), \
+            with patch("timeguard.evals.baselines.matrix.subprocess.call", side_effect=failed_command), \
                     contextlib.redirect_stdout(io.StringIO()), self.assertRaises(RuntimeError):
-                run_batch("timeguard.run", [], run, "generation", "low", audit, ledger, {"index": "fixed"})
+                run_batch("timeguard.evals.baselines.run", [], run, "generation", "low", audit, ledger, {"index": "fixed"})
             record = read_jsonl(ledger)[0]
             self.assertEqual(record["returncode"], 1)
             self.assertFalse(record["verified"])

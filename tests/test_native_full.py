@@ -8,9 +8,9 @@ import unittest
 from unittest.mock import patch
 
 from timeguard.common import digest,read_jsonl,write_json,write_jsonl
-from timeguard import judge
-from timeguard.native_full import reuse_reviews
-from timeguard import native_full,native_baseline
+from timeguard.evals import judge
+from timeguard.evals.baselines.native_full import reuse_reviews
+from timeguard.evals.baselines import native_full, native_baseline
 
 
 class NativeFullTests(unittest.TestCase):
@@ -87,7 +87,7 @@ class NativeFullTests(unittest.TestCase):
                     self.assertNotIn("已有答案",json.dumps(fresh_spec,ensure_ascii=False))
                     write_jsonl(out/"results.jsonl",[{**q,"status":"ok","answer":"新增答案","elapsed_seconds":1} for q in fresh_spec["queries"]])
                     return 0
-                with patch("timeguard.matrix.frozen_index",return_value={"same":True}),patch.object(native_full,"private_runtime",return_value=(private,{})),patch.object(native_full,"container_worker",side_effect=worker):
+                with patch("timeguard.evals.baselines.matrix.frozen_index",return_value={"same":True}),patch.object(native_full,"private_runtime",return_value=(private,{})),patch.object(native_full,"container_worker",side_effect=worker):
                     self.assertEqual(native_full.generate(root,source,root/"full"),0)
                 self.assertEqual(len(requests),111)
                 self.assertFalse({q["id"] for q in requests}&{q["id"] for q in queries[:39]})

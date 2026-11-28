@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from timeguard.common import digest,write_json
-from timeguard.native_report import judgement_counts,window_records,build
+from timeguard.evals.analysis.native_report import judgement_counts,window_records,build
 
 
 class NativeReportTests(unittest.TestCase):
@@ -43,7 +43,7 @@ class NativeReportTests(unittest.TestCase):
                 if path.name==original.name:
                     return {"run":path.name,"planned":39,"completed":32,"statuses":{"ok":30,"request_error":2},"missing":7,"complete":False}
                 return {"run":path.name,"complete":True,**({"recovery":proof} if path.name==names["rerank"] else {})}
-            with patch("timeguard.native_report.run_details",side_effect=details),patch("timeguard.native_report.audit_summary",return_value={"available":True,"source_fingerprint_stable":True}):
+            with patch("timeguard.evals.analysis.native_report.run_details",side_effect=details),patch("timeguard.evals.analysis.native_report.audit_summary",return_value={"available":True,"source_fingerprint_stable":True}):
                 result=build(root,root/"unused-audit")
             self.assertEqual(result["status"],"awaiting_scope_decision")
             self.assertIn(names["rerank"],{r["run"] for r in result["core_runs"]})
@@ -68,7 +68,7 @@ class NativeReportTests(unittest.TestCase):
                 write_json(root/name/'manifest.json',{'identity':{'source_sha256':'同源码','queries_sha256':'同题源','upstream':'同底座','freeze':'同索引'}})
             write_json(root/'metadata-restore.json',{'verified':True,'documents':84})
             write_json(root/'supervisor-finish.json',{'awaiting_full150_decision':True})
-            with patch('timeguard.native_report.run_details',side_effect=lambda path:{'run':path.name,'complete':True}),patch('timeguard.native_report.audit_summary',return_value={'available':True,'source_fingerprint_stable':True}):
+            with patch('timeguard.evals.analysis.native_report.run_details',side_effect=lambda path:{'run':path.name,'complete':True}),patch('timeguard.evals.analysis.native_report.audit_summary',return_value={'available':True,'source_fingerprint_stable':True}):
                 report=build(root,root/'unused-audit')
             self.assertEqual(len(report['core_runs']),7)
             self.assertEqual(report['status'],'awaiting_full150_decision')

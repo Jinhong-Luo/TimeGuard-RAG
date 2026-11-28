@@ -2,10 +2,10 @@
 import unittest
 from types import SimpleNamespace
 
-from timeguard.final_snapshot import freeze, replay
-from timeguard.snapshot_history import recover
+from timeguard.evidence.final_snapshot import freeze, replay
+from timeguard.evals.analysis.snapshot_history import recover
 from timeguard.common import digest
-from timeguard.judge import citation_context
+from timeguard.evals.judge import citation_context
 
 
 class SnapshotTest(unittest.IsolatedAsyncioTestCase):

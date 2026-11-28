@@ -4,7 +4,8 @@ import os
 import unittest
 from unittest.mock import patch
 
-from timeguard import judge, openai_transport as api
+from timeguard.evals import judge
+from timeguard.llm import openai_transport as api
 
 
 def response(effort, output, status="completed"):
@@ -77,7 +78,7 @@ class OpenAITransportTest(unittest.TestCase):
 class NativeTransportTest(unittest.IsolatedAsyncioTestCase):
     async def test_only_the_selected_model_endpoint_uses_official_api(self):
         import httpx
-        from timeguard.openai_native import install
+        from timeguard.llm.openai_native import install
 
         current = ContextVar("题目", default=None)
         endpoint = "http://127.0.0.1:18866/v1"

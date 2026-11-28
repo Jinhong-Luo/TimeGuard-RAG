@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from timeguard.common import digest, read_json, write_json, write_jsonl
-from timeguard.extend_corpus import FINANCEBENCH_COMMIT, MODEL_FIELDS, materialize, prepare_inputs, verify_native
+from timeguard.indexing.extend_corpus import FINANCEBENCH_COMMIT, MODEL_FIELDS, materialize, prepare_inputs, verify_native
 
 
 class ExtendCorpusTests(unittest.TestCase):

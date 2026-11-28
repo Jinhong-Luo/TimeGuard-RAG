@@ -1,7 +1,7 @@
 """财务校验的跨期、单位、符号、定义与缺项回归。"""
 import unittest
-from timeguard.financial_agent import Operand
-from timeguard.formula_guard import formula,requirements,check
+from timeguard.research.financial_agent import Operand
+from timeguard.evidence.formula_guard import formula,requirements,check
 
 
 def money(value,year=2022,scale="millions",label="revenue"):

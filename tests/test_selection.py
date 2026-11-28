@@ -5,9 +5,9 @@ import json
 from pathlib import Path
 import unittest
 
-from timeguard import judge
+from timeguard.evals import judge
 from timeguard.common import digest
-from timeguard.select import choose
+from timeguard.evals.select import choose
 
 
 class SelectionTests(unittest.TestCase):

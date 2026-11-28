@@ -3,9 +3,9 @@
 import copy
 import unittest
 
-from timeguard.data import prepare
-from timeguard.run import chat_body, retrieval_body
-from timeguard.score import doc_name, evidence_metrics, summarize
+from timeguard.indexing.data import prepare
+from timeguard.evals.baselines.run import chat_body, retrieval_body
+from timeguard.evals.score import doc_name, evidence_metrics, summarize
 
 
 class BaselineTests(unittest.TestCase):

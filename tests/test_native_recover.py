@@ -1,6 +1,6 @@
 """恢复仅按请求状态选取完整行，不依据答案对错挑选来源。"""
 import unittest
-from timeguard.native_recover import recovery_plan
+from timeguard.evals.baselines.native_recover import recovery_plan
 
 
 class NativeRecoveryTests(unittest.TestCase):

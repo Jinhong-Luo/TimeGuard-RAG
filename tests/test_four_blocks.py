@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from timeguard.four_blocks import pick, scoped_search, select_four
+from timeguard.evals.trials.four_blocks import pick, scoped_search, select_four
 
 
 class FourBlocksTest(unittest.TestCase):
@@ -15,7 +15,7 @@ class FourBlocksTest(unittest.TestCase):
     def test_invalid_output_restores_original_four(self):
         chunks = [{"document_name":"报告","content":"正文","positions":[[1]]} for _ in range(20)]
         rt = {"base_url":"测试","token":"测试"}
-        with patch("timeguard.four_blocks.post_completion",side_effect=TimeoutError()):
+        with patch("timeguard.evals.trials.four_blocks.post_completion",side_effect=TimeoutError()):
             log = []
             self.assertEqual(select_four(rt,"问题",chunks,log),[1,2,3,4])
             self.assertEqual(len(log),1)

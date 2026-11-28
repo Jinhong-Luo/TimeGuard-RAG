@@ -1,8 +1,8 @@
 """开发集配对报告的分母、损失和共享请求核验。"""
 import unittest
 
-from timeguard.full_feedback import packet_key
-from timeguard.full_feedback_report import transitions,STAGES
+from timeguard.evals.trials.full_feedback import packet_key
+from timeguard.evals.analysis.full_feedback_report import transitions,STAGES
 
 
 class FullFeedbackTest(unittest.TestCase):

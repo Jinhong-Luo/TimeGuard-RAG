@@ -5,11 +5,11 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-import shutil
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from timeguard.worker_bundle import package_files, stage_package
 from timeguard.common import digest, read_json, read_jsonl, write_json
-from timeguard.native_baseline import CONTAINER
+from timeguard.evals.baselines.native_baseline import CONTAINER
 
 
 def main():
@@ -29,18 +29,16 @@ def main():
     if not cases:
         raise ValueError("来源中没有满足触发条件的题目")
     args.output.mkdir(parents=True,exist_ok=False)
-    package=Path(__file__).resolve().parents[1]/"timeguard"
-    files=["__init__.py","agentic_candidate.py","agentic_fallback_check.py","common.py","scope.py","score.py"]
-    dest="/tmp/timeguard-fallback-"+digest([digest((package/f).read_bytes()) for f in files])[:12]
+    files = package_files("research/agentic_candidate.py", "evals/trials/agentic_fallback_check.py",
+                          "retrieval/scope.py", "retrieval/catalog.py")
     with tempfile.TemporaryDirectory() as tmp:
-        worker=Path(tmp)/"timeguard"
-        worker.mkdir()
-        for name in files:
-            shutil.copyfile(package/name,worker/name)
+        worker = Path(tmp, "timeguard")
+        hashes = stage_package(worker, files)
+        dest = "/tmp/timeguard-fallback-" + digest(hashes)[:12]
         subprocess.run(["docker","exec",CONTAINER,"mkdir","-p",dest],check=True)
         subprocess.run(["docker","cp",str(worker),CONTAINER+":"+dest+"/"],check=True)
     run=subprocess.run(["docker","exec","-i","-w","/ragflow","-e","PYTHONPATH="+dest+":/ragflow",CONTAINER,
-                        "python","-m","timeguard.agentic_fallback_check"],
+                        "python","-m","timeguard.evals.trials.agentic_fallback_check"],
                        input=json.dumps({**spec,"cases":cases}),text=True,check=True,stdout=subprocess.PIPE)
     result=next(json.loads(line.removeprefix("TIMEGUARD_CHECK ")) for line in run.stdout.splitlines()
                 if line.startswith("TIMEGUARD_CHECK "))

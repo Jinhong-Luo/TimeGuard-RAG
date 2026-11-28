@@ -2,8 +2,8 @@
 import unittest
 
 from timeguard.common import digest
-from timeguard.evidence_layers import match_blocks, visible_blocks
-from timeguard.layer_report import assess, layers
+from timeguard.evidence.evidence_layers import match_blocks, visible_blocks
+from timeguard.evals.analysis.layer_report import assess, layers
 
 
 def chunk(doc, page, text):

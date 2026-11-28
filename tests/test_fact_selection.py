@@ -2,7 +2,7 @@
 import copy
 import unittest
 from timeguard.common import digest
-from timeguard.fact_selection import excerpt, received_facts, validate, prepare
+from timeguard.evidence.fact_selection import excerpt, received_facts, validate, prepare
 
 
 class FactSelectionTest(unittest.TestCase):
